@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 
@@ -6,11 +7,20 @@ final ms = MyStyles();
 class MyStyles {
   final _pop = TextStyle(fontFamily: 'Poppins');
 
-  TextStyle get _pop13 => _pop.copyWith(fontSize: 13);
-  TextStyle get _pop13w400 => _pop13.copyWith(fontWeight: FontWeight.w400);
-  TextStyle get popTextPrime13w400 => _pop13w400.copyWith(color: mc.textPrime);
-  TextStyle get _pop20 => _pop.copyWith(fontSize: 20);
-  TextStyle get _pop20w600 => _pop20.copyWith(fontWeight: FontWeight.w600);
-  TextStyle get popTextPrime20w600 => _pop20w600.copyWith(color: mc.textPrime);
-  TextStyle get popPinkLight20w600 => _pop20w600.copyWith(color: mc.pinkLight);
+  //pop 400
+  TextStyle get _pop400 => _pop.copyWith(fontWeight: FontWeight.w400);
+  TextStyle get _pop13w400 => _pop400.copyWith(fontSize: 13);
+  TextStyle get pop13w400TextPrime => _pop13w400.copyWith(color: mc.textPrime);
+  TextStyle get _pop16w400 => _pop400.copyWith(fontSize: 16);
+  TextStyle get pop16w400Grey => _pop16w400.copyWith(color: mc.fieldHint);
+
+  // pop 600
+  TextStyle get _pop600 => _pop.copyWith(fontWeight: FontWeight.w600);
+  TextStyle get _pop13w600 => _pop600.copyWith(fontSize: 13);
+  TextStyle get pop13w600PinkMain => _pop13w600.copyWith(color: mc.pinkMain);
+  TextStyle get _pop15w600 => _pop600.copyWith(fontSize: 15);
+  TextStyle get pop15w600TextPrime => _pop15w600.copyWith(color: mc.textPrime);
+  TextStyle get _pop20w600 => _pop600.copyWith(fontSize: 20);
+  TextStyle get pop20w600TextPrime => _pop20w600.copyWith(color: mc.textPrime);
+  TextStyle get pop20w600PinkMain => _pop20w600.copyWith(color: mc.pinkMain);
 }

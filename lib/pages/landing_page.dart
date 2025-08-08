@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/extensions/color_ext.dart';
+import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/constants/my_assets.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/button.dart';
@@ -39,9 +39,9 @@ class _LandingPageState extends State<LandingPage> {
         Row(),
         _index != 0 ? back : const GapV(20),
         const GapV(24),
-        MyText(headings[_index], ms.popTextPrime20w600),
+        MyText(headings[_index], ms.pop20w600TextPrime),
         const GapV(8),
-        MyText(texts[_index], ms.popTextPrime13w400),
+        MyText(texts[_index], ms.pop13w400TextPrime),
         const GapV(64),
       ],
     );
@@ -65,7 +65,7 @@ class _LandingPageState extends State<LandingPage> {
         const Spacer(),
         Align(
           alignment: Alignment.center,
-          child: Button.pinkLight(text: 'Continue', onTap: incIndex),
+          child: Button.pinkLightTH20(text: 'Continue', onTap: incIndex),
         ),
 
         GapBottom(),

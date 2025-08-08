@@ -5,11 +5,19 @@ import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 //The 'TH' after the color stands for text height
-enum _Type { pinkLightTH20 }
+enum _Type { pinkLightTH20, pinkMainTH20 }
 
 class Button extends StatelessWidget {
-  const Button.pinkLight({super.key, required this.text, required this.onTap})
-    : _type = _Type.pinkLightTH20;
+  const Button.pinkLightTH20({
+    super.key,
+    required this.text,
+    required this.onTap,
+  }) : _type = _Type.pinkLightTH20;
+  const Button.pinkMainTH20({
+    super.key,
+    required this.text,
+    required this.onTap,
+  }) : _type = _Type.pinkMainTH20;
   final String text;
   final Function() onTap;
   final _Type _type;
@@ -17,9 +25,15 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle style;
+    Color color;
     switch (_type) {
       case _Type.pinkLightTH20:
-        style = ms.popPinkLight20w600;
+        style = ms.pop20w600PinkMain;
+        color = mc.pinkCream;
+        break;
+      case _Type.pinkMainTH20:
+        style = ms.pop20w600TextPrime;
+        color = mc.pinkMain;
         break;
     }
 
@@ -28,12 +42,13 @@ class Button extends StatelessWidget {
     current = Center(child: current);
     current = Container(
       decoration: BoxDecoration(
-        color: mc.pinkCream,
+        color: color,
         borderRadius: BorderRadius.circular(50),
       ),
       width: 200,
       child: current,
     );
+    current = UnconstrainedBox(child: current);
     current = GestureDetector(onTap: onTap, child: current);
 
     return current;
