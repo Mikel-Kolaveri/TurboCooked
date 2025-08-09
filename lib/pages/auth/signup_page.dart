@@ -113,6 +113,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
     current = Center(child: current);
 
+    current = SafeArea(child: current);
+    current = Scaffold(body: current);
     current = UnFocus(current);
 
     return current;
