@@ -70,7 +70,7 @@ class _LandingPageState extends State<LandingPage> {
           child: Button.pinkLightTH20(
             text: 'Continue',
             onTap: _index == _headings.length - 1
-                ? () => context.go(Routes.signUp)
+                ? () => context.go(Routes.signup)
                 : incIndex,
           ),
         ),
