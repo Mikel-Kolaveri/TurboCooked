@@ -89,7 +89,6 @@ class _LandingPageState extends State<LandingPage> {
     current = Container(
       width: double.infinity,
       height: double.infinity,
-
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(assets[_index]),

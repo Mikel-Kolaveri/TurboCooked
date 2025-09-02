@@ -21,14 +21,14 @@ class SignupPage extends ConsumerStatefulWidget {
 class _SignupPageState extends ConsumerState<SignupPage> {
   late TapGestureRecognizer _termsRecongizer;
   late TapGestureRecognizer _policyRecognizer;
-  late TapGestureRecognizer _loginRecongizner;
+  late TapGestureRecognizer _loginRecognizer;
   @override
   void initState() {
     _termsRecongizer = TapGestureRecognizer()
       ..onTap = () => showPlaceholder('Terms Placeholder');
     _policyRecognizer = TapGestureRecognizer()
       ..onTap = () => showPlaceholder('Policy Placeholder');
-    _loginRecongizner = TapGestureRecognizer()
+    _loginRecognizer = TapGestureRecognizer()
       ..onTap = () => showPlaceholder('Login Page routing placeholder');
     super.initState();
   }
@@ -50,7 +50,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   void dispose() {
     _termsRecongizer.dispose();
     _policyRecognizer.dispose();
-    _loginRecongizner.dispose();
+    _loginRecognizer.dispose();
     super.dispose();
   }
 
@@ -70,7 +70,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         MyTextField(hint: '●●●●●●●●', label: 'Passowrd', isPsw: true),
         const GapV(16),
         MyTextField(hint: '●●●●●●●●', label: 'Confirm Passowrd', isPsw: true),
-        const GapV(24),
+        const GapV(16),
         MyRichText.center(
           children: [
             TextSpan(text: 'By signing up, you agree to our '),
@@ -88,15 +88,15 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           ],
           style: ms.pop13w400TextPrime,
         ),
-        const GapV(12),
+        const GapV(16),
         Button.pinkMainTH20(text: 'Sign Up', onTap: () {}),
-        const GapV(12),
+        const GapV(16),
         MyRichText.center(
           children: [
             TextSpan(text: 'Already have an account? '),
             TextSpan(
               text: 'Log in',
-              recognizer: _loginRecongizner,
+              recognizer: _loginRecognizer,
               style: ms.pop13w600PinkMain,
             ),
           ],

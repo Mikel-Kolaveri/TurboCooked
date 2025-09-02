@@ -18,6 +18,8 @@ class MyStyles {
   TextStyle get _pop600 => _pop.copyWith(fontWeight: FontWeight.w600);
   TextStyle get _pop13w600 => _pop600.copyWith(fontSize: 13);
   TextStyle get pop13w600PinkMain => _pop13w600.copyWith(color: mc.pinkMain);
+  TextStyle get _pop14w600 => _pop600.copyWith(fontSize: 14);
+  TextStyle get pop14w600PinkMain => _pop14w600.copyWith(color: mc.pinkMain);
   TextStyle get _pop15w600 => _pop600.copyWith(fontSize: 15);
   TextStyle get pop15w600TextPrime => _pop15w600.copyWith(color: mc.textPrime);
   TextStyle get _pop20w600 => _pop600.copyWith(fontSize: 20);
