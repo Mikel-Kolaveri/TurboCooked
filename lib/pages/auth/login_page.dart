@@ -25,7 +25,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   void initState() {
     _signUpRecognizer = TapGestureRecognizer()
-      ..onTap = () => context.go(Routes.signUp);
+      ..onTap = () => context.go(Routes.signup);
     super.initState();
   }
 
