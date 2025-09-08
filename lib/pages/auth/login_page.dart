@@ -69,7 +69,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
         ),
         const GapV(24),
-        Button.pinkMainTH20(text: 'Log In', onTap: () {}),
+        Button.pinkMainTH20(
+          text: 'Log In',
+          onTap: () => context.go(Routes.home),
+        ),
 
         const GapV(12),
         MyRichText.center(
