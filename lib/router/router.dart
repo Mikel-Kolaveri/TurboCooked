@@ -31,12 +31,7 @@ final router = GoRouter(
             alignment: Alignment.center,
             children: [
               child,
-              Positioned(
-                bottom: 16,
-                // left: 0,
-                // right: 0,
-                child: MyNavigationBar(),
-              ),
+              Positioned(bottom: 16, child: MyNavigationBar()),
             ],
           ),
         ),

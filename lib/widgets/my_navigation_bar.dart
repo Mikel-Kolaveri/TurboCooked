@@ -16,8 +16,6 @@ class MyNavigationBar extends ConsumerStatefulWidget {
       _MyNavigationBarState();
 }
 
-//TODO: fix some icons looking longer than others
-
 class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
   String currentRoute = Routes.home;
   @override
@@ -32,10 +30,12 @@ class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
         child: curr,
       );
       curr = AnimatedContainer(
+        padding: EdgeInsets.only(bottom: 4),
         duration: Duration(milliseconds: 300),
         decoration: BoxDecoration(
+          // color: Colors.red,
           border: route == currentRoute
-              ? Border(bottom: BorderSide(color: Colors.white, width: 2))
+              ? Border(bottom: BorderSide(color: Colors.white, width: 3))
               : null,
         ),
         child: curr,
@@ -45,6 +45,7 @@ class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
 
     Widget current = Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         navItem(MyAssets.homeIcon, route: Routes.home),
         const GapH(24),
