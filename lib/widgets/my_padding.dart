@@ -15,14 +15,15 @@ class AllPadding extends StatelessWidget {
 class SymPadding extends StatelessWidget {
   const SymPadding({
     super.key,
-    required this.child,
+
     required this.h,
     required this.v,
+    required this.child,
   });
 
-  final Widget child;
   final double h;
   final double v;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
