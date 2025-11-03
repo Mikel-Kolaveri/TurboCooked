@@ -92,8 +92,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     current = SizedBox(width: double.infinity, child: current);
 
-    current = HPadding(current, 32);
-    current = ColoredBox(color: mc.background, child: current);
+    current = HPadding(32, current);
+    current = ColoredBox(color: mc.bgAuth, child: current);
 
     current = Center(child: current);
 

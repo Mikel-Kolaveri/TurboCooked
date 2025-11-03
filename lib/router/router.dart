@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_app/extensions/set_status_bar_theme.dart';
 import 'package:recipe_app/pages/auth/login_page.dart';
 import 'package:recipe_app/pages/auth/signup_page.dart';
 import 'package:recipe_app/pages/core%20app/community/community_page.dart';
@@ -7,6 +8,7 @@ import 'package:recipe_app/pages/core%20app/home/home_page.dart';
 import 'package:recipe_app/pages/core%20app/profile/profile_page.dart';
 import 'package:recipe_app/pages/core%20app/recipes/recipes_page.dart';
 import 'package:recipe_app/pages/landing_page.dart';
+import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/widgets/my_navigation_bar.dart';
 
 final router = GoRouter(
@@ -25,18 +27,19 @@ final router = GoRouter(
     ),
     ShellRoute(
       //Home
-      builder: (context, state, child) => Scaffold(
-        body: SafeArea(
-          child: Stack(
+      builder: (context, state, child) {
+        setMyStatusBarStyle(context);
+        return Scaffold(
+          body: Stack(
             alignment: Alignment.center,
             children: [
               child,
               Positioned(bottom: 16, child: MyNavigationBar()),
             ],
           ),
-        ),
-        backgroundColor: Colors.brown,
-      ),
+          backgroundColor: mc.bg,
+        );
+      },
       routes: [
         GoRoute(path: Routes.home, builder: (context, state) => HomePage()),
         GoRoute(

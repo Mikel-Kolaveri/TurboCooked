@@ -91,7 +91,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           style: ms.pop13w400TextPrime,
         ),
         const GapV(16),
-        Button.pinkMainTH20(text: 'Sign Up', onTap: () {}),
+        Button.pinkMainTH20(
+          text: 'Sign Up',
+          onTap: () => context.go(Routes.home),
+        ),
         const GapV(16),
         MyRichText.center(
           children: [
@@ -110,8 +113,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
     current = SizedBox(width: double.infinity, child: current);
 
-    current = HPadding(current, 32);
-    current = ColoredBox(color: mc.background, child: current);
+    current = HPadding(32, current);
+    current = ColoredBox(color: mc.bgAuth, child: current);
 
     current = Center(child: current);
 
