@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/pages/core%20app/home/src/your_recipes/your_recipes.dart';
+import 'package:recipe_app/theme/my_styles.dart';
+import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_padding.dart';
+import 'package:recipe_app/widgets/my_text.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -12,7 +17,20 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
-    Widget current = Column(children: [Center(child: Text('HOME PAGE'))]);
+    Widget head = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const GapTop(),
+        MyText('Hi USER!', ms.pop24w400PinkMain),
+        MyText('What are we cooking today?', ms.pop13w400TextPrime),
+      ],
+    );
+    head = HPadding(32, head);
+
+    Widget current = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [const GapV(32), head, const GapV(16), YourRecipes()],
+    );
 
     return current;
   }

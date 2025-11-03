@@ -13,7 +13,7 @@ const _texts = [
   'Get inspired with our daily recipe recommendations.',
   'Learn essential cooking techniques at your own pace.',
 ];
-const assets = [MyAssets.landing1, MyAssets.landing2];
+const _assets = [MyAssets.landing1, MyAssets.landing2];
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -91,7 +91,7 @@ class _LandingPageState extends State<LandingPage> {
       height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(assets[_index]),
+          image: AssetImage(_assets[_index]),
           fit: BoxFit.cover,
         ),
       ),

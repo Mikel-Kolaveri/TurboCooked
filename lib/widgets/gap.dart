@@ -41,3 +41,13 @@ class GapBottom extends StatelessWidget {
     return SizedBox(height: size ?? 32);
   }
 }
+
+class GapTop extends StatelessWidget {
+  const GapTop({super.key, this.size});
+  final double? size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(height: size ?? 32);
+  }
+}

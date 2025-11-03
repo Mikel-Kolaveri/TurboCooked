@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 class AllPadding extends StatelessWidget {
-  const AllPadding(this.child, this.value, {super.key});
+  const AllPadding(this.value, this.child, {super.key});
 
   final Widget child;
   final double value;
@@ -35,7 +35,7 @@ class SymPadding extends StatelessWidget {
 }
 
 class VPadding extends StatelessWidget {
-  const VPadding(this.child, this.value, {super.key});
+  const VPadding(this.value, this.child, {super.key});
 
   final Widget child;
   final double value;
@@ -50,7 +50,7 @@ class VPadding extends StatelessWidget {
 }
 
 class HPadding extends StatelessWidget {
-  const HPadding(this.child, this.value, {super.key});
+  const HPadding(this.value, this.child, {super.key});
 
   final Widget child;
   final double value;
@@ -65,7 +65,7 @@ class HPadding extends StatelessWidget {
 }
 
 class UpPadding extends StatelessWidget {
-  const UpPadding(this.child, this.value, {super.key});
+  const UpPadding(this.value, this.child, {super.key});
 
   final Widget child;
   final double value;
@@ -80,7 +80,7 @@ class UpPadding extends StatelessWidget {
 }
 
 class DownPadding extends StatelessWidget {
-  const DownPadding(this.child, this.value, {super.key});
+  const DownPadding(this.value, this.child, {super.key});
 
   final Widget child;
   final double value;
@@ -95,7 +95,7 @@ class DownPadding extends StatelessWidget {
 }
 
 class LeftPadding extends StatelessWidget {
-  const LeftPadding(this.child, this.value, {super.key});
+  const LeftPadding(this.value, this.child, {super.key});
 
   final Widget child;
   final double value;
@@ -110,7 +110,7 @@ class LeftPadding extends StatelessWidget {
 }
 
 class RightPadding extends StatelessWidget {
-  const RightPadding(this.child, this.value, {super.key});
+  const RightPadding(this.value, this.child, {super.key});
 
   final Widget child;
   final double value;
