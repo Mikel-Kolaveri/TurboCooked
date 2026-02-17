@@ -20,7 +20,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     Widget head = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const GapTop(),
         MyText('Hi USER!', ms.pop24w400PinkMain),
         MyText('What are we cooking today?', ms.pop13w400TextPrime),
       ],

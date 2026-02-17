@@ -4,6 +4,7 @@ import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/constants/my_assets.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_styles.dart';
+import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/button.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
@@ -31,8 +32,7 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget back = Image.asset(MyAssets.back, height: 20);
-    back = GestureDetector(onTap: decIndex, child: back);
+    Widget back = BackBtn.custom(onTap: decIndex);
 
     Widget header = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/pages/core%20app/recipes/src/recipes_category_item.dart';
+import 'package:recipe_app/theme/my_styles.dart';
+import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_padding.dart';
 
 class RecipesPage extends ConsumerStatefulWidget {
   const RecipesPage({super.key});
@@ -11,7 +15,42 @@ class RecipesPage extends ConsumerStatefulWidget {
 class _RecipesPageState extends ConsumerState<RecipesPage> {
   @override
   Widget build(BuildContext context) {
-    Widget current = Column(children: [Center(child: Text('RECIPES PAGE'))]);
+    Widget current = Column(
+      children: [
+        const GapTop(),
+        Text('Categories', style: ms.pop20w600PinkMain),
+        const GapV(16),
+        Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 16,
+          spacing: 16,
+          children: [
+            RecipeCategoryItem(
+              categoryText: 'Spicy herbs soup',
+              assetLink:
+                  "https://c4.wallpaperflare.com/wallpaper/373/952/839/wooden-spoon-condiments-background-wallpaper-preview.jpg",
+            ),
+            RecipeCategoryItem(
+              categoryText: 'Very long recipe name ',
+              assetLink:
+                  "https://p2.piqsels.com/preview/166/884/864/skewer-kebab-barbecue-food.jpg",
+            ),
+            RecipeCategoryItem(
+              categoryText: 'Goulash',
+              assetLink:
+                  "https://p2.piqsels.com/preview/854/281/249/kagyana-strapatsada-gdarta-shakshuka.jpg",
+            ),
+            RecipeCategoryItem(
+              categoryText: 'Choclate Ice Cream',
+              assetLink:
+                  "https://p2.piqsels.com/preview/733/148/987/chocolate-cake-chocolate-cake-recipe-chocolate-images-chocolate-ice-cream.jpg",
+            ),
+          ],
+        ),
+      ],
+    );
+
+    current = HPadding(32, current);
     return current;
   }
 }
