@@ -33,7 +33,7 @@ final router = GoRouter(
           body: Stack(
             alignment: Alignment.center,
             children: [
-              child,
+              PopScope(canPop: false, child: SafeArea(child: child)),
               Positioned(bottom: 16, child: MyNavigationBar()),
             ],
           ),
