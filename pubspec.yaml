@@ -1,6 +1,6 @@
 name: recipe_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -72,3 +72,6 @@ flutter:
         - asset: fonts/Poppins/Poppins-BlackItalic.ttf
           weight: 900
           style: italic
+    - family: LeagueSpartan
+      fonts:
+        - asset: fonts/LeagueSpartan/LeagueSpartan-VariableFont_wght.ttf
