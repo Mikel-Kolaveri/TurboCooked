@@ -1,7 +1,8 @@
 part of '../your_recipes.dart';
 
-class _Item extends StatefulWidget {
-  const _Item({
+class RecipeItem extends StatefulWidget {
+  const RecipeItem({
+    super.key,
     required this.imgPath,
     required this.name,
     required this.rating,
@@ -15,10 +16,10 @@ class _Item extends StatefulWidget {
   final bool isFavorite;
 
   @override
-  State<_Item> createState() => _ItemState();
+  State<RecipeItem> createState() => _RecipeItemState();
 }
 
-class _ItemState extends State<_Item> {
+class _RecipeItemState extends State<RecipeItem> {
   late bool _isFave;
   @override
   void initState() {
@@ -29,7 +30,9 @@ class _ItemState extends State<_Item> {
   @override
   Widget build(BuildContext context) {
     final paddH = 16; //ListView HPadding
-    final width = MediaQuery.of(context).size.width / 2 - 8 - paddH * 2;
+    final mq = MediaQuery.of(context);
+    final width = mq.size.width / 2 - 8 - paddH * 2;
+    final height = mq.size.height / 3 - 32;
 
     Widget myCircleBox = MyCircleBox(
       padding: 10,
@@ -46,16 +49,18 @@ class _ItemState extends State<_Item> {
       child: myCircleBox,
     );
 
+    const circular16 = Radius.circular(16);
+
     Widget textBubble = Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: mc.white,
-        borderRadius: BorderRadius.circular(16),
+        color: mc.textPrime.opacityTo(0.85),
+        borderRadius: BorderRadius.vertical(bottom: circular16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MyText(widget.name, ms.pop12w400TextSec),
+          MyText(widget.name, ms.pop12w400TextSec, lines: 2),
           const GapV(8),
           Row(
             children: [
@@ -66,26 +71,30 @@ class _ItemState extends State<_Item> {
               MySvg(MyAssets.clock),
               const GapH(4),
               MyText('${widget.duration}min', ms.pop12w400PinkMain),
+              //TODO: fix logic, add conversion to x hours x minutes
             ],
           ),
         ],
       ),
     );
+
     Widget current = Stack(
       clipBehavior: Clip.none,
       children: [
         Container(
           width: width,
+          height: height,
           decoration: BoxDecoration(
+            border: Border.all(color: mc.textPrime.opacityTo(0.4)),
             image: DecorationImage(
-              image: AssetImage(widget.imgPath),
+              image: NetworkImage(widget.imgPath),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(16),
           ),
         ),
         Positioned(right: 8, top: 8, child: myCircleBox),
-        Positioned(bottom: -8, width: width, child: textBubble),
+        Positioned(bottom: 0, width: width, child: textBubble),
       ],
     );
     return current;
