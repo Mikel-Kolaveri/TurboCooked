@@ -18,7 +18,13 @@ class MyText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget current = Text(text, style: style, textAlign: textAlign);
+    Widget current = Text(
+      text,
+      style: style,
+      textAlign: textAlign,
+      maxLines: lines,
+      overflow: TextOverflow.ellipsis,
+    );
     if (onTap != null) current = GestureDetector(onTap: onTap, child: current);
     return current;
   }

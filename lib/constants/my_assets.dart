@@ -3,6 +3,7 @@ class MyAssets {
   static const landing2 = 'assets/landing_2.png';
 
   static const testMyrecipesPhoto = 'assets/test_myrecipes_photo.png';
+  static const sampleAvatarPic = 'assets/sample_avatar_pic.jpg';
 
   static const back = 'assets/icons/back.png';
 

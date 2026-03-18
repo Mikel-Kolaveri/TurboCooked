@@ -2,6 +2,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:recipe_app/constants/my_assets.dart';
+import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
@@ -17,15 +19,15 @@ class YourRecipes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final testChildren = [
-      _Item(
-        imgPath: MyAssets.landing1,
+      RecipeItem(
+        imgPath: TestNetworkImages.pasta,
         name: 'TestName',
         rating: 3,
         duration: 15,
         isFavorite: true,
       ),
-      _Item(
-        imgPath: MyAssets.testMyrecipesPhoto,
+      RecipeItem(
+        imgPath: TestNetworkImages.muffins,
         name: 'TestName very very very long',
         rating: 3,
         duration: 15,
@@ -41,7 +43,7 @@ class YourRecipes extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 32),
     );
 
-    current = SizedBox(height: 172, child: current);
+    current = SizedBox(height: 184, child: current);
 
     current = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

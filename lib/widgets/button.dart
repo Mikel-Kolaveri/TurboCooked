@@ -19,7 +19,7 @@ class Button extends StatelessWidget {
     required this.onTap,
   }) : _type = _Type.pinkMainTH20;
   final String text;
-  final Function() onTap;
+  final VoidCallback onTap;
   final _Type _type;
 
   @override
