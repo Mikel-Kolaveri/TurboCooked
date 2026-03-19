@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe_app/pages/core%20app/recipes/src/recipes_category_item.dart';
+import 'package:recipe_app/pages/core_app/recipes/src/recipes_category_item.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';

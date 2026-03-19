@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe_app/pages/core%20app/home/src/your_recipes_section/your_recipes_section.dart';
+import 'package:recipe_app/pages/core_app/home/src/your_recipes_section/your_recipes_section.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
