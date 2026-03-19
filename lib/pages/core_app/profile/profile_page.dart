@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
-import 'package:recipe_app/pages/core%20app/home/src/your_recipes_section/your_recipes_section.dart';
-import 'package:recipe_app/pages/core%20app/profile/src/profile_page_header.dart';
-import 'package:recipe_app/pages/core%20app/profile/src/social_info_bar.dart';
+import 'package:recipe_app/pages/core_app/home/src/your_recipes_section/your_recipes_section.dart';
+import 'package:recipe_app/pages/core_app/profile/src/profile_page_header.dart';
+import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
