@@ -6,6 +6,7 @@ import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_text.dart';
 
 class CommunityRecipeCard extends StatefulWidget {
   final String username;
@@ -64,8 +65,8 @@ class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.username, style: ms.pop16w400TextPrime),
-              Text(widget.timeAgo.timeAgo(), style: ms.pop13w600PinkMain),
+              MyText(widget.username, ms.pop16w400TextPrime),
+              MyText(widget.timeAgo.timeAgo(), ms.pop13w600PinkMain),
             ],
           ),
         ],
@@ -162,7 +163,7 @@ class _CardDescription extends StatelessWidget {
             children: [
               Expanded(child: Text(widget.title, style: ms.pop18w600TextPrime)),
               GapH(16),
-              Text('${widget.rating}', style: ms.pop15w600TextPrime),
+              MyText('${widget.rating}', ms.pop15w600TextPrime),
               GapH(4),
               Icon(Icons.star_rounded, color: mc.textPrime, size: 18),
             ],
@@ -173,11 +174,10 @@ class _CardDescription extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: Text(
+                child: MyText(
                   widget.description,
-                  style: ms.spart18w700TextPrime,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
+                  ms.spart18w700TextPrime,
+                  lines: 3,
                 ),
               ),
               const GapH(16),
@@ -196,7 +196,7 @@ class _CardDescription extends StatelessWidget {
                     size: 20,
                   ),
                   GapH(4),
-                  Text('${widget.cookTime}', style: ms.pop15w500TextPrime),
+                  MyText('${widget.cookTime}', ms.pop15w500TextPrime),
                 ],
               ),
               GapH(8),
@@ -209,7 +209,7 @@ class _CardDescription extends StatelessWidget {
                     size: 20,
                   ),
                   GapH(4),
-                  Text('${widget.comments}', style: ms.pop15w500TextPrime),
+                  MyText('${widget.comments}', ms.pop15w500TextPrime),
                 ],
               ),
               GapH(8),
@@ -218,7 +218,7 @@ class _CardDescription extends StatelessWidget {
                 children: [
                   Icon(Icons.remove_red_eye, color: mc.textPrime, size: 20),
                   GapH(4),
-                  Text('${widget.views}', style: ms.pop15w500TextPrime),
+                  MyText('${widget.views}', ms.pop15w500TextPrime),
                 ],
               ),
             ],

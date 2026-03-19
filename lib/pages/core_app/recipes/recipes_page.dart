@@ -4,6 +4,7 @@ import 'package:recipe_app/pages/core_app/recipes/src/recipes_category_item.dart
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
+import 'package:recipe_app/widgets/my_text.dart';
 
 class RecipesPage extends ConsumerStatefulWidget {
   const RecipesPage({super.key});
@@ -18,7 +19,7 @@ class _RecipesPageState extends ConsumerState<RecipesPage> {
     Widget current = Column(
       children: [
         const GapTop(),
-        Text('Categories', style: ms.pop20w600PinkMain),
+        MyText('Categories', ms.pop20w600PinkMain),
         const GapV(16),
         Wrap(
           alignment: WrapAlignment.center,
