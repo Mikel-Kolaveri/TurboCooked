@@ -33,10 +33,12 @@ class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
         padding: EdgeInsets.only(bottom: 4),
         duration: Duration(milliseconds: 300),
         decoration: BoxDecoration(
-          // color: Colors.red,
-          border: route == currentRoute
-              ? Border(bottom: BorderSide(color: Colors.white, width: 3))
-              : null,
+          border: Border(
+            bottom: BorderSide(
+              color: route == currentRoute ? mc.textPrime : mc.pinkMain,
+              width: 3,
+            ),
+          ),
         ),
         child: curr,
       );

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/extensions/datetime_extension.dart';
+import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 
-class RecipeCard extends StatefulWidget {
+class CommunityRecipeCard extends StatefulWidget {
   final String username;
   final DateTime timeAgo;
   final String avatarUrl;
@@ -18,7 +20,7 @@ class RecipeCard extends StatefulWidget {
   final int comments;
   final bool isLiked;
 
-  const RecipeCard({
+  const CommunityRecipeCard({
     super.key,
     required this.username,
     required this.timeAgo,
@@ -34,10 +36,10 @@ class RecipeCard extends StatefulWidget {
   });
 
   @override
-  State<RecipeCard> createState() => _RecipeCardState();
+  State<CommunityRecipeCard> createState() => _CommunityRecipeCardState();
 }
 
-class _RecipeCardState extends State<RecipeCard> {
+class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
   late bool _isLiked;
 
   @override
@@ -50,8 +52,8 @@ class _RecipeCardState extends State<RecipeCard> {
   Widget build(BuildContext context) {
     final borderColor = Colors.white.opacityTo(0.2);
 
-    var top = Padding(
-      padding: const EdgeInsets.all(16),
+    Widget top = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         children: [
           CircleAvatar(
@@ -69,6 +71,7 @@ class _RecipeCardState extends State<RecipeCard> {
         ],
       ),
     );
+
     var image = Container(
       decoration: BoxDecoration(
         border: Border.symmetric(
@@ -125,10 +128,14 @@ class _RecipeCardState extends State<RecipeCard> {
 
     current = Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white.opacityTo(0.2)),
+        // border: Border.all(color: Colors.white.opacityTo(0.2)),
         borderRadius: BorderRadius.circular(20),
       ),
       child: current,
+    );
+    current = GestureDetector(
+      child: current,
+      onTap: () => context.go(Routes.recipeDetails(origin: Routes.community)),
     );
     return current;
   }
@@ -137,13 +144,13 @@ class _RecipeCardState extends State<RecipeCard> {
 class _CardDescription extends StatelessWidget {
   const _CardDescription({required this.widget});
 
-  final RecipeCard widget;
+  final CommunityRecipeCard widget;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: mc.pinkMain,
+        color: Color(0xffb7002c),
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
       ),
       padding: const EdgeInsets.all(16),
@@ -153,11 +160,11 @@ class _CardDescription extends StatelessWidget {
           // Title + rating
           Row(
             children: [
-              Expanded(child: Text(widget.title, style: ms.pop18w700TextPrime)),
+              Expanded(child: Text(widget.title, style: ms.pop18w600TextPrime)),
               GapH(16),
               Text('${widget.rating}', style: ms.pop15w600TextPrime),
               GapH(4),
-              const Icon(Icons.star_rounded, color: Colors.white, size: 18),
+              Icon(Icons.star_rounded, color: mc.textPrime, size: 18),
             ],
           ),
 
@@ -168,7 +175,7 @@ class _CardDescription extends StatelessWidget {
               Expanded(
                 child: Text(
                   widget.description,
-                  style: ms.spart15w700TextPrime,
+                  style: ms.spart18w700TextPrime,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -183,9 +190,9 @@ class _CardDescription extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.access_time_rounded,
-                    color: Colors.white,
+                    color: mc.textPrime,
                     size: 20,
                   ),
                   GapH(4),
@@ -196,9 +203,9 @@ class _CardDescription extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.chat_bubble_outline_rounded,
-                    color: Colors.white,
+                    color: mc.textPrime,
                     size: 20,
                   ),
                   GapH(4),
@@ -209,11 +216,7 @@ class _CardDescription extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Icons.remove_red_eye,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  Icon(Icons.remove_red_eye, color: mc.textPrime, size: 20),
                   GapH(4),
                   Text('${widget.views}', style: ms.pop15w500TextPrime),
                 ],

@@ -36,6 +36,8 @@ class MyStyles {
   TextStyle get pop15w600TextPrime => _pop15w600.copyWith(color: mc.textPrime);
 
   TextStyle get pop15w600PinkMain => _pop15w600.copyWith(color: mc.pinkMain);
+  TextStyle get _pop18w600 => _pop600.copyWith(fontSize: 18);
+  TextStyle get pop18w600TextPrime => _pop18w600.copyWith(color: mc.textPrime);
   TextStyle get _pop20w600 => _pop600.copyWith(fontSize: 20);
   TextStyle get pop20w600TextPrime => _pop20w600.copyWith(color: mc.textPrime);
   TextStyle get pop20w600PinkMain => _pop20w600.copyWith(color: mc.pinkMain);
@@ -46,8 +48,6 @@ class MyStyles {
   TextStyle get _pop700 => _pop.copyWith(fontWeight: FontWeight.w700);
   TextStyle get _pop13w700 => _pop700.copyWith(fontSize: 13);
   TextStyle get pop13w700TextPrime => _pop13w700.copyWith(color: mc.textPrime);
-  TextStyle get _pop18w700 => _pop700.copyWith(fontSize: 18);
-  TextStyle get pop18w700TextPrime => _pop18w700.copyWith(color: mc.textPrime);
 
   //////////////// LeagueSpartan
 
@@ -56,6 +56,6 @@ class MyStyles {
   final _spart = TextStyle(fontFamily: 'LeagueSpartan');
   TextStyle get _spart700 => _spart.copyWith(fontWeight: FontWeight.w700);
   TextStyle get _spart18w700 => _spart700.copyWith(fontSize: 18);
-  TextStyle get spart15w700TextPrime =>
+  TextStyle get spart18w700TextPrime =>
       _spart18w700.copyWith(color: mc.textPrime);
 }

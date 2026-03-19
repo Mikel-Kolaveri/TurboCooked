@@ -1,3 +1,5 @@
+library;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/extensions/set_status_bar_theme.dart';
@@ -6,10 +8,12 @@ import 'package:recipe_app/pages/auth/signup_page.dart';
 import 'package:recipe_app/pages/core%20app/community/community_page.dart';
 import 'package:recipe_app/pages/core%20app/home/home_page.dart';
 import 'package:recipe_app/pages/core%20app/profile/profile_page.dart';
+import 'package:recipe_app/pages/core%20app/recipe_details/recipe_details_page.dart';
 import 'package:recipe_app/pages/core%20app/recipes/recipes_page.dart';
 import 'package:recipe_app/pages/landing_page.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/widgets/my_navigation_bar.dart';
+part 'page_transitions.dart';
 
 final router = GoRouter(
   routes: [
@@ -30,21 +34,39 @@ final router = GoRouter(
       builder: (context, state, child) {
         setMyStatusBarStyle(context);
         return Scaffold(
-          body: Stack(
-            alignment: Alignment.center,
-            children: [
-              PopScope(canPop: false, child: SafeArea(child: child)),
-              Positioned(bottom: 16, child: MyNavigationBar()),
-            ],
+          body: SafeArea(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                PopScope(canPop: false, child: SafeArea(child: child)),
+                Positioned(bottom: 8, child: MyNavigationBar()),
+              ],
+            ),
           ),
           backgroundColor: mc.bg,
         );
       },
       routes: [
-        GoRoute(path: Routes.home, builder: (context, state) => HomePage()),
         GoRoute(
-          path: Routes.community,
+          path: Routes.home,
+          builder: (context, state) => HomePage(),
+          routes: [
+            GoRoute(
+              path: Routes._recipeDetails,
+              builder: (context, state) => RecipeDetailsPage(),
+            ),
+          ],
+        ),
+
+        GoRoute(
+          path: Routes.home,
           builder: (context, state) => CommunityPage(),
+          routes: [
+            GoRoute(
+              path: Routes._recipeDetails,
+              builder: (context, state) => RecipeDetailsPage(),
+            ),
+          ],
         ),
         GoRoute(
           path: Routes.recipes,
@@ -67,4 +89,9 @@ abstract class Routes {
   static const String community = '/community';
   static const String recipes = '/recipes';
   static const String profile = '/profile';
+
+  static const String _recipeDetails = 'recipe_details';
+
+  static String recipeDetails({required String origin}) =>
+      '$origin/recipe_details';
 }

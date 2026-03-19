@@ -34,6 +34,7 @@ class GapH extends StatelessWidget {
 
 class GapBottom extends StatelessWidget {
   const GapBottom({super.key, this.size});
+  const GapBottom.home({super.key, this.size = 96});
   final double? size;
 
   @override

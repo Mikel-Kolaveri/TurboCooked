@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/pages/core%20app/community/src/community_recipe_card.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
-import 'package:recipe_app/widgets/recipe_card.dart';
 
 class CommunityPage extends ConsumerStatefulWidget {
   const CommunityPage({super.key});
@@ -20,7 +20,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
         const GapTop(),
         Text('Community Posts', style: ms.pop20w600PinkMain),
         const GapV(16),
-        RecipeCard(
+        CommunityRecipeCard(
           username: 'name',
           timeAgo: DateTime.now(),
           avatarUrl: 'avatarUrl',
@@ -35,7 +35,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
           isLiked: true,
         ),
         const GapV(16),
-        RecipeCard(
+        CommunityRecipeCard(
           username: 'name',
           timeAgo: DateTime(2020),
           avatarUrl: 'avatarUrl',
@@ -51,7 +51,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
           isLiked: true,
         ),
         const GapV(16),
-        RecipeCard(
+        CommunityRecipeCard(
           username: 'name',
           timeAgo: DateTime(2025, 10, 5, 1),
           avatarUrl: 'avatarUrl',
@@ -66,6 +66,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
           comments: 23,
           isLiked: true,
         ),
+        GapBottom.home(),
       ],
     );
     current = HPadding(32, current);
