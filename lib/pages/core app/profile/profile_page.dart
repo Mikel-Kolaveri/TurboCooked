@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
-import 'package:recipe_app/pages/core%20app/home/src/your_recipes/your_recipes.dart';
+import 'package:recipe_app/pages/core%20app/home/src/your_recipes_section/your_recipes_section.dart';
 import 'package:recipe_app/pages/core%20app/profile/src/profile_page_header.dart';
 import 'package:recipe_app/pages/core%20app/profile/src/social_info_bar.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -45,35 +45,35 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           spacing: 16,
           direction: Axis.horizontal,
           children: [
-            RecipeItem(
+            RecipeItem.profile(
               imgPath: TestNetworkImages.risoto,
               name: 'Namee',
               rating: 3,
               duration: 5,
               isFavorite: false,
             ),
-            RecipeItem(
+            RecipeItem.profile(
               imgPath: TestNetworkImages.curry,
               name: 'Namee',
               rating: 3,
               duration: 5,
               isFavorite: false,
             ),
-            RecipeItem(
+            RecipeItem.profile(
               imgPath: TestNetworkImages.chicken,
               name: 'Namee',
               rating: 3,
               duration: 5,
               isFavorite: false,
             ),
-            RecipeItem(
+            RecipeItem.profile(
               imgPath: TestNetworkImages.muffins,
               name: 'Namee',
               rating: 3,
               duration: 5,
               isFavorite: false,
             ),
-            RecipeItem(
+            RecipeItem.profile(
               imgPath: TestNetworkImages.pasta,
               name: 'Namee',
               rating: 3,
@@ -82,6 +82,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
           ],
         ),
+        GapBottom.home(),
       ],
     );
     current = HPadding(32, current);
