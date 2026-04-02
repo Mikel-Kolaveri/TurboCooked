@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_text.dart';
 
 class RecipeCategoryItem extends StatelessWidget {
   const RecipeCategoryItem({
@@ -40,11 +41,7 @@ class RecipeCategoryItem extends StatelessWidget {
       children: [
         img,
         const GapV(8),
-        Text(
-          categoryText,
-          style: ms.pop15w500TextPrime,
-          textAlign: TextAlign.center,
-        ),
+        MyText.center(categoryText, ms.pop15w500TextPrime, lines: 3),
       ],
     );
 

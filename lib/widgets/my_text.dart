@@ -23,7 +23,7 @@ class MyText extends StatelessWidget {
       style: style,
       textAlign: textAlign,
       maxLines: lines,
-      overflow: TextOverflow.ellipsis,
+      overflow: lines != null ? TextOverflow.ellipsis : null,
     );
     if (onTap != null) current = GestureDetector(onTap: onTap, child: current);
     return current;
