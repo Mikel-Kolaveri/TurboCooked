@@ -59,7 +59,7 @@ final router = GoRouter(
         ),
 
         GoRoute(
-          path: Routes.home,
+          path: Routes.community,
           builder: (context, state) => CommunityPage(),
           routes: [
             GoRoute(
@@ -75,6 +75,12 @@ final router = GoRouter(
         GoRoute(
           path: Routes.profile,
           builder: (context, state) => ProfilePage(),
+          routes: [
+            GoRoute(
+              path: Routes._recipeDetails,
+              builder: (context, state) => RecipeDetailsPage(),
+            ),
+          ],
         ),
       ],
     ),

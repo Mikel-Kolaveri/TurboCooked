@@ -15,6 +15,10 @@ class MyStyles {
   TextStyle get pop12w400TextSec => _pop12w400.copyWith(color: mc.textSecond);
   TextStyle get pop12w400PinkMain => _pop12w400.copyWith(color: mc.pinkMain);
   TextStyle get pop12w400TextPrime => _pop12w400.copyWith(color: mc.textPrime);
+  TextStyle get _pop14w400 => _pop400.copyWith(fontSize: 14);
+  TextStyle get pop14w400PinkMain => _pop14w400.copyWith(color: mc.pinkMain);
+  TextStyle get pop14w400PinkCream => _pop14w400.copyWith(color: mc.pinkCream);
+
   TextStyle get _pop16w400 => _pop400.copyWith(fontSize: 16);
   TextStyle get pop16w400Grey => _pop16w400.copyWith(color: mc.fieldHint);
   TextStyle get pop16w400TextPrime => _pop16w400.copyWith(color: mc.textPrime);
@@ -22,6 +26,8 @@ class MyStyles {
 
   //pop 500
   TextStyle get _pop500 => _pop.copyWith(fontWeight: FontWeight.w500);
+  TextStyle get _pop12w500 => _pop500.copyWith(fontSize: 12);
+  TextStyle get pop12w500PinkMain => _pop12w500.copyWith(color: mc.pinkMain);
   TextStyle get _pop15w500 => _pop500.copyWith(fontSize: 15);
   TextStyle get pop15w500TextPrime => _pop15w500.copyWith(color: mc.textPrime);
   TextStyle get pop15w500PinkMain => _pop15w500.copyWith(color: mc.pinkMain);
