@@ -1,0 +1,16 @@
+In this Flutter codebase, single-child widget wrapping uses a `current` variable pattern:
+
+Widget current = <base widget (often a multi-child like Column or Row)>;
+current = Padding(padding: ..., child: current);
+current = ClipRRect(borderRadius: ..., child: current);
+current = Container(decoration: ..., child: current);
+current = GestureDetector(onTap: ..., child: current);
+return current;
+
+Rules:
+- Start with the innermost/base widget assigned to `current`
+- Each subsequent line wraps `current` in a single-child widget and reassigns it
+- Multi-child widgets (Column, Row, Stack, Wrap) are NOT chained — they are written
+  inline as the base or as named local variables (e.g. `Widget stats = Row(...)`)
+- Named local widgets (avatar, info, stats, etc.) are built separately before
+  being placed inside a multi-child widget
