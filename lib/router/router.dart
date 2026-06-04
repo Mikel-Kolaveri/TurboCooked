@@ -8,6 +8,7 @@ import 'package:recipe_app/pages/auth/signup_page.dart';
 import 'package:recipe_app/pages/core_app/community/community_page.dart';
 import 'package:recipe_app/pages/core_app/home/home_page.dart';
 import 'package:recipe_app/pages/core_app/profile/profile_page.dart';
+import 'package:recipe_app/pages/core_app/settings/settings_page.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/recipe_details_page.dart';
 import 'package:recipe_app/pages/core_app/recipes/recipes_page.dart';
 import 'package:recipe_app/pages/landing_page.dart';
@@ -82,6 +83,10 @@ final router = GoRouter(
             ),
           ],
         ),
+        GoRoute(
+          path: Routes.settings,
+          builder: (context, state) => const SettingsPage(),
+        ),
       ],
     ),
   ],
@@ -95,6 +100,7 @@ abstract class Routes {
   static const String community = '/community';
   static const String recipes = '/recipes';
   static const String profile = '/profile';
+  static const String settings = '/settings';
 
   static const String _recipeDetails = 'recipe_details';
 

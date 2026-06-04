@@ -1,5 +1,7 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
 import 'package:recipe_app/pages/core_app/home/src/your_recipes_section/your_recipes_section.dart';
 import 'package:recipe_app/pages/core_app/profile/src/profile_page_header.dart';
@@ -23,7 +25,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     Widget current = Column(
       children: [
         const GapTop(size: 16),
-
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            GestureDetector(
+              onTap: () => context.push(Routes.settings),
+              child: Icon(Icons.settings_outlined, color: mc.pinkCream),
+            ),
+          ],
+        ),
+        const GapV(8),
         ProfilePageHeader(),
         const GapV(8),
         Row(

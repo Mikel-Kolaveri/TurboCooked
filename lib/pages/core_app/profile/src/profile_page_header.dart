@@ -26,8 +26,8 @@ class ProfilePageHeader extends ConsumerWidget {
         ),
       ],
     );
-
     current = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         current,
         const GapH(16),
