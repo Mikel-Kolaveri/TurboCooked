@@ -5,10 +5,19 @@ import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class MyTextField extends StatefulWidget {
-  const MyTextField({super.key, this.hint, this.label, this.isPsw = false});
+  const MyTextField({
+    super.key,
+    this.hint,
+    this.label,
+    this.isPsw = false,
+    this.controller,
+    this.validator,
+  });
   final String? hint;
   final String? label;
   final bool isPsw;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   State<MyTextField> createState() => _MyTextFieldState();
@@ -29,7 +38,11 @@ class _MyTextFieldState extends State<MyTextField> {
       );
     }
 
-    Widget current = TextField(
+    final borderRadius = BorderRadius.circular(50);
+
+    Widget current = TextFormField(
+      controller: widget.controller,
+      validator: widget.validator,
       obscuringCharacter: '●',
       obscureText: widget.isPsw && !_showPass,
       enableSuggestions: !widget.isPsw,
@@ -40,14 +53,21 @@ class _MyTextFieldState extends State<MyTextField> {
       ),
       decoration: InputDecoration(
         suffixIcon: eyeIcon,
-        contentPadding: EdgeInsets.symmetric(horizontal: 32),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 32),
         hintText: widget.hint,
         hintStyle: ms.pop16w400Grey,
         filled: true,
         fillColor: mc.textfieldFill,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(50),
-          borderSide: BorderSide.none,
+        border: OutlineInputBorder(borderRadius: borderRadius, borderSide: BorderSide.none),
+        enabledBorder: OutlineInputBorder(borderRadius: borderRadius, borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(borderRadius: borderRadius, borderSide: BorderSide.none),
+        errorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(color: Colors.red.shade400, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(color: Colors.red.shade600, width: 2),
         ),
       ),
     );

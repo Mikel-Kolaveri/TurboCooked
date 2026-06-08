@@ -16,6 +16,9 @@ import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/widgets/my_navigation_bar.dart';
 part 'page_transitions.dart';
 
+// TODO: Pass AuthStateNotifier to GoRouter as refreshListenable
+// TODO: Add a redirect callback that checks isAuthenticated
+
 final router = GoRouter(
   routes: [
     ShellRoute(

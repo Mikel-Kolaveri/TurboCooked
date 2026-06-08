@@ -8,6 +8,8 @@ import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_svg.dart';
 
+//TODO: fix navbar state UI logic to correspond with the page
+
 class MyNavigationBar extends ConsumerStatefulWidget {
   const MyNavigationBar({super.key});
 

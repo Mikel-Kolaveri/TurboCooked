@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/models/app_user.dart';
 import 'package:recipe_app/pages/core_app/home/src/your_recipes_section/your_recipes_section.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
@@ -17,10 +18,12 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(currentUserProvider);
+
     Widget head = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MyText('Hi USER!', ms.pop24w400PinkMain),
+        MyText('Hi ${user?.displayName ?? 'there'}', ms.pop24w400PinkMain),
         MyText('What are we cooking today?', ms.pop13w400TextPrime),
       ],
     );
