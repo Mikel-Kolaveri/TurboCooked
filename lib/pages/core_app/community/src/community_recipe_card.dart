@@ -1,26 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/extensions/datetime_extension.dart';
-import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class CommunityRecipeCard extends StatefulWidget {
-  final String username;
-  final DateTime timeAgo;
-  final String avatarUrl;
-  final String imageUrl;
-  final String title;
-  final int rating;
-  final String description;
-  final int cookTime;
-  final int views;
-  final int comments;
-  final bool isLiked;
-
   const CommunityRecipeCard({
     super.key,
     required this.username,
@@ -31,10 +17,26 @@ class CommunityRecipeCard extends StatefulWidget {
     required this.rating,
     required this.description,
     required this.cookTime,
-    required this.views,
     required this.comments,
+    required this.views,
     required this.isLiked,
+    this.onTap,
+    this.height = 380,
   });
+
+  final String username;
+  final DateTime timeAgo;
+  final String avatarUrl;
+  final String imageUrl;
+  final String title;
+  final double rating;
+  final String description;
+  final int cookTime;
+  final int comments;
+  final int views;
+  final bool isLiked;
+  final VoidCallback? onTap;
+  final double height;
 
   @override
   State<CommunityRecipeCard> createState() => _CommunityRecipeCardState();
@@ -51,178 +53,182 @@ class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = Colors.white.opacityTo(0.2);
+    final black = Colors.black;
 
-    Widget top = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+    Widget image = Image.network(
+      widget.imageUrl,
+      height: widget.height,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      loadingBuilder: (_, child, progress) {
+        if (progress == null) return child;
+        return Container(
+          height: widget.height,
+          color: const Color(0xFF2A1515),
+          child: const Center(
+            child: CircularProgressIndicator(color: Color(0xFFFD5D69)),
+          ),
+        );
+      },
+    );
+
+    Widget ratingBadge = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.black.opacityTo(0.60),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: mc.pinkMain.opacityTo(0.45), width: 0.8),
+      ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundImage: NetworkImage(widget.avatarUrl),
-          ),
-          GapH(12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyText(widget.username, ms.pop16w400TextPrime),
-              MyText(widget.timeAgo.timeAgo(), ms.pop13w600PinkMain),
-            ],
-          ),
+          Icon(Icons.star_rounded, color: mc.pinkMain, size: 14),
+          GapH(4),
+          MyText(widget.rating.toStringAsFixed(1), ms.pop13w700TextPrime),
         ],
       ),
     );
 
-    var image = Container(
-      decoration: BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(color: borderColor, width: 1),
-          vertical: BorderSide(color: borderColor, width: 0.5),
-        ),
-      ),
-      child: Image.network(
-        widget.imageUrl,
-        height: 220,
-        width: double.infinity,
-        fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Container(
-            height: 220,
-            color: const Color(0xFF4A2525),
-            child: const Center(
-              child: CircularProgressIndicator(color: Color(0xFFEF5C62)),
-            ),
-          );
-        },
-      ),
-    );
-
-    var likeIcon = GestureDetector(
+    Widget likeButton = GestureDetector(
       onTap: () => setState(() => _isLiked = !_isLiked),
       child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(color: mc.pinkMain, shape: BoxShape.circle),
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          color: Colors.black.opacityTo(0.55),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: _isLiked ? mc.pinkMain : Colors.white.opacityTo(0.5),
+            width: 1.5,
+          ),
+        ),
         child: Icon(
           _isLiked ? Icons.favorite : Icons.favorite_border,
-          color: Colors.white,
+          color: _isLiked ? mc.pinkMain : Colors.white,
           size: 20,
         ),
       ),
     );
 
-    Widget current = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    Widget stats = Row(
       children: [
-        top,
-        Stack(
-          children: [
-            image,
-            Positioned(top: 12, right: 12, child: likeIcon),
-          ],
+        _StatChip(
+          icon: Icons.access_time_rounded,
+          label: '${widget.cookTime} min',
         ),
-        _CardDescription(widget: widget),
+        GapH(8),
+        _StatChip(
+          icon: Icons.chat_bubble_outline_rounded,
+          label: '${widget.comments}',
+        ),
+        GapH(8),
+        _StatChip(
+          icon: Icons.remove_red_eye_outlined,
+          label: '${widget.views}',
+        ),
       ],
     );
 
+    Widget bottomContent = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: mc.pinkMain, width: 1.5),
+              ),
+              child: CircleAvatar(
+                radius: 14,
+                backgroundImage: NetworkImage(widget.avatarUrl),
+              ),
+            ),
+            GapH(8),
+            MyText(widget.username, ms.pop13w600PinkMain),
+            GapH(10),
+            Icon(
+              Icons.access_time_rounded,
+              color: Colors.white.opacityTo(0.5),
+              size: 12,
+            ),
+            GapH(4),
+            MyText(widget.timeAgo.timeAgo(), ms.pop12w400TextPrime),
+          ],
+        ),
+        GapV(6),
+        MyText(widget.title, ms.pop18w600TextPrime),
+        GapV(6),
+        MyText(widget.description, ms.pop12w400TextPrime, lines: 2),
+        GapV(10),
+        stats,
+      ],
+    );
+
+    Widget current = Stack(
+      children: [
+        Positioned.fill(child: image),
+        Positioned(top: 16, left: 16, child: ratingBadge),
+        Positioned(top: 16, right: 16, child: likeButton),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [black.opacityTo(0.5), black.opacityTo(0.8)],
+              ),
+            ),
+            child: bottomContent,
+          ),
+        ),
+      ],
+    );
+    current = SizedBox(height: widget.height, child: current);
+    current = ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: current,
+    );
     current = Container(
       decoration: BoxDecoration(
-        // border: Border.all(color: Colors.white.opacityTo(0.2)),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: mc.pinkMain.opacityTo(0.25), width: 1),
       ),
       child: current,
     );
-    current = GestureDetector(
-      child: current,
-      onTap: () => context.go(Routes.recipeDetails(origin: Routes.community)),
-    );
+    if (widget.onTap != null) {
+      current = GestureDetector(onTap: widget.onTap, child: current);
+    }
     return current;
   }
 }
 
-class _CardDescription extends StatelessWidget {
-  const _CardDescription({required this.widget});
+class _StatChip extends StatelessWidget {
+  const _StatChip({required this.icon, required this.label});
 
-  final CommunityRecipeCard widget;
+  final IconData icon;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
-        color: Color(0xffb7002c),
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        color: Colors.black.opacityTo(0.45),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.opacityTo(0.15), width: 0.8),
       ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Title + rating
-          Row(
-            children: [
-              Expanded(child: Text(widget.title, style: ms.pop18w600TextPrime)),
-              GapH(16),
-              MyText('${widget.rating}', ms.pop15w600TextPrime),
-              GapH(4),
-              Icon(Icons.star_rounded, color: mc.textPrime, size: 18),
-            ],
-          ),
-
-          // Description + time/views
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: MyText(
-                  widget.description,
-                  ms.spart18w700TextPrime,
-                  lines: 3,
-                ),
-              ),
-              const GapH(16),
-            ],
-          ),
-          const GapV(8),
-          Wrap(
-            direction: Axis.horizontal,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.access_time_rounded,
-                    color: mc.textPrime,
-                    size: 20,
-                  ),
-                  GapH(4),
-                  MyText('${widget.cookTime}', ms.pop15w500TextPrime),
-                ],
-              ),
-              GapH(8),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.chat_bubble_outline_rounded,
-                    color: mc.textPrime,
-                    size: 20,
-                  ),
-                  GapH(4),
-                  MyText('${widget.comments}', ms.pop15w500TextPrime),
-                ],
-              ),
-              GapH(8),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.remove_red_eye, color: mc.textPrime, size: 20),
-                  GapH(4),
-                  MyText('${widget.views}', ms.pop15w500TextPrime),
-                ],
-              ),
-            ],
-          ),
+          Icon(icon, color: mc.pinkLight, size: 13),
+          GapH(5),
+          MyText(label, ms.pop13w400TextPrime),
         ],
       ),
     );

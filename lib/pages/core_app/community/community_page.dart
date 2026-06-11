@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/constants/test_network_images.dart';
 import 'package:recipe_app/pages/core_app/community/src/community_recipe_card.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
@@ -17,63 +18,52 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
   @override
   Widget build(BuildContext context) {
     Widget current = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const GapTop(),
         MyText('Community Posts', ms.pop20w600PinkMain),
-        const GapV(16),
+        const GapV(20),
+
+        const GapV(10),
         CommunityRecipeCard(
-          username: 'name',
-          timeAgo: DateTime.now(),
-          avatarUrl: 'avatarUrl',
-          imageUrl:
-              'https://easyweeknight.com/wp-content/uploads/2019/02/creamy-garlic-butter-chicken-test.jpg.webp',
-          title: 'Creamy Garlic Butter ',
-          rating: 5,
-          description: 'Tender chicken simmered ',
-          cookTime: 45,
-          views: 52125,
-          comments: 50,
-          isLiked: true,
-        ),
-        const GapV(16),
-        CommunityRecipeCard(
-          username: 'name',
-          timeAgo: DateTime(2020),
-          avatarUrl: 'avatarUrl',
-          imageUrl:
-              "https://p2.piqsels.com/preview/166/884/864/skewer-kebab-barbecue-food.jpg",
-          title: 'Classic Shishkebab',
+          username: 'julia_eats',
+          timeAgo: DateTime(2026, 5, 25, 14),
+          avatarUrl: TestNetworkImages.avatar,
+          imageUrl: TestNetworkImages.chicken,
+          title: 'Coq au Vin',
           rating: 5,
           description:
-              'This recipe requires basic ingredients and minimal prep time, making it ideal for busy days...',
-          cookTime: 45,
-          views: 9000,
-          comments: 10,
-          isLiked: true,
+              'A French classic — chicken braised slowly in red wine with mushrooms, pearl onions, and smoky bacon until fall-apart tender.',
+          cookTime: 90,
+          views: 18400,
+          comments: 63,
+          isLiked: false,
         ),
-        const GapV(16),
+
+        const GapV(28),
+
+        const GapV(10),
         CommunityRecipeCard(
-          username: 'name',
-          timeAgo: DateTime(2025, 10, 5, 1),
-          avatarUrl: 'avatarUrl',
-          imageUrl:
-              'https://easyweeknight.com/wp-content/uploads/2019/02/creamy-garlic-butter-chicken-test.jpg.webp',
-          title: 'Creamy Garlic Butter Chicken',
-          rating: 5,
+          username: 'spice_raj',
+          timeAgo: DateTime(2026, 5, 22, 20),
+          avatarUrl: TestNetworkImages.avatar,
+          imageUrl: TestNetworkImages.curry,
+          title: 'Chorizo Gnocchi Bake',
+          rating: 4.9,
           description:
-              'Tender chicken simmered in creamy garlic butter sauce, rich and savory, perfect for quick comforting weeknight dinners with rice.',
-          cookTime: 45,
-          views: 32500,
-          comments: 23,
+              'Golden pan-fried gnocchi tossed with spicy chorizo, mozzarella, and a rich tomato sauce.',
+          cookTime: 40,
+          views: 24100,
+          comments: 89,
           isLiked: true,
         ),
+        const GapV(28),
+
         GapBottom.home(),
       ],
     );
-    current = HPadding(32, current);
-
+    current = HPadding(16, current);
     current = SingleChildScrollView(child: current);
-
     return current;
   }
 }
