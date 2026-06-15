@@ -1,9 +1,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class SupabaseConfig {
-  static const String url = 'https://aefqgmpetddgxigpsjrz.supabase.co';
-  static const String publishableKey =
-      'sb_publishable_l1GLES8699cMZoY0UjVS4Q_NgONEVTO';
+  static const String url = String.fromEnvironment('SUPABASE_URL');
+  static const String publishableKey = String.fromEnvironment('SUPABASE_PUBLISHABLE_KEY');
 
   static const String redirectUrl = 'com.turbocooked.app://login';
 }
