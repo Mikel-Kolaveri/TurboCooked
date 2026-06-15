@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/auth/auth_state_notifier.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final currentUserProvider = StateNotifierProvider<UserNotifier, AppUser?>((ref) {
@@ -7,21 +7,19 @@ final currentUserProvider = StateNotifierProvider<UserNotifier, AppUser?>((ref) 
 });
 
 class UserNotifier extends StateNotifier<AppUser?> {
-  StreamSubscription<AuthState>? _subscription;
-
   UserNotifier() : super(null) {
-    final current = Supabase.instance.client.auth.currentUser;
-    state = current != null ? AppUser.fromSupabaseUser(current) : null;
+    _sync();
+    authStateNotifier.addListener(_sync);
+  }
 
-    _subscription = Supabase.instance.client.auth.onAuthStateChange.listen((event) {
-      final user = event.session?.user;
-      state = user != null ? AppUser.fromSupabaseUser(user) : null;
-    });
+  void _sync() {
+    final user = Supabase.instance.client.auth.currentUser;
+    state = user != null ? AppUser.fromSupabaseUser(user) : null;
   }
 
   @override
   void dispose() {
-    _subscription?.cancel();
+    authStateNotifier.removeListener(_sync);
     super.dispose();
   }
 }

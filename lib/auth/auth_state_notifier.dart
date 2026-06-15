@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Feeds auth state changes into GoRouter's refreshListenable so the router
-// re-evaluates its redirect callback whenever the user signs in or out.
+// Single shared instance — used by GoRouter (refreshListenable) and
+// UserNotifier, so there is exactly one Supabase auth stream subscription.
+final authStateNotifier = AuthStateNotifier();
+
 class AuthStateNotifier extends ChangeNotifier {
   StreamSubscription<AuthState>? _subscription;
 

@@ -2,6 +2,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_app/auth/auth_state_notifier.dart';
 import 'package:recipe_app/extensions/set_status_bar_theme.dart';
 import 'package:recipe_app/pages/auth/login_page.dart';
 import 'package:recipe_app/pages/auth/signup_page.dart';
@@ -16,10 +17,18 @@ import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/widgets/my_navigation_bar.dart';
 part 'page_transitions.dart';
 
-// TODO: Pass AuthStateNotifier to GoRouter as refreshListenable
-// TODO: Add a redirect callback that checks isAuthenticated
-
 final router = GoRouter(
+  refreshListenable: authStateNotifier,
+  redirect: (context, state) {
+    final isAuth = authStateNotifier.isAuthenticated;
+    final isOnAuthPage = state.uri.path == Routes.landing ||
+        state.uri.path == Routes.login ||
+        state.uri.path == Routes.signup;
+
+    if (!isAuth && !isOnAuthPage) return Routes.landing;
+    if (isAuth && isOnAuthPage) return Routes.home;
+    return null;
+  },
   routes: [
     ShellRoute(
       //Landing
