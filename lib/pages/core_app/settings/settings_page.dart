@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/auth_service.dart';
-import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/back_button.dart';
@@ -60,8 +58,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           icon: Icons.logout_outlined,
           title: 'Log Out',
           onTap: () async {
-            await ref.read(authServiceProvider).signOut();
-            if (context.mounted) context.replace(Routes.login);
+            try {
+              await ref.read(authServiceProvider).signOut();
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Failed to log out. Please try again.')),
+                );
+              }
+            }
           },
           showArrow: false,
         ),
