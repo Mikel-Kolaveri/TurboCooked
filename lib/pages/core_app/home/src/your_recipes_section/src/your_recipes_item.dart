@@ -95,14 +95,12 @@ class _RecipeItemState extends State<RecipeItem> {
         Container(
           width: width,
           height: height,
+          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             border: Border.all(color: mc.textPrime.opacityTo(0.4)),
-            image: DecorationImage(
-              image: NetworkImage(widget.imgPath),
-              fit: BoxFit.cover,
-            ),
             borderRadius: BorderRadius.circular(16),
           ),
+          child: MyNetworkImage(widget.imgPath),
         ),
         Positioned(right: 8, top: 8, child: favIcon),
         Positioned(bottom: 0, width: width, child: textBubble),

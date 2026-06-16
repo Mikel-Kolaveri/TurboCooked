@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_network_avatar.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class ProfilePageHeader extends ConsumerWidget {
@@ -10,10 +11,7 @@ class ProfilePageHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget current = CircleAvatar(
-      backgroundImage: NetworkImage(TestNetworkImages.avatar),
-      radius: 56,
-    );
+    Widget current = MyNetworkAvatar(TestNetworkImages.avatar, radius: 56);
 
     Widget text = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

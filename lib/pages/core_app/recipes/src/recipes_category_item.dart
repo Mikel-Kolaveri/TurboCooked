@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/theme/my_styles.dart';
+import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
@@ -27,14 +28,12 @@ class RecipeCategoryItem extends StatelessWidget {
         maxHeight: maxHeightWidth,
         maxWidth: maxHeightWidth,
       ),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        image: DecorationImage(
-          image: NetworkImage(assetLink),
-          fit: BoxFit.cover,
-        ),
         boxShadow: [BoxShadow(color: Colors.white, blurRadius: 1)],
       ),
+      child: MyNetworkImage(assetLink),
     );
 
     Widget current = Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_details_creator_profile.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_ingredient_item.dart';
 import 'package:recipe_app/theme/my_styles.dart';
@@ -59,7 +60,7 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
     );
     current = HPadding(16, current);
     current = MyCustomScrollView(
-      header: Image.network(TestNetworkImages.pasta, fit: BoxFit.cover),
+      header: MyNetworkImage(TestNetworkImages.pasta),
       headerHeight: 300,
       children: [current],
     );

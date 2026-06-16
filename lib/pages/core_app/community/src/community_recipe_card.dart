@@ -3,6 +3,8 @@ import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/extensions/datetime_extension.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
+import 'package:recipe_app/widgets/my_network_avatar.dart';
+import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
@@ -55,21 +57,9 @@ class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
   Widget build(BuildContext context) {
     final black = Colors.black;
 
-    Widget image = Image.network(
+    Widget image = MyNetworkImage(
       widget.imageUrl,
       height: widget.height,
-      width: double.infinity,
-      fit: BoxFit.cover,
-      loadingBuilder: (_, child, progress) {
-        if (progress == null) return child;
-        return Container(
-          height: widget.height,
-          color: const Color(0xFF2A1515),
-          child: const Center(
-            child: CircularProgressIndicator(color: Color(0xFFFD5D69)),
-          ),
-        );
-      },
     );
 
     Widget ratingBadge = Container(
@@ -135,16 +125,7 @@ class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
       children: [
         Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: mc.pinkMain, width: 1.5),
-              ),
-              child: CircleAvatar(
-                radius: 14,
-                backgroundImage: NetworkImage(widget.avatarUrl),
-              ),
-            ),
+            MyNetworkAvatar(widget.avatarUrl, radius: 14, borderColor: mc.pinkMain),
             GapH(8),
             MyText(widget.username, ms.pop13w600PinkMain),
             GapH(10),
