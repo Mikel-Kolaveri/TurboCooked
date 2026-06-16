@@ -20,44 +20,45 @@ class MyNavigationBar extends ConsumerStatefulWidget {
 
 class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
   String currentRoute = Routes.home;
-  @override
-  Widget build(BuildContext context) {
-    Widget navItem(String asset, {required String route}) {
-      Widget curr = MySvg(asset, height: 32);
-      curr = GestureDetector(
-        onTap: () => setState(() {
-          currentRoute = route;
-          context.go(route);
-        }),
-        child: curr,
-      );
-      curr = AnimatedContainer(
-        padding: EdgeInsets.only(bottom: 4),
-        duration: Duration(milliseconds: 300),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: route == currentRoute ? mc.textPrime : mc.pinkMain,
-              width: 3,
-            ),
+
+  Widget _navItem(String asset, {required String route}) {
+    Widget curr = MySvg(asset, height: 32);
+    curr = GestureDetector(
+      onTap: () => setState(() {
+        currentRoute = route;
+        context.go(route);
+      }),
+      child: curr,
+    );
+    curr = AnimatedContainer(
+      padding: EdgeInsets.only(bottom: 4),
+      duration: Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: route == currentRoute ? mc.textPrime : mc.pinkMain,
+            width: 3,
           ),
         ),
-        child: curr,
-      );
-      return curr;
-    }
+      ),
+      child: curr,
+    );
+    return curr;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     Widget current = Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        navItem(MyAssets.homeIcon, route: Routes.home),
+        _navItem(MyAssets.homeIcon, route: Routes.home),
         const GapH(24),
-        navItem(MyAssets.communityIcon, route: Routes.community),
+        _navItem(MyAssets.communityIcon, route: Routes.community),
         const GapH(24),
-        navItem(MyAssets.recipesIcon, route: Routes.recipes),
+        _navItem(MyAssets.recipesIcon, route: Routes.recipes),
         const GapH(24),
-        navItem(MyAssets.profileIcon, route: Routes.profile),
+        _navItem(MyAssets.profileIcon, route: Routes.profile),
       ],
     );
     current = SymPadding(h: 32, v: 16, child: current);

@@ -45,113 +45,25 @@ class CommunityRecipeCard extends StatefulWidget {
 }
 
 class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
-  late bool _isLiked;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLiked = widget.isLiked;
-  }
-
   @override
   Widget build(BuildContext context) {
     final black = Colors.black;
 
-    Widget image = MyNetworkImage(
-      widget.imageUrl,
-      height: widget.height,
-    );
-
-    Widget ratingBadge = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.black.opacityTo(0.60),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: mc.pinkMain.opacityTo(0.45), width: 0.8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.star_rounded, color: mc.pinkMain, size: 14),
-          GapH(4),
-          MyText(widget.rating.toStringAsFixed(1), ms.pop13w700TextPrime),
-        ],
-      ),
-    );
-
-    Widget likeButton = GestureDetector(
-      onTap: () => setState(() => _isLiked = !_isLiked),
-      child: Container(
-        width: 42,
-        height: 42,
-        decoration: BoxDecoration(
-          color: Colors.black.opacityTo(0.55),
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: _isLiked ? mc.pinkMain : Colors.white.opacityTo(0.5),
-            width: 1.5,
-          ),
-        ),
-        child: Icon(
-          _isLiked ? Icons.favorite : Icons.favorite_border,
-          color: _isLiked ? mc.pinkMain : Colors.white,
-          size: 20,
-        ),
-      ),
-    );
-
-    Widget stats = Row(
-      children: [
-        _StatChip(
-          icon: Icons.access_time_rounded,
-          label: '${widget.cookTime} min',
-        ),
-        GapH(8),
-        _StatChip(
-          icon: Icons.chat_bubble_outline_rounded,
-          label: '${widget.comments}',
-        ),
-        GapH(8),
-        _StatChip(
-          icon: Icons.remove_red_eye_outlined,
-          label: '${widget.views}',
-        ),
-      ],
-    );
-
-    Widget bottomContent = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            MyNetworkAvatar(widget.avatarUrl, radius: 14, borderColor: mc.pinkMain),
-            GapH(8),
-            MyText(widget.username, ms.pop13w600PinkMain),
-            GapH(10),
-            Icon(
-              Icons.access_time_rounded,
-              color: Colors.white.opacityTo(0.5),
-              size: 12,
-            ),
-            GapH(4),
-            MyText(widget.timeAgo.timeAgo(), ms.pop12w400TextPrime),
-          ],
-        ),
-        GapV(6),
-        MyText(widget.title, ms.pop18w600TextPrime),
-        GapV(6),
-        MyText(widget.description, ms.pop12w400TextPrime, lines: 2),
-        GapV(10),
-        stats,
-      ],
-    );
-
     Widget current = Stack(
       children: [
-        Positioned.fill(child: image),
-        Positioned(top: 16, left: 16, child: ratingBadge),
-        Positioned(top: 16, right: 16, child: likeButton),
+        Positioned.fill(
+          child: MyNetworkImage(widget.imageUrl, height: widget.height),
+        ),
+        Positioned(
+          top: 16,
+          left: 16,
+          child: _RatingBadge(rating: widget.rating),
+        ),
+        Positioned(
+          top: 16,
+          right: 16,
+          child: _LikeButton(isLiked: widget.isLiked),
+        ),
         Positioned(
           left: 0,
           right: 0,
@@ -165,7 +77,16 @@ class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
                 colors: [black.opacityTo(0.5), black.opacityTo(0.8)],
               ),
             ),
-            child: bottomContent,
+            child: _BottomContent(
+              avatarUrl: widget.avatarUrl,
+              username: widget.username,
+              timeAgo: widget.timeAgo,
+              title: widget.title,
+              description: widget.description,
+              cookTime: widget.cookTime,
+              comments: widget.comments,
+              views: widget.views,
+            ),
           ),
         ),
       ],
@@ -189,6 +110,139 @@ class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
   }
 }
 
+class _RatingBadge extends StatelessWidget {
+  const _RatingBadge({required this.rating});
+
+  final double rating;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.black.opacityTo(0.60),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: mc.pinkMain.opacityTo(0.45), width: 0.8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.star_rounded, color: mc.pinkMain, size: 14),
+          const GapH(4),
+          MyText(rating.toStringAsFixed(1), ms.pop13w700TextPrime),
+        ],
+      ),
+    );
+  }
+}
+
+class _LikeButton extends StatefulWidget {
+  const _LikeButton({required this.isLiked});
+
+  final bool isLiked;
+
+  @override
+  State<_LikeButton> createState() => _LikeButtonState();
+}
+
+class _LikeButtonState extends State<_LikeButton> {
+  late bool _isLiked;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLiked = widget.isLiked;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => setState(() => _isLiked = !_isLiked),
+      child: Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          color: Colors.black.opacityTo(0.55),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: _isLiked ? mc.pinkMain : Colors.white.opacityTo(0.5),
+            width: 1.5,
+          ),
+        ),
+        child: Icon(
+          _isLiked ? Icons.favorite : Icons.favorite_border,
+          color: _isLiked ? mc.pinkMain : Colors.white,
+          size: 20,
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomContent extends StatelessWidget {
+  const _BottomContent({
+    required this.avatarUrl,
+    required this.username,
+    required this.timeAgo,
+    required this.title,
+    required this.description,
+    required this.cookTime,
+    required this.comments,
+    required this.views,
+  });
+
+  final String avatarUrl;
+  final String username;
+  final DateTime timeAgo;
+  final String title;
+  final String description;
+  final int cookTime;
+  final int comments;
+  final int views;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            MyNetworkAvatar(avatarUrl, radius: 14, borderColor: mc.pinkMain),
+            const GapH(8),
+            MyText(username, ms.pop13w600PinkMain),
+            const GapH(8),
+            Icon(
+              Icons.access_time_rounded,
+              color: Colors.white.opacityTo(0.5),
+              size: 12,
+            ),
+            const GapH(4),
+            MyText(timeAgo.timeAgo(), ms.pop12w400TextPrime),
+          ],
+        ),
+        const GapV(4),
+        MyText(title, ms.pop18w600TextPrime),
+        const GapV(4),
+        MyText(description, ms.pop12w400TextPrime, lines: 2),
+        const GapV(8),
+        Wrap(
+          children: [
+            _StatChip(icon: Icons.access_time_rounded, label: '$cookTime min'),
+            const GapH(8),
+            _StatChip(
+              icon: Icons.chat_bubble_outline_rounded,
+              label: '$comments',
+            ),
+            const GapH(8),
+            _StatChip(icon: Icons.remove_red_eye_outlined, label: '$views'),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 class _StatChip extends StatelessWidget {
   const _StatChip({required this.icon, required this.label});
 
@@ -208,7 +262,7 @@ class _StatChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, color: mc.pinkLight, size: 13),
-          GapH(5),
+          const GapH(4),
           MyText(label, ms.pop13w400TextPrime),
         ],
       ),
