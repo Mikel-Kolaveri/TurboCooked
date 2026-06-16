@@ -30,7 +30,7 @@ class _MyTextFieldState extends State<MyTextField> {
     final labelTxt = widget.label;
 
     Widget? eyeIcon;
-    if (widget.isPsw != false) {
+    if (widget.isPsw) {
       eyeIcon = _showPass ? Icon(Icons.visibility_off) : Icon(Icons.visibility);
       eyeIcon = GestureDetector(
         onTap: () => setState(() => _showPass = !_showPass),
@@ -58,9 +58,18 @@ class _MyTextFieldState extends State<MyTextField> {
         hintStyle: ms.pop16w400Grey,
         filled: true,
         fillColor: mc.textfieldFill,
-        border: OutlineInputBorder(borderRadius: borderRadius, borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: borderRadius, borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: borderRadius, borderSide: BorderSide.none),
+        border: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide.none,
+        ),
         errorBorder: OutlineInputBorder(
           borderRadius: borderRadius,
           borderSide: BorderSide(color: Colors.red.shade400, width: 1.5),

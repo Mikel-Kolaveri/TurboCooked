@@ -1,5 +1,3 @@
-library;
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/auth_state_notifier.dart';
@@ -21,7 +19,8 @@ final router = GoRouter(
   refreshListenable: authStateNotifier,
   redirect: (context, state) {
     final isAuth = authStateNotifier.isAuthenticated;
-    final isOnAuthPage = state.uri.path == Routes.landing ||
+    final isOnAuthPage =
+        state.uri.path == Routes.landing ||
         state.uri.path == Routes.login ||
         state.uri.path == Routes.signup;
 
@@ -51,7 +50,7 @@ final router = GoRouter(
             child: Stack(
               alignment: Alignment.center,
               children: [
-                PopScope(canPop: false, child: SafeArea(child: child)),
+                PopScope(canPop: false, child: child),
                 Positioned(bottom: 8, child: MyNavigationBar()),
               ],
             ),
