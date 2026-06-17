@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
-import 'package:recipe_app/pages/core_app/home/src/your_recipes_section/your_recipes_section.dart';
+import 'package:recipe_app/pages/core_app/home/src/your_recipes_section.dart';
 import 'package:recipe_app/pages/core_app/profile/src/profile_page_header.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
 import 'package:recipe_app/theme/my_colors.dart';

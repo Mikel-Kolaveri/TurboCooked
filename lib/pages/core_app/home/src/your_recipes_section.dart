@@ -12,7 +12,7 @@ import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_svg.dart';
 import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/widgets/my_text.dart';
-part 'src/your_recipes_item.dart';
+part 'your_recipes_item.dart';
 
 class YourRecipes extends StatelessWidget {
   const YourRecipes({super.key});

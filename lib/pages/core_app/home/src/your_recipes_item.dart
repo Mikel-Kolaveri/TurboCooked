@@ -1,4 +1,4 @@
-part of '../your_recipes_section.dart';
+part of 'your_recipes_section.dart';
 
 enum _OriginPath { home, profile }
 
