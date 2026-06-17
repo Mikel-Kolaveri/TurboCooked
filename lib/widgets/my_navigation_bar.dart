@@ -22,7 +22,7 @@ class MyNavigationBar extends StatelessWidget {
         const GapH(24),
         _NavItem(asset: MyAssets.communityIcon, route: Routes.community, currentPath: path),
         const GapH(24),
-        _NavItem(asset: MyAssets.recipesIcon, route: Routes.recipes, currentPath: path),
+        _NavItem(asset: MyAssets.recipesIcon, route: Routes.categories, currentPath: path),
         const GapH(24),
         _NavItem(asset: MyAssets.profileIcon, route: Routes.profile, currentPath: path),
       ],

@@ -9,9 +9,11 @@ class RecipeCategoryItem extends StatelessWidget {
     super.key,
     required this.categoryText,
     required this.assetLink,
+    this.onTap,
   });
   final String categoryText;
   final String assetLink;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,6 @@ class RecipeCategoryItem extends StatelessWidget {
       child: current,
     );
     //so text length doesn't increase the width of the widget, instead wraps down
-    return current;
+    return GestureDetector(onTap: onTap, child: current);
   }
 }
