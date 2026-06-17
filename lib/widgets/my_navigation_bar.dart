@@ -21,44 +21,39 @@ class MyNavigationBar extends ConsumerStatefulWidget {
 class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
   String currentRoute = Routes.home;
 
-  Widget _navItem(String asset, {required String route}) {
-    Widget curr = MySvg(asset, height: 32);
-    curr = GestureDetector(
-      onTap: () => setState(() {
-        currentRoute = route;
-        context.go(route);
-      }),
-      child: curr,
-    );
-    curr = AnimatedContainer(
-      padding: EdgeInsets.only(bottom: 4),
-      duration: Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: route == currentRoute ? mc.textPrime : mc.pinkMain,
-            width: 3,
-          ),
-        ),
-      ),
-      child: curr,
-    );
-    return curr;
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget current = Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _navItem(MyAssets.homeIcon, route: Routes.home),
+        _NavItem(
+          asset: MyAssets.homeIcon,
+          route: Routes.home,
+          currentRoute: currentRoute,
+          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
+        ),
         const GapH(24),
-        _navItem(MyAssets.communityIcon, route: Routes.community),
+        _NavItem(
+          asset: MyAssets.communityIcon,
+          route: Routes.community,
+          currentRoute: currentRoute,
+          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
+        ),
         const GapH(24),
-        _navItem(MyAssets.recipesIcon, route: Routes.recipes),
+        _NavItem(
+          asset: MyAssets.recipesIcon,
+          route: Routes.recipes,
+          currentRoute: currentRoute,
+          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
+        ),
         const GapH(24),
-        _navItem(MyAssets.profileIcon, route: Routes.profile),
+        _NavItem(
+          asset: MyAssets.profileIcon,
+          route: Routes.profile,
+          currentRoute: currentRoute,
+          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
+        ),
       ],
     );
     current = SymPadding(h: 32, v: 16, child: current);
@@ -70,6 +65,40 @@ class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
       child: current,
     );
 
+    return current;
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  const _NavItem({
+    required this.asset,
+    required this.route,
+    required this.currentRoute,
+    required this.onTap,
+  });
+
+  final String asset;
+  final String route;
+  final String currentRoute;
+  final void Function(String) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget current = MySvg(asset, height: 32);
+    current = GestureDetector(onTap: () => onTap(route), child: current);
+    current = AnimatedContainer(
+      padding: const EdgeInsets.only(bottom: 4),
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: route == currentRoute ? mc.textPrime : mc.pinkMain,
+            width: 3,
+          ),
+        ),
+      ),
+      child: current,
+    );
     return current;
   }
 }

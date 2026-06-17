@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 
@@ -24,21 +25,18 @@ class MyNetworkImage extends StatelessWidget {
     final bgColor = backgroundColor ?? mc.bg;
     final iconColor = errorIconColor ?? mc.pinkMain;
 
-    return Image.network(
-      url,
+    return CachedNetworkImage(
+      imageUrl: url,
       height: height,
       width: width,
       fit: fit,
-      loadingBuilder: (_, child, progress) {
-        if (progress == null) return child;
-        return Container(
-          height: height,
-          width: width,
-          color: bgColor,
-          child: Center(child: CircularProgressIndicator(color: iconColor)),
-        );
-      },
-      errorBuilder: (_, __, ___) => Container(
+      placeholder: (_, __) => Container(
+        height: height,
+        width: width,
+        color: bgColor,
+        child: Center(child: CircularProgressIndicator(color: iconColor)),
+      ),
+      errorWidget: (_, __, ___) => Container(
         height: height,
         width: width,
         color: bgColor,

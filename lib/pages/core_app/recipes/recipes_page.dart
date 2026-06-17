@@ -21,6 +21,7 @@ class _RecipesPageState extends ConsumerState<RecipesPage> {
         const GapTop(),
         MyText('Categories', ms.pop20w600PinkMain),
         const GapV(16),
+        // TODO: consider replacing with GridView.builder when categories come from data
         Wrap(
           alignment: WrapAlignment.center,
           runSpacing: 16,

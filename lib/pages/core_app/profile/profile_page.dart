@@ -22,7 +22,8 @@ class ProfilePage extends ConsumerStatefulWidget {
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    Widget current = Column(
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       children: [
         const GapTop(size: 16),
         Row(
@@ -51,6 +52,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         const GapV(16),
         SocialInfoBar(),
         const GapV(16),
+        // TODO: consider replacing with GridView
         Wrap(
           runSpacing: 24,
           spacing: 16,
@@ -96,9 +98,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         GapBottom.home(),
       ],
     );
-    current = HPadding(32, current);
-    current = SingleChildScrollView(child: current);
-    return current;
   }
 }
 

@@ -4,7 +4,6 @@ import 'package:recipe_app/constants/test_network_images.dart';
 import 'package:recipe_app/pages/core_app/community/src/community_recipe_card.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
-import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class CommunityPage extends ConsumerStatefulWidget {
@@ -17,8 +16,8 @@ class CommunityPage extends ConsumerStatefulWidget {
 class _CommunityPageState extends ConsumerState<CommunityPage> {
   @override
   Widget build(BuildContext context) {
-    Widget current = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       children: [
         const GapTop(),
         MyText('Community Posts', ms.pop20w600PinkMain),
@@ -62,8 +61,5 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
         GapBottom.home(),
       ],
     );
-    current = HPadding(16, current);
-    current = SingleChildScrollView(child: current);
-    return current;
   }
 }
