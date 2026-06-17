@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/constants/my_assets.dart';
 import 'package:recipe_app/router/router.dart';
@@ -8,52 +7,24 @@ import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_svg.dart';
 
-//TODO: fix navbar state UI logic to correspond with the page
-
-class MyNavigationBar extends ConsumerStatefulWidget {
+class MyNavigationBar extends StatelessWidget {
   const MyNavigationBar({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MyNavigationBarState();
-}
-
-class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
-  String currentRoute = Routes.home;
-
-  @override
   Widget build(BuildContext context) {
+    final path = GoRouterState.of(context).uri.path;
+
     Widget current = Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _NavItem(
-          asset: MyAssets.homeIcon,
-          route: Routes.home,
-          currentRoute: currentRoute,
-          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
-        ),
+        _NavItem(asset: MyAssets.homeIcon, route: Routes.home, currentPath: path),
         const GapH(24),
-        _NavItem(
-          asset: MyAssets.communityIcon,
-          route: Routes.community,
-          currentRoute: currentRoute,
-          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
-        ),
+        _NavItem(asset: MyAssets.communityIcon, route: Routes.community, currentPath: path),
         const GapH(24),
-        _NavItem(
-          asset: MyAssets.recipesIcon,
-          route: Routes.recipes,
-          currentRoute: currentRoute,
-          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
-        ),
+        _NavItem(asset: MyAssets.recipesIcon, route: Routes.recipes, currentPath: path),
         const GapH(24),
-        _NavItem(
-          asset: MyAssets.profileIcon,
-          route: Routes.profile,
-          currentRoute: currentRoute,
-          onTap: (r) => setState(() { currentRoute = r; context.go(r); }),
-        ),
+        _NavItem(asset: MyAssets.profileIcon, route: Routes.profile, currentPath: path),
       ],
     );
     current = SymPadding(h: 32, v: 16, child: current);
@@ -64,7 +35,6 @@ class _MyNavigationBarState extends ConsumerState<MyNavigationBar> {
       ),
       child: current,
     );
-
     return current;
   }
 }
@@ -73,26 +43,26 @@ class _NavItem extends StatelessWidget {
   const _NavItem({
     required this.asset,
     required this.route,
-    required this.currentRoute,
-    required this.onTap,
+    required this.currentPath,
   });
 
   final String asset;
   final String route;
-  final String currentRoute;
-  final void Function(String) onTap;
+  final String currentPath;
 
   @override
   Widget build(BuildContext context) {
+    final isActive = currentPath == route || currentPath.startsWith('$route/');
+
     Widget current = MySvg(asset, height: 32);
-    current = GestureDetector(onTap: () => onTap(route), child: current);
+    current = GestureDetector(onTap: () => context.go(route), child: current);
     current = AnimatedContainer(
       padding: const EdgeInsets.only(bottom: 4),
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: route == currentRoute ? mc.textPrime : mc.pinkMain,
+            color: isActive ? mc.textPrime : mc.pinkMain,
             width: 3,
           ),
         ),

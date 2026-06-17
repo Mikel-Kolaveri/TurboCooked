@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Single shared instance — used by GoRouter (refreshListenable) and
-// UserNotifier, so there is exactly one Supabase auth stream subscription.
 final authStateNotifier = AuthStateNotifier();
+
+final authStateNotifierProvider =
+    ChangeNotifierProvider<AuthStateNotifier>((_) => authStateNotifier);
 
 class AuthStateNotifier extends ChangeNotifier {
   StreamSubscription<AuthState>? _subscription;

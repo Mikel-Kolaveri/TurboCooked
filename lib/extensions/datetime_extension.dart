@@ -16,7 +16,7 @@ extension DateTimeExtension on DateTime {
       return '${diff.inDays} days ago';
     }
     if (diff.inHours > 0) {
-      return '${diff.inHours} ${diff.inHours == 1 ? 'h ago' : 'h ago'} ';
+      return '${diff.inHours}h ago';
     }
     if (diff.inMinutes > 0) {
       return '${diff.inMinutes} ${diff.inMinutes == 1 ? "minute" : "minutes"} ago';

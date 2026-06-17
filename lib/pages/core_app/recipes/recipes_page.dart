@@ -43,7 +43,7 @@ class _RecipesPageState extends ConsumerState<RecipesPage> {
                   "https://p2.piqsels.com/preview/854/281/249/kagyana-strapatsada-gdarta-shakshuka.jpg",
             ),
             RecipeCategoryItem(
-              categoryText: 'Choclate Ice Cream',
+              categoryText: 'Chocolate Ice Cream',
               assetLink:
                   "https://p2.piqsels.com/preview/733/148/987/chocolate-cake-chocolate-cake-recipe-chocolate-images-chocolate-ice-cream.jpg",
             ),
