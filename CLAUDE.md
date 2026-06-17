@@ -34,6 +34,9 @@ return current;
 
 When adding new wrappers, follow the same principle: shorten a verbose or frequently-repeated Flutter pattern.
 
+## Git
+Always ask for confirmation before creating a commit.
+
 ## File structure
 - New pages → `lib/pages/core_app/<feature>/`
 - New shared widgets → `lib/widgets/`
