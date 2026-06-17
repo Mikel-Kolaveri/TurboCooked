@@ -8,11 +8,11 @@ import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
-class CommunityRecipeCard extends StatefulWidget {
-  const CommunityRecipeCard({
+class RecipeCard extends StatefulWidget {
+  const RecipeCard({
     super.key,
     required this.username,
-    required this.timeAgo,
+    required this.createdAt,
     required this.avatarUrl,
     required this.imageUrl,
     required this.title,
@@ -21,13 +21,13 @@ class CommunityRecipeCard extends StatefulWidget {
     required this.cookTime,
     required this.comments,
     required this.views,
-    required this.isLiked,
+    this.isLiked = false,
     this.onTap,
     this.height = 380,
   });
 
   final String username;
-  final DateTime timeAgo;
+  final DateTime createdAt;
   final String avatarUrl;
   final String imageUrl;
   final String title;
@@ -41,10 +41,10 @@ class CommunityRecipeCard extends StatefulWidget {
   final double height;
 
   @override
-  State<CommunityRecipeCard> createState() => _CommunityRecipeCardState();
+  State<RecipeCard> createState() => _RecipeCardState();
 }
 
-class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
+class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
     final black = Colors.black;
@@ -78,9 +78,9 @@ class _CommunityRecipeCardState extends State<CommunityRecipeCard> {
               ),
             ),
             child: _BottomContent(
-              avatarUrl: widget.avatarUrl,
-              username: widget.username,
-              timeAgo: widget.timeAgo,
+              authorAvatarUrl: widget.avatarUrl,
+              authorName: widget.username,
+              createdAt: widget.createdAt,
               title: widget.title,
               description: widget.description,
               cookTime: widget.cookTime,
@@ -181,9 +181,9 @@ class _LikeButtonState extends State<_LikeButton> {
 
 class _BottomContent extends StatelessWidget {
   const _BottomContent({
-    required this.avatarUrl,
-    required this.username,
-    required this.timeAgo,
+    required this.authorAvatarUrl,
+    required this.authorName,
+    required this.createdAt,
     required this.title,
     required this.description,
     required this.cookTime,
@@ -191,9 +191,9 @@ class _BottomContent extends StatelessWidget {
     required this.views,
   });
 
-  final String avatarUrl;
-  final String username;
-  final DateTime timeAgo;
+  final String authorAvatarUrl;
+  final String authorName;
+  final DateTime createdAt;
   final String title;
   final String description;
   final int cookTime;
@@ -208,9 +208,13 @@ class _BottomContent extends StatelessWidget {
       children: [
         Row(
           children: [
-            MyNetworkAvatar(avatarUrl, radius: 14, borderColor: mc.pinkMain),
+            MyNetworkAvatar(
+              authorAvatarUrl,
+              radius: 14,
+              borderColor: mc.pinkMain,
+            ),
             const GapH(8),
-            MyText(username, ms.pop13w600PinkMain),
+            MyText(authorName, ms.pop13w600PinkMain),
             const GapH(8),
             Icon(
               Icons.access_time_rounded,
@@ -218,7 +222,7 @@ class _BottomContent extends StatelessWidget {
               size: 12,
             ),
             const GapH(4),
-            MyText(timeAgo.timeAgo(), ms.pop12w400TextPrime),
+            MyText(createdAt.timeAgo(), ms.pop12w400TextPrime),
           ],
         ),
         const GapV(4),
