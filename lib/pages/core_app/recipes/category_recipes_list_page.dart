@@ -7,8 +7,8 @@ import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/recipe_card.dart';
 
-class CategoryRecipesPage extends StatelessWidget {
-  const CategoryRecipesPage({super.key, required this.category});
+class CategoryRecipesListPage extends StatelessWidget {
+  const CategoryRecipesListPage({super.key, required this.category});
   final RecipeCategory category;
 
   @override

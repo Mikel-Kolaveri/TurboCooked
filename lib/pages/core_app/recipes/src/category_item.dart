@@ -4,8 +4,8 @@ import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
-class RecipeCategoryItem extends StatelessWidget {
-  const RecipeCategoryItem({
+class CategoryItem extends StatelessWidget {
+  const CategoryItem({
     super.key,
     required this.categoryText,
     required this.assetLink,

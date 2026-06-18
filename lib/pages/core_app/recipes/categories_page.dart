@@ -2,21 +2,21 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/data/recipe_data.dart';
-import 'package:recipe_app/pages/core_app/recipes/src/recipes_category_item.dart';
+import 'package:recipe_app/pages/core_app/recipes/src/category_item.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
-class RecipesPage extends ConsumerStatefulWidget {
-  const RecipesPage({super.key});
+class CategoriesPage extends ConsumerStatefulWidget {
+  const CategoriesPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _RecipesPageState();
 }
 
-class _RecipesPageState extends ConsumerState<RecipesPage> {
+class _RecipesPageState extends ConsumerState<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     Widget current = Column(
@@ -30,7 +30,7 @@ class _RecipesPageState extends ConsumerState<RecipesPage> {
           spacing: 16,
           children: RecipeData.categories
               .map(
-                (category) => RecipeCategoryItem(
+                (category) => CategoryItem(
                   categoryText: category.name,
                   assetLink: category.imageUrl,
                   onTap: () =>

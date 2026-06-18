@@ -7,11 +7,11 @@ import 'package:recipe_app/pages/auth/signup_page.dart';
 import 'package:recipe_app/pages/core_app/community/community_page.dart';
 import 'package:recipe_app/pages/core_app/home/home_page.dart';
 import 'package:recipe_app/pages/core_app/profile/profile_page.dart';
-import 'package:recipe_app/pages/core_app/recipes/recipes_page.dart';
+import 'package:recipe_app/pages/core_app/recipes/categories_page.dart';
 import 'package:recipe_app/pages/core_app/settings/settings_page.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/recipe_details_page.dart';
 import 'package:recipe_app/data/recipe_data.dart';
-import 'package:recipe_app/pages/core_app/recipes/category_recipes_page.dart';
+import 'package:recipe_app/pages/core_app/recipes/category_recipes_list_page.dart';
 import 'package:recipe_app/pages/landing_page.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/widgets/my_navigation_bar.dart';
@@ -84,12 +84,13 @@ final router = GoRouter(
         ),
         GoRoute(
           path: Routes.categories,
-          builder: (context, state) => RecipesPage(),
+          builder: (context, state) => CategoriesPage(),
           routes: [
             GoRoute(
               path: Routes._category,
-              builder: (context, state) =>
-                  CategoryRecipesPage(category: state.extra as RecipeCategory),
+              builder: (context, state) => CategoryRecipesListPage(
+                category: state.extra as RecipeCategory,
+              ),
               routes: [
                 GoRoute(
                   path: Routes._recipeDetails,
