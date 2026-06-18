@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:recipe_app/theme/my_colors.dart';
+import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_details_creator_profile.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_ingredient_item.dart';
@@ -21,6 +24,7 @@ class RecipeDetailsPage extends ConsumerStatefulWidget {
 class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    //TODO: add name of the recipe at the top
     Widget current = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,6 +67,20 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
       header: MyNetworkImage(TestNetworkImages.pasta),
       headerHeight: 300,
       children: [current],
+    );
+
+    // current = ColoredBox(color: mc.pinkCream);
+
+    Widget back = CircleAvatar(
+      backgroundColor: mc.white.opacityTo(0.85),
+      child: BackBtn(),
+    );
+
+    current = Stack(
+      children: [
+        current,
+        Positioned(top: 32, left: 16, child: back),
+      ],
     );
     return current;
   }

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/router/router.dart';
+import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
+import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/recipe_card.dart';
 
@@ -36,16 +39,25 @@ class CategoryRecipesListPage extends StatelessWidget {
         );
       },
     );
+    Widget header = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(child: Row(children: [BackBtn()])),
 
-    Widget header = Column(
-      children: [const GapTop(), MyText(category.name, ms.pop20w600PinkMain)],
+        MyText(category.name, ms.pop20w600PinkMain),
+        Expanded(child: SizedBox()),
+      ],
     );
+    header = Column(children: [const GapTop(), header, const GapV(16)]);
+    header = HPadding(16, header);
 
-    return Column(
+    Widget current = Column(
       children: [
         header,
         Expanded(child: list),
       ],
     );
+
+    return ColoredBox(color: mc.bg, child: current);
   }
 }
