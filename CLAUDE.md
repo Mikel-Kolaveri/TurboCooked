@@ -14,6 +14,7 @@ Only add a comment when the WHY is non-obvious — a hidden constraint, a workar
 ## Design system
 - Follow the existing `pop{size}w{weight}{color}` naming convention in `MyStyles` when adding new text styles. Don't suggest renaming existing styles.
 - Follow `mc.` color names from `MyColors` for all colors. No raw `Color(0x...)` or `Colors.*` unless `MyColors` has no equivalent.
+- Use `.opacityTo(double)` from `lib/extensions/color_extension.dart` for color opacity. Never use `.withOpacity()` or `.withValues(alpha:)` directly.
 
 ## Widget conventions
 
