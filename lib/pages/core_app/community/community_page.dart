@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recipe_app/data/recipe_data.dart';
+import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_text.dart';
@@ -16,50 +18,41 @@ class CommunityPage extends ConsumerStatefulWidget {
 class _CommunityPageState extends ConsumerState<CommunityPage> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      children: [
-        const GapTop(),
-        MyText('Community Posts', ms.pop20w600PinkMain),
-        const GapV(20),
+    final recipes = RecipeData.categories.expand((c) => c.recipes).toList();
 
-        const GapV(10),
-        RecipeCard(
-          username: 'julia_eats',
-          createdAt: DateTime(2026, 5, 25, 14),
-          avatarUrl: TestNetworkImages.avatar,
-          imageUrl: TestNetworkImages.chicken,
-          title: 'Coq au Vin',
-          rating: 5,
-          description:
-              'A French classic — chicken braised slowly in red wine with mushrooms, pearl onions, and smoky bacon until fall-apart tender.',
-          cookTime: 90,
-          views: 18400,
-          comments: 63,
-          isLiked: false,
-        ),
-
-        const GapV(28),
-
-        const GapV(10),
-        RecipeCard(
-          username: 'spice_raj',
-          createdAt: DateTime(2026, 5, 22, 20),
-          avatarUrl: TestNetworkImages.avatar,
-          imageUrl: TestNetworkImages.curry,
-          title: 'Chorizo Gnocchi Bake',
-          rating: 4.9,
-          description:
-              'Golden pan-fried gnocchi tossed with spicy chorizo, mozzarella, and a rich tomato sauce.',
-          cookTime: 40,
-          views: 24100,
-          comments: 89,
-          isLiked: true,
-        ),
-        const GapV(28),
-
-        GapBottom.home(),
-      ],
+    return ListView.separated(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 96),
+      itemCount: recipes.length + 1,
+      separatorBuilder: (_, __) => const GapV(28),
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const GapTop(),
+              MyText('Community Posts', ms.pop20w600PinkMain),
+              const GapV(10),
+            ],
+          );
+        }
+        final recipe = recipes[index - 1];
+        return RecipeCard(
+          username: recipe.authorName,
+          createdAt: recipe.createdAt,
+          avatarUrl: recipe.authorAvatarUrl,
+          imageUrl: recipe.imageUrl,
+          title: recipe.name,
+          rating: recipe.rating,
+          description: recipe.description,
+          cookTime: recipe.durationMinutes,
+          views: recipe.views,
+          comments: recipe.comments,
+          onTap: () => context.push(
+            Routes.recipeDetails(origin: Routes.community),
+            extra: recipe,
+          ),
+        );
+      },
     );
   }
 }

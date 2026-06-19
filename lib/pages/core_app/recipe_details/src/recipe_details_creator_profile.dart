@@ -8,11 +8,20 @@ import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class RecipeDetailsCreatorProfile extends ConsumerWidget {
-  const RecipeDetailsCreatorProfile({super.key});
+  const RecipeDetailsCreatorProfile({
+    super.key,
+    required this.authorName,
+    required this.authorAvatarUrl,
+  });
+  final String authorName;
+  final String authorAvatarUrl;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget current = CircleAvatar(radius: 32);
+    Widget current = CircleAvatar(
+      radius: 32,
+      backgroundImage: NetworkImage(authorAvatarUrl),
+    );
 
     current = Row(
       children: [
@@ -22,8 +31,8 @@ class RecipeDetailsCreatorProfile extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyText('@Test Handle', (ms.pop14w400PinkMain)),
-              MyText('Chefs name', (ms.pop16w400TextPrime), lines: 3),
+              MyText('@$authorName', (ms.pop14w400PinkMain)),
+              MyText(authorName, (ms.pop16w400TextPrime), lines: 3),
             ],
           ),
         ),

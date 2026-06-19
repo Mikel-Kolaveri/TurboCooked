@@ -5,24 +5,15 @@ enum _OriginPath { home, profile }
 class RecipeItem extends StatefulWidget {
   const RecipeItem.home({
     super.key,
-    required this.imgPath,
-    required this.name,
-    required this.rating,
-    required this.duration,
-    required this.isFavorite,
+    required this.recipe,
+    this.isFavorite = false,
   }) : _origin = _OriginPath.home;
   const RecipeItem.profile({
     super.key,
-    required this.imgPath,
-    required this.name,
-    required this.rating,
-    required this.duration,
-    required this.isFavorite,
+    required this.recipe,
+    this.isFavorite = false,
   }) : _origin = _OriginPath.profile;
-  final String imgPath;
-  final String name;
-  final double rating;
-  final int duration;
+  final Recipe recipe;
   final bool isFavorite;
   final _OriginPath _origin;
 
@@ -71,17 +62,17 @@ class _RecipeItemState extends State<RecipeItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MyText(widget.name, ms.pop12w400TextSec, lines: 2),
+          MyText(widget.recipe.name, ms.pop12w400TextSec, lines: 2),
           const GapV(8),
           Row(
             children: [
-              MyText(widget.rating.toString(), ms.pop12w400PinkMain),
+              MyText(widget.recipe.rating.toString(), ms.pop12w400PinkMain),
               const GapH(4),
               MySvg(MyAssets.star),
               const GapH.spacer(4),
               MySvg(MyAssets.clock),
               const GapH(4),
-              MyText('${widget.duration}min', ms.pop12w400PinkMain),
+              MyText('${widget.recipe.durationMinutes}min', ms.pop12w400PinkMain),
               //TODO: fix logic, add conversion to x hours x minutes
             ],
           ),
@@ -100,7 +91,7 @@ class _RecipeItemState extends State<RecipeItem> {
             border: Border.all(color: mc.textPrime.opacityTo(0.4)),
             borderRadius: BorderRadius.circular(16),
           ),
-          child: MyNetworkImage(widget.imgPath),
+          child: MyNetworkImage(widget.recipe.imageUrl),
         ),
         Positioned(right: 8, top: 8, child: favIcon),
         Positioned(bottom: 0, width: width, child: textBubble),
@@ -120,7 +111,10 @@ class _RecipeItemState extends State<RecipeItem> {
 
     current = GestureDetector(
       child: current,
-      onTap: () => context.go(Routes.recipeDetails(origin: origin)),
+      onTap: () => context.go(
+        Routes.recipeDetails(origin: origin),
+        extra: widget.recipe,
+      ),
     );
     return current;
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_details_creator_profile.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_ingredient_item.dart';
@@ -11,7 +11,8 @@ import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class RecipeDetailsPage extends ConsumerStatefulWidget {
-  const RecipeDetailsPage({super.key});
+  const RecipeDetailsPage({super.key, required this.recipe});
+  final Recipe recipe;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -21,19 +22,20 @@ class RecipeDetailsPage extends ConsumerStatefulWidget {
 class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    final recipe = widget.recipe;
     Widget current = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const GapTop(size: 24),
-        RecipeDetailsCreatorProfile(),
+        RecipeDetailsCreatorProfile(
+          authorName: recipe.authorName,
+          authorAvatarUrl: recipe.authorAvatarUrl,
+        ),
         const GapV(32),
         MyText('Details', ms.pop20w600PinkMain),
         const GapV(4),
         MyText(
-          'Tiramisu is a classic Italian dessert, featuring layers of'
-          ' espresso-soaked ladyfingers, rich mascarpone cheese, and a dusting'
-          ' of cocoa powder, creating a harmonious blend of creamy and'
-          ' coffee flavors.',
+          recipe.description,
           ms.pop12w400TextPrime.copyWith(height: 1.5),
         ),
         const GapV(32),
@@ -60,7 +62,7 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
     );
     current = HPadding(16, current);
     current = MyCustomScrollView(
-      header: MyNetworkImage(TestNetworkImages.pasta),
+      header: MyNetworkImage(recipe.imageUrl),
       headerHeight: 300,
       children: [current],
     );

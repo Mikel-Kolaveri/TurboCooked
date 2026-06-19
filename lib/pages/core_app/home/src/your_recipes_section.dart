@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/constants/my_assets.dart';
-import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -19,21 +19,13 @@ class YourRecipes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sampleRecipes = RecipeData.categories
+        .expand((c) => c.recipes)
+        .take(2)
+        .toList();
     final testChildren = [
-      RecipeItem.home(
-        imgPath: TestNetworkImages.pasta,
-        name: 'TestName',
-        rating: 3,
-        duration: 15,
-        isFavorite: true,
-      ),
-      RecipeItem.home(
-        imgPath: TestNetworkImages.muffins,
-        name: 'TestName very very very long',
-        rating: 3,
-        duration: 15,
-        isFavorite: false,
-      ),
+      RecipeItem.home(recipe: sampleRecipes[0], isFavorite: true),
+      RecipeItem.home(recipe: sampleRecipes[1]),
     ];
 
     Widget current = ListView.separated(

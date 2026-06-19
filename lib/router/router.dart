@@ -67,7 +67,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: Routes._recipeDetails,
-              builder: (context, state) => RecipeDetailsPage(),
+              builder: (context, state) => RecipeDetailsPage(recipe: state.extra as Recipe),
             ),
           ],
         ),
@@ -78,7 +78,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: Routes._recipeDetails,
-              builder: (context, state) => RecipeDetailsPage(),
+              builder: (context, state) => RecipeDetailsPage(recipe: state.extra as Recipe),
             ),
           ],
         ),
@@ -94,7 +94,7 @@ final router = GoRouter(
               routes: [
                 GoRoute(
                   path: Routes._recipeDetails,
-                  builder: (context, state) => RecipeDetailsPage(),
+                  builder: (context, state) => RecipeDetailsPage(recipe: state.extra as Recipe),
                 ),
               ],
             ),
@@ -106,7 +106,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: Routes._recipeDetails,
-              builder: (context, state) => RecipeDetailsPage(),
+              builder: (context, state) => RecipeDetailsPage(recipe: state.extra as Recipe),
             ),
           ],
         ),

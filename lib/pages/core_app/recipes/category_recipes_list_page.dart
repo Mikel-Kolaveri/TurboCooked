@@ -32,6 +32,7 @@ class CategoryRecipesListPage extends StatelessWidget {
           views: recipe.views,
           onTap: () => context.push(
             Routes.recipeDetails(origin: Routes.categoryRecipes),
+            extra: recipe,
           ),
         );
       },

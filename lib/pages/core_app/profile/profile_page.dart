@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/router/router.dart';
-import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/pages/core_app/home/src/your_recipes_section.dart';
 import 'package:recipe_app/pages/core_app/profile/src/profile_page_header.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
@@ -57,43 +57,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           runSpacing: 24,
           spacing: 16,
           direction: Axis.horizontal,
-          children: [
-            RecipeItem.profile(
-              imgPath: TestNetworkImages.risoto,
-              name: 'Namee',
-              rating: 3,
-              duration: 5,
-              isFavorite: false,
-            ),
-            RecipeItem.profile(
-              imgPath: TestNetworkImages.curry,
-              name: 'Namee',
-              rating: 3,
-              duration: 5,
-              isFavorite: false,
-            ),
-            RecipeItem.profile(
-              imgPath: TestNetworkImages.chicken,
-              name: 'Namee',
-              rating: 3,
-              duration: 5,
-              isFavorite: false,
-            ),
-            RecipeItem.profile(
-              imgPath: TestNetworkImages.muffins,
-              name: 'Namee',
-              rating: 3,
-              duration: 5,
-              isFavorite: false,
-            ),
-            RecipeItem.profile(
-              imgPath: TestNetworkImages.pasta,
-              name: 'Namee',
-              rating: 3,
-              duration: 5,
-              isFavorite: false,
-            ),
-          ],
+          children: RecipeData.categories
+              .expand((c) => c.recipes)
+              .take(5)
+              .map((r) => RecipeItem.profile(recipe: r))
+              .toList(),
         ),
         GapBottom.home(),
       ],
