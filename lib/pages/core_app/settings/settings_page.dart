@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/auth_service.dart';
+import 'package:recipe_app/extensions/color_extension.dart';
+import 'package:recipe_app/auth/auth_state_notifier.dart';
+import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/back_button.dart';
@@ -54,24 +58,35 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           showArrow: false,
         ),
         _divider(),
-        SettingsTile(
-          icon: Icons.logout_outlined,
-          title: 'Log Out',
-          onTap: () async {
-            try {
-              await ref.read(authServiceProvider).signOut();
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Failed to log out. Please try again.')),
-                );
+        if (ref.watch(authStateNotifierProvider).isGuest) ...[
+          SettingsTile(
+            icon: Icons.login_outlined,
+            title: 'Sign In',
+            onTap: () => context.go(Routes.login),
+            showArrow: false,
+          ),
+        ] else ...[
+          SettingsTile(
+            icon: Icons.logout_outlined,
+            title: 'Log Out',
+            onTap: () async {
+              try {
+                await ref.read(authServiceProvider).signOut();
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Failed to log out. Please try again.'),
+                    ),
+                  );
+                }
               }
-            }
-          },
-          showArrow: false,
-        ),
-        const GapV(24),
-        MyText('Delete account', ms.pop20w600PinkMain),
+            },
+            showArrow: false,
+          ),
+          const GapV(24),
+          MyText('Delete account', ms.pop20w600PinkMain),
+        ],
         GapBottom.home(),
       ],
     );
@@ -81,5 +96,5 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }
 
   Widget _divider() =>
-      Divider(color: mc.pinkMain.withValues(alpha: 0.15), height: 1);
+      Divider(color: mc.pinkMain.opacityTo(0.15), height: 1);
 }

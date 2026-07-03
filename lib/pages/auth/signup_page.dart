@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/auth_service.dart';
+import 'package:recipe_app/auth/auth_state_notifier.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
@@ -241,6 +242,23 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               ),
             ],
             style: ms.pop13w400TextPrime,
+          ),
+          const GapV(16),
+          Center(
+            child: GestureDetector(
+              onTap: () => ref.read(authStateNotifierProvider).continueAsGuest(),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: mc.pinkMain),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: MyText('Continue as guest', ms.pop13w600PinkMain),
+              ),
+            ),
           ),
           const GapBottom(size: 40),
         ],

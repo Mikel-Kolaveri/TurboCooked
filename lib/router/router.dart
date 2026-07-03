@@ -20,14 +20,14 @@ part 'page_transitions.dart';
 final router = GoRouter(
   refreshListenable: authStateNotifier,
   redirect: (context, state) {
-    final isAuth = authStateNotifier.isAuthenticated;
+    final hasAccess = authStateNotifier.hasAppAccess;
     final isOnAuthPage =
         state.uri.path == Routes.landing ||
         state.uri.path == Routes.login ||
         state.uri.path == Routes.signup;
 
-    if (!isAuth && !isOnAuthPage) return Routes.landing;
-    if (isAuth && isOnAuthPage) return Routes.home;
+    if (!hasAccess && !isOnAuthPage) return Routes.landing;
+    if (authStateNotifier.isAuthenticated && isOnAuthPage) return Routes.home;
     return null;
   },
   routes: [

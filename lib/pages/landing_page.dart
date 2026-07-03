@@ -74,7 +74,6 @@ class _LandingPageState extends State<LandingPage> {
                 : incIndex,
           ),
         ),
-
         GapBottom(),
       ],
     );

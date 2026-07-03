@@ -10,14 +10,28 @@ final authStateNotifierProvider =
 
 class AuthStateNotifier extends ChangeNotifier {
   StreamSubscription<AuthState>? _subscription;
+  bool _isGuest = false;
 
   AuthStateNotifier() {
-    _subscription = Supabase.instance.client.auth.onAuthStateChange.listen((_) {
+    _subscription = Supabase.instance.client.auth.onAuthStateChange.listen((state) {
+      if (state.event == AuthChangeEvent.signedIn) _isGuest = false;
       notifyListeners();
     });
   }
 
   bool get isAuthenticated => Supabase.instance.client.auth.currentUser != null;
+  bool get isGuest => _isGuest;
+  bool get hasAppAccess => isAuthenticated || _isGuest;
+
+  void continueAsGuest() {
+    _isGuest = true;
+    notifyListeners();
+  }
+
+  void exitGuest() {
+    _isGuest = false;
+    notifyListeners();
+  }
 
   @override
   void dispose() {

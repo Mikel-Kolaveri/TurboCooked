@@ -18,4 +18,5 @@ class MyColors {
   Color get textfieldFill => pinkCream;
 
   final Color fieldHint = Colors.grey.shade700;
+  final Color greyLight = Color(0xFFE0E0E0);
 }
