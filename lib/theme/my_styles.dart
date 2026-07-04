@@ -37,6 +37,7 @@ class MyStyles {
   late final _pop600 = _pop.copyWith(fontWeight: FontWeight.w600);
   late final _pop13w600 = _pop600.copyWith(fontSize: 13);
   late final pop13w600PinkMain = _pop13w600.copyWith(color: mc.pinkMain);
+  late final pop13w600TextPrime = _pop13w600.copyWith(color: mc.textPrime);
   late final _pop14w600 = _pop600.copyWith(fontSize: 14);
   late final pop14w600PinkMain = _pop14w600.copyWith(color: mc.pinkMain);
   late final _pop15w600 = _pop600.copyWith(fontSize: 15);
