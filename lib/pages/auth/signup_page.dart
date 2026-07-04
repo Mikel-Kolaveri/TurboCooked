@@ -246,7 +246,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           const GapV(16),
           Center(
             child: GestureDetector(
-              onTap: () => ref.read(authStateNotifierProvider).continueAsGuest(),
+              onTap: () {
+                ref.read(authStateNotifierProvider).continueAsGuest();
+                context.go(Routes.home);
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
