@@ -42,6 +42,9 @@ class RecipeCategory {
 }
 
 abstract class RecipeData {
+  static List<Recipe> get allRecipes =>
+      categories.expand((c) => c.recipes).toList();
+
   static final List<RecipeCategory> categories = [
     RecipeCategory(
       id: 'italian',
