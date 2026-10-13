@@ -72,8 +72,10 @@ class _RecipeItemState extends State<RecipeItem> {
               const GapH.spacer(4),
               MySvg(MyAssets.clock),
               const GapH(4),
-              MyText('${widget.recipe.durationMinutes}min', ms.pop12w400PinkMain),
-              //TODO: fix logic, add conversion to x hours x minutes
+              MyText(
+                widget.recipe.durationMinutes.toCookTime(),
+                ms.pop12w400PinkMain,
+              ),
             ],
           ),
         ],

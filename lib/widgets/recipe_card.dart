@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/extensions/datetime_extension.dart';
+import 'package:recipe_app/extensions/int_extension.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/my_network_avatar.dart';
@@ -232,14 +233,20 @@ class _BottomContent extends StatelessWidget {
         const GapV(8),
         Wrap(
           children: [
-            _StatChip(icon: Icons.access_time_rounded, label: '$cookTime min'),
+            _StatChip(
+              icon: Icons.access_time_rounded,
+              label: cookTime.toCookTime(),
+            ),
             const GapH(8),
             _StatChip(
               icon: Icons.chat_bubble_outline_rounded,
-              label: '$comments',
+              label: comments.toCompactCount(),
             ),
             const GapH(8),
-            _StatChip(icon: Icons.remove_red_eye_outlined, label: '$views'),
+            _StatChip(
+              icon: Icons.remove_red_eye_outlined,
+              label: views.toCompactCount(),
+            ),
           ],
         ),
       ],
