@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/data/recipe_data.dart';
-import 'package:recipe_app/pages/core_app/home/src/your_recipes_section.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -11,6 +10,7 @@ import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_network_avatar.dart';
 import 'package:recipe_app/widgets/my_text.dart';
+import 'package:recipe_app/widgets/recipe_item.dart';
 
 class AuthorProfilePage extends ConsumerWidget {
   const AuthorProfilePage({super.key, required this.recipe});
