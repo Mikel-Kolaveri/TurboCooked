@@ -1,21 +1,25 @@
 part of 'your_recipes_section.dart';
 
-enum _OriginPath { home, profile }
-
 class RecipeItem extends StatefulWidget {
+  const RecipeItem({
+    super.key,
+    required this.recipe,
+    required this.origin,
+    this.isFavorite = false,
+  });
   const RecipeItem.home({
     super.key,
     required this.recipe,
     this.isFavorite = false,
-  }) : _origin = _OriginPath.home;
+  }) : origin = Routes.home;
   const RecipeItem.profile({
     super.key,
     required this.recipe,
     this.isFavorite = false,
-  }) : _origin = _OriginPath.profile;
+  }) : origin = Routes.profile;
   final Recipe recipe;
   final bool isFavorite;
-  final _OriginPath _origin;
+  final String origin;
 
   @override
   State<RecipeItem> createState() => _RecipeItemState();
@@ -100,21 +104,10 @@ class _RecipeItemState extends State<RecipeItem> {
       ],
     );
 
-    final String origin;
-
-    switch (widget._origin) {
-      case _OriginPath.home:
-        origin = Routes.home;
-        break;
-      case _OriginPath.profile:
-        origin = Routes.profile;
-        break;
-    }
-
     current = GestureDetector(
       child: current,
-      onTap: () => context.go(
-        Routes.recipeDetails(origin: origin),
+      onTap: () => context.push(
+        Routes.recipeDetails(origin: widget.origin),
         extra: widget.recipe,
       ),
     );

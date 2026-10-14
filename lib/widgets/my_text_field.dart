@@ -12,12 +12,18 @@ class MyTextField extends StatefulWidget {
     this.isPsw = false,
     this.controller,
     this.validator,
+    this.maxLines = 1,
+    this.keyboardType,
+    this.onChanged,
   });
   final String? hint;
   final String? label;
   final bool isPsw;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final int maxLines;
+  final TextInputType? keyboardType;
+  final ValueChanged<String>? onChanged;
 
   @override
   State<MyTextField> createState() => _MyTextFieldState();
@@ -38,11 +44,15 @@ class _MyTextFieldState extends State<MyTextField> {
       );
     }
 
-    final borderRadius = BorderRadius.circular(50);
+    final isMultiline = widget.maxLines > 1;
+    final borderRadius = BorderRadius.circular(isMultiline ? 20 : 50);
 
     Widget current = TextFormField(
       controller: widget.controller,
       validator: widget.validator,
+      maxLines: widget.maxLines,
+      keyboardType: widget.keyboardType,
+      onChanged: widget.onChanged,
       obscuringCharacter: '●',
       obscureText: widget.isPsw && !_showPass,
       enableSuggestions: !widget.isPsw,
@@ -53,7 +63,9 @@ class _MyTextFieldState extends State<MyTextField> {
       ),
       decoration: InputDecoration(
         suffixIcon: eyeIcon,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 32),
+        contentPadding: isMultiline
+            ? const EdgeInsets.symmetric(horizontal: 24, vertical: 16)
+            : const EdgeInsets.symmetric(horizontal: 32),
         hintText: widget.hint,
         hintStyle: ms.pop16w400Grey,
         filled: true,

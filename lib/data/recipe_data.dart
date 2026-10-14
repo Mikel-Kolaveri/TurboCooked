@@ -8,6 +8,20 @@ class Ingredient {
   const Ingredient(this.amount, this.name);
 }
 
+class RecipeComment {
+  final String authorName;
+  final String avatarUrl;
+  final String text;
+  final DateTime createdAt;
+
+  const RecipeComment({
+    required this.authorName,
+    required this.avatarUrl,
+    required this.text,
+    required this.createdAt,
+  });
+}
+
 const _placeholderIngredients = [
   Ingredient('1 cup', 'Tomatoes'),
   Ingredient('100g', 'Cheese'),
@@ -71,6 +85,49 @@ class RecipeCategory {
 abstract class RecipeData {
   static List<Recipe> get allRecipes =>
       categories.expand((c) => c.recipes).toList();
+
+  static List<Recipe> byAuthor(String authorName) =>
+      allRecipes.where((r) => r.authorName == authorName).toList();
+
+  static final List<RecipeComment> placeholderComments = [
+    RecipeComment(
+      authorName: 'sweet_tooth',
+      avatarUrl: _avatar,
+      text: 'Made this last night and the whole family loved it!',
+      createdAt: DateTime(2026, 9, 28),
+    ),
+    RecipeComment(
+      authorName: 'veggie_chef',
+      avatarUrl: _avatar,
+      text: 'Swapped in mushrooms for a vegetarian version, worked great.',
+      createdAt: DateTime(2026, 9, 20),
+    ),
+    RecipeComment(
+      authorName: 'quick_eats',
+      avatarUrl: _avatar,
+      text: 'How long does this keep in the fridge?',
+      createdAt: DateTime(2026, 9, 14),
+    ),
+    RecipeComment(
+      authorName: 'baker_grace',
+      avatarUrl: _avatar,
+      text:
+          'The step-by-step photos would be a nice addition, but super clear anyway.',
+      createdAt: DateTime(2026, 8, 30),
+    ),
+    RecipeComment(
+      authorName: 'ramen_king',
+      avatarUrl: _avatar,
+      text: 'Added a bit of chili flakes. 10/10.',
+      createdAt: DateTime(2026, 8, 12),
+    ),
+    RecipeComment(
+      authorName: 'toast_queen',
+      avatarUrl: _avatar,
+      text: 'Saving this one for the weekend!',
+      createdAt: DateTime(2026, 7, 2),
+    ),
+  ];
 
   static final List<RecipeCategory> categories = [
     RecipeCategory(

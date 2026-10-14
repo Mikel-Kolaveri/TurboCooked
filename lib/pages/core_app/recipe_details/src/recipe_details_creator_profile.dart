@@ -4,6 +4,7 @@ import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_network_avatar.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
@@ -12,20 +13,17 @@ class RecipeDetailsCreatorProfile extends ConsumerWidget {
     super.key,
     required this.authorName,
     required this.authorAvatarUrl,
+    this.onTap,
   });
   final String authorName;
   final String authorAvatarUrl;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget current = CircleAvatar(
-      radius: 32,
-      backgroundImage: NetworkImage(authorAvatarUrl),
-    );
-
-    current = Row(
+    Widget author = Row(
       children: [
-        current,
+        MyNetworkAvatar(authorAvatarUrl, radius: 32),
         const GapH(16),
         Expanded(
           child: Column(
@@ -36,7 +34,17 @@ class RecipeDetailsCreatorProfile extends ConsumerWidget {
             ],
           ),
         ),
+      ],
+    );
+    author = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: author,
+    );
 
+    Widget current = Row(
+      children: [
+        Expanded(child: author),
         const GapH(8),
         Expanded(child: _Button()),
       ],

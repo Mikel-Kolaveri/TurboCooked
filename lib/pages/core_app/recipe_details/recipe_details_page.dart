@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_app/constants/my_assets.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/extensions/int_extension.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_step_item.dart';
+import 'package:recipe_app/providers/comments_provider.dart';
+import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/widgets/back_button.dart';
+import 'package:recipe_app/widgets/comment_tile.dart';
 import 'package:recipe_app/widgets/my_network_image.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_details_creator_profile.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_ingredient_item.dart';
@@ -30,6 +34,10 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final recipe = widget.recipe;
+    final origin = Routes.recipeDetailsOrigin(
+      GoRouterState.of(context).uri.path,
+    );
+    final comments = ref.watch(commentsProvider(recipe));
 
     Widget current = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,6 +50,8 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
         RecipeDetailsCreatorProfile(
           authorName: recipe.authorName,
           authorAvatarUrl: recipe.authorAvatarUrl,
+          onTap: () =>
+              context.push(Routes.author(origin: origin), extra: recipe),
         ),
         const GapV(32),
         MyText('Details', ms.pop20w600PinkMain),
@@ -62,6 +72,12 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
           RecipeStepItem(index: i, text: step),
           const GapV(16),
         ],
+        const GapV(16),
+        _CommentsPreview(
+          comments: comments,
+          onSeeAll: () =>
+              context.push(Routes.comments(origin: origin), extra: recipe),
+        ),
         GapBottom.home(),
       ],
     );
@@ -106,6 +122,37 @@ class _MetaRow extends StatelessWidget {
         Icon(Icons.people_outline, color: mc.pinkMain, size: 18),
         const GapH(4),
         MyText('${recipe.servings} servings', ms.pop14w400PinkMain),
+      ],
+    );
+  }
+}
+
+class _CommentsPreview extends StatelessWidget {
+  const _CommentsPreview({required this.comments, required this.onSeeAll});
+  final List<RecipeComment> comments;
+  final VoidCallback onSeeAll;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget header = Row(
+      children: [
+        MyText('Comments (${comments.length})', ms.pop20w600PinkMain),
+        const GapH.spacer(8),
+        MyText('See all', ms.pop14w600PinkMain, onTap: onSeeAll),
+      ],
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        header,
+        const GapV(12),
+        if (comments.isEmpty)
+          MyText('No comments yet. Be the first!', ms.pop13w400TextPrime),
+        for (final comment in comments.take(2)) ...[
+          CommentTile(comment: comment),
+          const GapV(16),
+        ],
       ],
     );
   }
