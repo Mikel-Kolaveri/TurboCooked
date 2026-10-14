@@ -8,6 +8,7 @@ class MyCircleBox extends StatelessWidget {
     required this.child,
     this.padding,
     this.boxShadow,
+    this.size,
   });
 
   final Color? color;
@@ -16,16 +17,30 @@ class MyCircleBox extends StatelessWidget {
   final double? padding;
   final List<BoxShadow>? boxShadow;
 
+  /// Fixed diameter with the child centered. When null, the circle wraps the child.
+  final double? size;
+
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    Widget current = Padding(
+      padding: EdgeInsets.all(padding ?? 0),
+      child: child,
+    );
+    if (size != null) {
+      current = SizedBox.square(
+        dimension: size,
+        child: Center(child: current),
+      );
+    }
+    current = DecoratedBox(
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
         border: border,
         boxShadow: boxShadow,
       ),
-      child: Padding(padding: EdgeInsets.all(padding ?? 0), child: child),
+      child: current,
     );
+    return current;
   }
 }

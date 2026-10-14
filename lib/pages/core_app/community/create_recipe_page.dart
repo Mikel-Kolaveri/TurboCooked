@@ -323,13 +323,8 @@ class _StepRow extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget number = MyCircleBox(
       color: mc.pinkMain,
-      child: SizedBox(
-        width: 28,
-        height: 28,
-        child: Center(
-          child: MyText.center('${index + 1}', ms.pop13w700TextPrime),
-        ),
-      ),
+      size: 28,
+      child: MyText.center('${index + 1}', ms.pop13w700TextPrime),
     );
     number = UpPadding(12, number);
 
