@@ -1,21 +1,38 @@
-part of 'your_recipes_section.dart';
-
-enum _OriginPath { home, profile }
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recipe_app/constants/my_assets.dart';
+import 'package:recipe_app/data/recipe_data.dart';
+import 'package:recipe_app/extensions/color_extension.dart';
+import 'package:recipe_app/extensions/int_extension.dart';
+import 'package:recipe_app/router/router.dart';
+import 'package:recipe_app/theme/my_colors.dart';
+import 'package:recipe_app/theme/my_styles.dart';
+import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_box.dart';
+import 'package:recipe_app/widgets/my_network_image.dart';
+import 'package:recipe_app/widgets/my_svg.dart';
+import 'package:recipe_app/widgets/my_text.dart';
 
 class RecipeItem extends StatefulWidget {
+  const RecipeItem({
+    super.key,
+    required this.recipe,
+    required this.origin,
+    this.isFavorite = false,
+  });
   const RecipeItem.home({
     super.key,
     required this.recipe,
     this.isFavorite = false,
-  }) : _origin = _OriginPath.home;
+  }) : origin = Routes.home;
   const RecipeItem.profile({
     super.key,
     required this.recipe,
     this.isFavorite = false,
-  }) : _origin = _OriginPath.profile;
+  }) : origin = Routes.profile;
   final Recipe recipe;
   final bool isFavorite;
-  final _OriginPath _origin;
+  final String origin;
 
   @override
   State<RecipeItem> createState() => _RecipeItemState();
@@ -72,8 +89,10 @@ class _RecipeItemState extends State<RecipeItem> {
               const GapH.spacer(4),
               MySvg(MyAssets.clock),
               const GapH(4),
-              MyText('${widget.recipe.durationMinutes}min', ms.pop12w400PinkMain),
-              //TODO: fix logic, add conversion to x hours x minutes
+              MyText(
+                widget.recipe.durationMinutes.toCookTime(),
+                ms.pop12w400PinkMain,
+              ),
             ],
           ),
         ],
@@ -98,21 +117,10 @@ class _RecipeItemState extends State<RecipeItem> {
       ],
     );
 
-    final String origin;
-
-    switch (widget._origin) {
-      case _OriginPath.home:
-        origin = Routes.home;
-        break;
-      case _OriginPath.profile:
-        origin = Routes.profile;
-        break;
-    }
-
     current = GestureDetector(
       child: current,
-      onTap: () => context.go(
-        Routes.recipeDetails(origin: origin),
+      onTap: () => context.push(
+        Routes.recipeDetails(origin: widget.origin),
         extra: widget.recipe,
       ),
     );

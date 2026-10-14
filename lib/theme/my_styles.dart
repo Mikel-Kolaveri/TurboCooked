@@ -13,6 +13,7 @@ class MyStyles {
   late final pop12w400TextSec = _pop12w400.copyWith(color: mc.textSecond);
   late final pop12w400PinkMain = _pop12w400.copyWith(color: mc.pinkMain);
   late final pop12w400TextPrime = _pop12w400.copyWith(color: mc.textPrime);
+  late final pop12w400PinkLight = _pop12w400.copyWith(color: mc.pinkLight);
   late final _pop13w400 = _pop400.copyWith(fontSize: 13);
   late final pop13w400TextPrime = _pop13w400.copyWith(color: mc.textPrime);
   late final _pop14w400 = _pop400.copyWith(fontSize: 14);

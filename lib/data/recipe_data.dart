@@ -1,6 +1,41 @@
 const _avatar =
     'https://static.pincel.app/cdn-cgi/image/width=450,format=auto/https://static.pincel.app/media/3akuge0rlqsrf49mlnkh4o-zycyn.png';
 
+class Ingredient {
+  final String amount;
+  final String name;
+
+  const Ingredient(this.amount, this.name);
+}
+
+class RecipeComment {
+  final String authorName;
+  final String avatarUrl;
+  final String text;
+  final DateTime createdAt;
+
+  const RecipeComment({
+    required this.authorName,
+    required this.avatarUrl,
+    required this.text,
+    required this.createdAt,
+  });
+}
+
+const _placeholderIngredients = [
+  Ingredient('1 cup', 'Tomatoes'),
+  Ingredient('100g', 'Cheese'),
+  Ingredient('3', 'Cucumbers'),
+  Ingredient('500g', 'Pasta'),
+];
+
+const _placeholderSteps = [
+  'Prep and measure all of your ingredients before you start cooking.',
+  'Heat a large pan over medium heat and add a splash of olive oil.',
+  'Cook the main ingredients until golden, stirring occasionally.',
+  'Season to taste, plate up, and serve while hot.',
+];
+
 class Recipe {
   final String name;
   final String imageUrl;
@@ -12,6 +47,9 @@ class Recipe {
   final int comments;
   final int views;
   final DateTime createdAt;
+  final int servings;
+  final List<Ingredient> ingredients;
+  final List<String> steps;
 
   const Recipe({
     required this.name,
@@ -24,6 +62,9 @@ class Recipe {
     required this.comments,
     required this.views,
     required this.createdAt,
+    this.servings = 2,
+    this.ingredients = _placeholderIngredients,
+    this.steps = _placeholderSteps,
   });
 }
 
@@ -45,6 +86,49 @@ abstract class RecipeData {
   static List<Recipe> get allRecipes =>
       categories.expand((c) => c.recipes).toList();
 
+  static List<Recipe> byAuthor(String authorName) =>
+      allRecipes.where((r) => r.authorName == authorName).toList();
+
+  static final List<RecipeComment> placeholderComments = [
+    RecipeComment(
+      authorName: 'sweet_tooth',
+      avatarUrl: _avatar,
+      text: 'Made this last night and the whole family loved it!',
+      createdAt: DateTime(2026, 9, 28),
+    ),
+    RecipeComment(
+      authorName: 'veggie_chef',
+      avatarUrl: _avatar,
+      text: 'Swapped in mushrooms for a vegetarian version, worked great.',
+      createdAt: DateTime(2026, 9, 20),
+    ),
+    RecipeComment(
+      authorName: 'quick_eats',
+      avatarUrl: _avatar,
+      text: 'How long does this keep in the fridge?',
+      createdAt: DateTime(2026, 9, 14),
+    ),
+    RecipeComment(
+      authorName: 'baker_grace',
+      avatarUrl: _avatar,
+      text:
+          'The step-by-step photos would be a nice addition, but super clear anyway.',
+      createdAt: DateTime(2026, 8, 30),
+    ),
+    RecipeComment(
+      authorName: 'ramen_king',
+      avatarUrl: _avatar,
+      text: 'Added a bit of chili flakes. 10/10.',
+      createdAt: DateTime(2026, 8, 12),
+    ),
+    RecipeComment(
+      authorName: 'toast_queen',
+      avatarUrl: _avatar,
+      text: 'Saving this one for the weekend!',
+      createdAt: DateTime(2026, 7, 2),
+    ),
+  ];
+
   static final List<RecipeCategory> categories = [
     RecipeCategory(
       id: 'italian',
@@ -65,6 +149,21 @@ abstract class RecipeData {
           comments: 47,
           views: 12300,
           createdAt: DateTime(2026, 5, 10),
+          servings: 4,
+          ingredients: const [
+            Ingredient('400g', 'Spaghetti'),
+            Ingredient('150g', 'Guanciale'),
+            Ingredient('4', 'Egg yolks'),
+            Ingredient('80g', 'Pecorino Romano'),
+            Ingredient('1 tsp', 'Black pepper, freshly cracked'),
+          ],
+          steps: const [
+            'Bring a large pot of salted water to a boil and cook the spaghetti until al dente.',
+            'Meanwhile, cut the guanciale into strips and render it in a dry pan until crispy.',
+            'Whisk the egg yolks with the grated pecorino and plenty of black pepper.',
+            'Reserve a cup of pasta water, then toss the drained pasta with the guanciale off the heat.',
+            'Stir in the egg mixture, loosening with pasta water until glossy. Serve immediately.',
+          ],
         ),
         Recipe(
           name: 'Classic Beef Lasagna',

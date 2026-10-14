@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/data/recipe_data.dart';
-import 'package:recipe_app/pages/core_app/home/src/your_recipes_section.dart';
 import 'package:recipe_app/pages/core_app/profile/src/profile_page_header.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -11,6 +10,7 @@ import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
+import 'package:recipe_app/widgets/recipe_item.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
