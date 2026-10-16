@@ -83,10 +83,6 @@ class _RecipeItemState extends State<RecipeItem> {
           const GapV(8),
           Row(
             children: [
-              MyText(widget.recipe.rating.toString(), ms.pop12w400PinkMain),
-              const GapH(4),
-              MySvg(MyAssets.star),
-              const GapH.spacer(4),
               MySvg(MyAssets.clock),
               const GapH(4),
               MyText(

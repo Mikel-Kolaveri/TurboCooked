@@ -23,16 +23,7 @@ class CategoryRecipesListPage extends StatelessWidget {
       itemBuilder: (context, index) {
         final recipe = category.recipes[index];
         return RecipeCard(
-          username: recipe.authorName,
-          createdAt: recipe.createdAt,
-          avatarUrl: recipe.authorAvatarUrl,
-          imageUrl: recipe.imageUrl,
-          title: recipe.name,
-          rating: recipe.rating,
-          description: recipe.description,
-          cookTime: recipe.durationMinutes,
-          comments: recipe.comments,
-          views: recipe.views,
+          recipe: recipe,
           onTap: () => context.push(
             Routes.recipeDetails(origin: Routes.categoryRecipes),
             extra: recipe,

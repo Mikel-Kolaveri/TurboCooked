@@ -82,13 +82,11 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
     final recipe = Recipe(
       name: _titleCtrl.text.trim(),
       imageUrl: TestNetworkImages.pasta,
-      rating: 0,
       durationMinutes: int.parse(_cookTimeCtrl.text.trim()),
       authorName: user?.displayName ?? 'guest',
       authorAvatarUrl: '',
       description: _descriptionCtrl.text.trim(),
       comments: 0,
-      views: 0,
       createdAt: DateTime.now(),
       servings: int.parse(_servingsCtrl.text.trim()),
       ingredients: _ingredients

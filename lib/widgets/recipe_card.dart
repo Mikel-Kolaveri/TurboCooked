@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/extensions/datetime_extension.dart';
 import 'package:recipe_app/extensions/int_extension.dart';
@@ -12,31 +13,13 @@ import 'package:recipe_app/widgets/my_text.dart';
 class RecipeCard extends StatefulWidget {
   const RecipeCard({
     super.key,
-    required this.username,
-    required this.createdAt,
-    required this.avatarUrl,
-    required this.imageUrl,
-    required this.title,
-    required this.rating,
-    required this.description,
-    required this.cookTime,
-    required this.comments,
-    required this.views,
+    required this.recipe,
     this.isLiked = false,
     this.onTap,
     this.height = 380,
   });
 
-  final String username;
-  final DateTime createdAt;
-  final String avatarUrl;
-  final String imageUrl;
-  final String title;
-  final double rating;
-  final String description;
-  final int cookTime;
-  final int comments;
-  final int views;
+  final Recipe recipe;
   final bool isLiked;
   final VoidCallback? onTap;
   final double height;
@@ -48,17 +31,13 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
+    final recipe = widget.recipe;
     final black = Colors.black;
 
     Widget current = Stack(
       children: [
         Positioned.fill(
-          child: MyNetworkImage(widget.imageUrl, height: widget.height),
-        ),
-        Positioned(
-          top: 16,
-          left: 16,
-          child: _RatingBadge(rating: widget.rating),
+          child: MyNetworkImage(recipe.imageUrl, height: widget.height),
         ),
         Positioned(
           top: 16,
@@ -79,14 +58,13 @@ class _RecipeCardState extends State<RecipeCard> {
               ),
             ),
             child: _BottomContent(
-              authorAvatarUrl: widget.avatarUrl,
-              authorName: widget.username,
-              createdAt: widget.createdAt,
-              title: widget.title,
-              description: widget.description,
-              cookTime: widget.cookTime,
-              comments: widget.comments,
-              views: widget.views,
+              authorAvatarUrl: recipe.authorAvatarUrl,
+              authorName: recipe.authorName,
+              createdAt: recipe.createdAt,
+              title: recipe.name,
+              description: recipe.description,
+              cookTime: recipe.durationMinutes,
+              comments: recipe.comments,
             ),
           ),
         ),
@@ -108,32 +86,6 @@ class _RecipeCardState extends State<RecipeCard> {
       current = GestureDetector(onTap: widget.onTap, child: current);
     }
     return current;
-  }
-}
-
-class _RatingBadge extends StatelessWidget {
-  const _RatingBadge({required this.rating});
-
-  final double rating;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.black.opacityTo(0.60),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: mc.pinkMain.opacityTo(0.45), width: 0.8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.star_rounded, color: mc.pinkMain, size: 14),
-          const GapH(4),
-          MyText(rating.toStringAsFixed(1), ms.pop13w700TextPrime),
-        ],
-      ),
-    );
   }
 }
 
@@ -189,7 +141,6 @@ class _BottomContent extends StatelessWidget {
     required this.description,
     required this.cookTime,
     required this.comments,
-    required this.views,
   });
 
   final String authorAvatarUrl;
@@ -199,7 +150,6 @@ class _BottomContent extends StatelessWidget {
   final String description;
   final int cookTime;
   final int comments;
-  final int views;
 
   @override
   Widget build(BuildContext context) {
@@ -241,11 +191,6 @@ class _BottomContent extends StatelessWidget {
             _StatChip(
               icon: Icons.chat_bubble_outline_rounded,
               label: comments.toCompactCount(),
-            ),
-            const GapH(8),
-            _StatChip(
-              icon: Icons.remove_red_eye_outlined,
-              label: views.toCompactCount(),
             ),
           ],
         ),

@@ -56,16 +56,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
         final recipe = recipes[index - 1];
         return RecipeCard(
           key: ObjectKey(recipe),
-          username: recipe.authorName,
-          createdAt: recipe.createdAt,
-          avatarUrl: recipe.authorAvatarUrl,
-          imageUrl: recipe.imageUrl,
-          title: recipe.name,
-          rating: recipe.rating,
-          description: recipe.description,
-          cookTime: recipe.durationMinutes,
-          views: recipe.views,
-          comments: recipe.comments,
+          recipe: recipe,
           onTap: () => context.push(
             Routes.recipeDetails(origin: Routes.community),
             extra: recipe,

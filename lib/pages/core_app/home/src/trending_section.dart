@@ -17,7 +17,7 @@ class TrendingSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final trending = [...ref.watch(communityRecipesProvider)]
-      ..sort((a, b) => b.views.compareTo(a.views));
+      ..sort((a, b) => b.comments.compareTo(a.comments));
     final top = trending.take(5).toList();
 
     Widget current = ListView.separated(
@@ -31,16 +31,7 @@ class TrendingSection extends ConsumerWidget {
           width: 280,
           child: RecipeCard(
             key: ObjectKey(recipe),
-            username: recipe.authorName,
-            createdAt: recipe.createdAt,
-            avatarUrl: recipe.authorAvatarUrl,
-            imageUrl: recipe.imageUrl,
-            title: recipe.name,
-            rating: recipe.rating,
-            description: recipe.description,
-            cookTime: recipe.durationMinutes,
-            comments: recipe.comments,
-            views: recipe.views,
+            recipe: recipe,
             height: _cardHeight,
             onTap: () => context.push(
               Routes.recipeDetails(origin: Routes.home),

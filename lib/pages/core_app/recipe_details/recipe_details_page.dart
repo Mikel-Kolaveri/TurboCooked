@@ -111,10 +111,6 @@ class _MetaRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        MySvg(MyAssets.star),
-        const GapH(4),
-        MyText(recipe.rating.toStringAsFixed(1), ms.pop14w400PinkMain),
-        const GapH(16),
         MySvg(MyAssets.clock),
         const GapH(4),
         MyText(recipe.durationMinutes.toCookTime(), ms.pop14w400PinkMain),
