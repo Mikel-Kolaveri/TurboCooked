@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/data/recipe_data.dart';
+import 'package:recipe_app/models/recipe_comment.dart';
 import 'package:recipe_app/extensions/datetime_extension.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';

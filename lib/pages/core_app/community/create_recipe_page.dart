@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/user_notifier.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
-import 'package:recipe_app/data/recipe_data.dart';
+import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/providers/community_recipes_provider.dart';
 import 'package:recipe_app/theme/my_colors.dart';

@@ -1,26 +1,10 @@
 import 'package:recipe_app/models/profile.dart';
+import 'package:recipe_app/models/recipe.dart';
+import 'package:recipe_app/models/recipe_category.dart';
+import 'package:recipe_app/models/recipe_comment.dart';
 
 const _avatar =
     'https://static.pincel.app/cdn-cgi/image/width=450,format=auto/https://static.pincel.app/media/3akuge0rlqsrf49mlnkh4o-zycyn.png';
-
-class Ingredient {
-  final String amount;
-  final String name;
-
-  const Ingredient(this.amount, this.name);
-}
-
-class RecipeComment {
-  final Profile author;
-  final String text;
-  final DateTime createdAt;
-
-  const RecipeComment({
-    required this.author,
-    required this.text,
-    required this.createdAt,
-  });
-}
 
 const _chefMarco = Profile(
   id: 'u_chef_marco',
@@ -154,60 +138,6 @@ const _eggMaster = Profile(
   followerCount: 402,
   followingCount: 87,
 );
-
-const _placeholderIngredients = [
-  Ingredient('1 cup', 'Tomatoes'),
-  Ingredient('100g', 'Cheese'),
-  Ingredient('3', 'Cucumbers'),
-  Ingredient('500g', 'Pasta'),
-];
-
-const _placeholderSteps = [
-  'Prep and measure all of your ingredients before you start cooking.',
-  'Heat a large pan over medium heat and add a splash of olive oil.',
-  'Cook the main ingredients until golden, stirring occasionally.',
-  'Season to taste, plate up, and serve while hot.',
-];
-
-class Recipe {
-  final String name;
-  final String imageUrl;
-  final int durationMinutes;
-  final Profile author;
-  final String description;
-  final int comments;
-  final DateTime createdAt;
-  final int servings;
-  final List<Ingredient> ingredients;
-  final List<String> steps;
-
-  const Recipe({
-    required this.name,
-    required this.imageUrl,
-    required this.durationMinutes,
-    required this.author,
-    required this.description,
-    required this.comments,
-    required this.createdAt,
-    this.servings = 2,
-    this.ingredients = _placeholderIngredients,
-    this.steps = _placeholderSteps,
-  });
-}
-
-class RecipeCategory {
-  final String id;
-  final String name;
-  final String imageUrl;
-  final List<Recipe> recipes;
-
-  const RecipeCategory({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    required this.recipes,
-  });
-}
 
 abstract class RecipeData {
   static List<Recipe> get allRecipes =>
