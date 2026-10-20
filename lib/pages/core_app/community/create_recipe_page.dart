@@ -77,14 +77,14 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
 
   void _publish() {
     if (!_formKey.currentState!.validate()) return;
+    final author = ref.read(currentProfileProvider);
+    if (author == null) return;
 
-    final user = ref.read(currentUserProvider);
     final recipe = Recipe(
       name: _titleCtrl.text.trim(),
       imageUrl: TestNetworkImages.pasta,
       durationMinutes: int.parse(_cookTimeCtrl.text.trim()),
-      authorName: user?.displayName ?? 'guest',
-      authorAvatarUrl: '',
+      author: author,
       description: _descriptionCtrl.text.trim(),
       comments: 0,
       createdAt: DateTime.now(),

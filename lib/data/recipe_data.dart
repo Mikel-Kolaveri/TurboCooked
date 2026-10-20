@@ -1,3 +1,5 @@
+import 'package:recipe_app/models/profile.dart';
+
 const _avatar =
     'https://static.pincel.app/cdn-cgi/image/width=450,format=auto/https://static.pincel.app/media/3akuge0rlqsrf49mlnkh4o-zycyn.png';
 
@@ -9,18 +11,149 @@ class Ingredient {
 }
 
 class RecipeComment {
-  final String authorName;
-  final String avatarUrl;
+  final Profile author;
   final String text;
   final DateTime createdAt;
 
   const RecipeComment({
-    required this.authorName,
-    required this.avatarUrl,
+    required this.author,
     required this.text,
     required this.createdAt,
   });
 }
+
+const _chefMarco = Profile(
+  id: 'u_chef_marco',
+  username: 'chef_marco',
+  displayName: 'Marco Rossi',
+  avatarUrl: _avatar,
+  bio: 'Roman-born chef. Pasta is a love language.',
+  followerCount: 1840,
+  followingCount: 112,
+);
+const _nonnaItalia = Profile(
+  id: 'u_nonna_italia',
+  username: 'nonna_italia',
+  displayName: 'Giulia Bianchi',
+  avatarUrl: _avatar,
+  bio: 'Sunday lunches, family recipes, no shortcuts.',
+  followerCount: 2310,
+  followingCount: 48,
+);
+const _dolceVita = Profile(
+  id: 'u_dolce_vita',
+  username: 'dolce_vita',
+  displayName: 'Sofia Romano',
+  avatarUrl: _avatar,
+  bio: 'Italian desserts and strong espresso.',
+  followerCount: 3020,
+  followingCount: 201,
+);
+const _wokMaster = Profile(
+  id: 'u_wok_master',
+  username: 'wok_master',
+  displayName: 'Kevin Chen',
+  avatarUrl: _avatar,
+  bio: 'High heat, fast hands.',
+  followerCount: 960,
+  followingCount: 77,
+);
+const _padThaiPro = Profile(
+  id: 'u_pad_thai_pro',
+  username: 'pad_thai_pro',
+  displayName: 'Malee Srisuk',
+  avatarUrl: _avatar,
+  bio: 'Bangkok street food, made at home.',
+  followerCount: 1475,
+  followingCount: 133,
+);
+const _sushiLover = Profile(
+  id: 'u_sushi_lover',
+  username: 'sushi_lover',
+  displayName: 'Yuki Tanaka',
+  avatarUrl: _avatar,
+  followerCount: 688,
+  followingCount: 250,
+);
+const _ramenKing = Profile(
+  id: 'u_ramen_king',
+  username: 'ramen_king',
+  displayName: 'Kenji Sato',
+  avatarUrl: _avatar,
+  bio: 'Broth takes time. Worth it.',
+  followerCount: 2105,
+  followingCount: 90,
+);
+const _sweetTooth = Profile(
+  id: 'u_sweet_tooth',
+  username: 'sweet_tooth',
+  displayName: 'Emma Clarke',
+  avatarUrl: _avatar,
+  bio: 'Chocolate first, questions later.',
+  followerCount: 3410,
+  followingCount: 315,
+);
+const _bakerGrace = Profile(
+  id: 'u_baker_grace',
+  username: 'baker_grace',
+  displayName: 'Grace Miller',
+  avatarUrl: _avatar,
+  bio: 'Weekend baker, weekday tester.',
+  followerCount: 1290,
+  followingCount: 184,
+);
+const _brownieQueen = Profile(
+  id: 'u_brownie_queen',
+  username: 'brownie_queen',
+  displayName: 'Olivia Brown',
+  avatarUrl: _avatar,
+  followerCount: 845,
+  followingCount: 162,
+);
+const _patissierJp = Profile(
+  id: 'u_patissier_jp',
+  username: 'patissier_jp',
+  displayName: 'Jean-Pierre Laurent',
+  avatarUrl: _avatar,
+  bio: 'Classic French pastry, explained simply.',
+  followerCount: 2780,
+  followingCount: 64,
+);
+const _toastQueen = Profile(
+  id: 'u_toast_queen',
+  username: 'toast_queen',
+  displayName: 'Chloe Evans',
+  avatarUrl: _avatar,
+  bio: 'Breakfast is the best meal. Fight me.',
+  followerCount: 512,
+  followingCount: 298,
+);
+const _quickEats = Profile(
+  id: 'u_quick_eats',
+  username: 'quick_eats',
+  displayName: 'Sam Patel',
+  avatarUrl: _avatar,
+  bio: 'Dinner in 15 minutes or less.',
+  followerCount: 1033,
+  followingCount: 141,
+);
+const _veggieChef = Profile(
+  id: 'u_veggie_chef',
+  username: 'veggie_chef',
+  displayName: 'Priya Nair',
+  avatarUrl: _avatar,
+  bio: 'Plants on the plate, flavour first.',
+  followerCount: 1567,
+  followingCount: 220,
+);
+const _eggMaster = Profile(
+  id: 'u_egg_master',
+  username: 'egg_master',
+  displayName: 'Tom Becker',
+  avatarUrl: _avatar,
+  followerCount: 402,
+  followingCount: 87,
+);
 
 const _placeholderIngredients = [
   Ingredient('1 cup', 'Tomatoes'),
@@ -40,8 +173,7 @@ class Recipe {
   final String name;
   final String imageUrl;
   final int durationMinutes;
-  final String authorName;
-  final String authorAvatarUrl;
+  final Profile author;
   final String description;
   final int comments;
   final DateTime createdAt;
@@ -53,8 +185,7 @@ class Recipe {
     required this.name,
     required this.imageUrl,
     required this.durationMinutes,
-    required this.authorName,
-    required this.authorAvatarUrl,
+    required this.author,
     required this.description,
     required this.comments,
     required this.createdAt,
@@ -82,44 +213,35 @@ abstract class RecipeData {
   static List<Recipe> get allRecipes =>
       categories.expand((c) => c.recipes).toList();
 
-  static List<Recipe> byAuthor(String authorName) =>
-      allRecipes.where((r) => r.authorName == authorName).toList();
-
   static final List<RecipeComment> placeholderComments = [
     RecipeComment(
-      authorName: 'sweet_tooth',
-      avatarUrl: _avatar,
+      author: _sweetTooth,
       text: 'Made this last night and the whole family loved it!',
       createdAt: DateTime(2026, 9, 28),
     ),
     RecipeComment(
-      authorName: 'veggie_chef',
-      avatarUrl: _avatar,
+      author: _veggieChef,
       text: 'Swapped in mushrooms for a vegetarian version, worked great.',
       createdAt: DateTime(2026, 9, 20),
     ),
     RecipeComment(
-      authorName: 'quick_eats',
-      avatarUrl: _avatar,
+      author: _quickEats,
       text: 'How long does this keep in the fridge?',
       createdAt: DateTime(2026, 9, 14),
     ),
     RecipeComment(
-      authorName: 'baker_grace',
-      avatarUrl: _avatar,
+      author: _bakerGrace,
       text:
           'The step-by-step photos would be a nice addition, but super clear anyway.',
       createdAt: DateTime(2026, 8, 30),
     ),
     RecipeComment(
-      authorName: 'ramen_king',
-      avatarUrl: _avatar,
+      author: _ramenKing,
       text: 'Added a bit of chili flakes. 10/10.',
       createdAt: DateTime(2026, 8, 12),
     ),
     RecipeComment(
-      authorName: 'toast_queen',
-      avatarUrl: _avatar,
+      author: _toastQueen,
       text: 'Saving this one for the weekend!',
       createdAt: DateTime(2026, 7, 2),
     ),
@@ -137,8 +259,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=600&q=80',
           durationMinutes: 25,
-          authorName: 'chef_marco',
-          authorAvatarUrl: _avatar,
+          author: _chefMarco,
           description:
               'A Roman classic — egg-based sauce with crispy guanciale, pecorino, and a generous crack of black pepper.',
           comments: 47,
@@ -164,8 +285,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=600&q=80',
           durationMinutes: 90,
-          authorName: 'nonna_italia',
-          authorAvatarUrl: _avatar,
+          author: _nonnaItalia,
           description:
               'Layers of slow-cooked bolognese, creamy béchamel, and fresh pasta sheets topped with golden mozzarella.',
           comments: 62,
@@ -176,8 +296,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-373498_11-af7aea1.jpg?quality=90&webp=true&resize=440,400',
           durationMinutes: 40,
-          authorName: 'chef_marco',
-          authorAvatarUrl: _avatar,
+          author: _chefMarco,
           description:
               'Silky arborio rice stirred to perfection with white wine, warm stock, and a heavy hand of Parmigiano-Reggiano.',
           comments: 31,
@@ -188,8 +307,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&q=80',
           durationMinutes: 30,
-          authorName: 'dolce_vita',
-          authorAvatarUrl: _avatar,
+          author: _dolceVita,
           description:
               'Espresso-soaked ladyfingers layered with mascarpone cream and dusted with dark cocoa.',
           comments: 88,
@@ -208,8 +326,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&q=80',
           durationMinutes: 20,
-          authorName: 'wok_master',
-          authorAvatarUrl: _avatar,
+          author: _wokMaster,
           description:
               'Day-old jasmine rice tossed in a smoking-hot wok with chicken, egg, soy sauce, and spring onions.',
           comments: 29,
@@ -220,8 +337,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80',
           durationMinutes: 30,
-          authorName: 'pad_thai_pro',
-          authorAvatarUrl: _avatar,
+          author: _padThaiPro,
           description:
               'Stir-fried rice noodles with shrimp, tofu, tamarind sauce, peanuts, and a squeeze of fresh lime.',
           comments: 54,
@@ -232,8 +348,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80',
           durationMinutes: 25,
-          authorName: 'sushi_lover',
-          authorAvatarUrl: _avatar,
+          author: _sushiLover,
           description:
               'Pan-seared salmon glazed with a sweet-savory teriyaki sauce, served over steamed rice and sesame greens.',
           comments: 38,
@@ -244,8 +359,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80',
           durationMinutes: 20,
-          authorName: 'ramen_king',
-          authorAvatarUrl: _avatar,
+          author: _ramenKing,
           description:
               'Rich tonkotsu broth fired up with chili paste, soft-boiled egg, chashu pork, and nori.',
           comments: 71,
@@ -264,8 +378,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80',
           durationMinutes: 20,
-          authorName: 'sweet_tooth',
-          authorAvatarUrl: _avatar,
+          author: _sweetTooth,
           description:
               'Individual chocolate cakes with a warm, gooey molten center — best served with vanilla ice cream.',
           comments: 93,
@@ -276,8 +389,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&q=80',
           durationMinutes: 75,
-          authorName: 'baker_grace',
-          authorAvatarUrl: _avatar,
+          author: _bakerGrace,
           description:
               'Dense and creamy New York-style cheesecake on a buttery graham cracker crust with a hint of vanilla.',
           comments: 57,
@@ -288,8 +400,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1589749096594-cb1b82a81d0c?w=600&q=80',
           durationMinutes: 40,
-          authorName: 'brownie_queen',
-          authorAvatarUrl: _avatar,
+          author: _brownieQueen,
           description:
               'Ultra-fudgy, crinkle-top brownies loaded with dark chocolate and a sprinkle of flaky sea salt.',
           comments: 44,
@@ -300,8 +411,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=600&q=80',
           durationMinutes: 60,
-          authorName: 'patissier_jp',
-          authorAvatarUrl: _avatar,
+          author: _patissierJp,
           description:
               'Silky vanilla custard beneath a perfectly torched caramel crust — the ultimate French indulgence.',
           comments: 66,
@@ -320,8 +430,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1541519227354-08fa5d50c820?w=600&q=80',
           durationMinutes: 10,
-          authorName: 'toast_queen',
-          authorAvatarUrl: _avatar,
+          author: _toastQueen,
           description:
               'Smashed ripe avocado on toasted sourdough with chili flakes, lemon zest, and a poached egg on top.',
           comments: 22,
@@ -332,8 +441,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1618040996337-56904b7850b9?w=600&q=80',
           durationMinutes: 15,
-          authorName: 'quick_eats',
-          authorAvatarUrl: _avatar,
+          author: _quickEats,
           description:
               'Golden crispy tortilla stuffed with melted cheese, jalapeños, and a side of salsa and sour cream.',
           comments: 18,
@@ -344,8 +452,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.immediate.co.uk/production/volatile/sites/30/2022/03/Quick-dinner-recipes-c7ca11c.jpg?quality=90&webp=true&resize=1000,1000',
           durationMinutes: 20,
-          authorName: 'veggie_chef',
-          authorAvatarUrl: _avatar,
+          author: _veggieChef,
           description:
               'Colorful mix of bell peppers, broccoli, and snap peas tossed in a garlic-ginger soy glaze.',
           comments: 26,
@@ -356,8 +463,7 @@ abstract class RecipeData {
           imageUrl:
               'https://images.unsplash.com/photo-1510693206972-df098062cb71?w=600&q=80',
           durationMinutes: 10,
-          authorName: 'egg_master',
-          authorAvatarUrl: _avatar,
+          author: _eggMaster,
           description:
               'Perfectly folded French omelette with a creamy interior, filled with herbs, cheese, and sautéed mushrooms.',
           comments: 15,

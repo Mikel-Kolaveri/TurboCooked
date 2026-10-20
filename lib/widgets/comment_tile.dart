@@ -16,7 +16,11 @@ class CommentTile extends StatelessWidget {
     Widget header = Row(
       children: [
         Flexible(
-          child: MyText(comment.authorName, ms.pop13w600PinkMain, lines: 1),
+          child: MyText(
+            comment.author.displayName,
+            ms.pop13w600PinkMain,
+            lines: 1,
+          ),
         ),
         const GapH(8),
         MyText(comment.createdAt.timeAgo(), ms.pop12w400PinkLight),
@@ -36,7 +40,7 @@ class CommentTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MyNetworkAvatar(
-          comment.avatarUrl,
+          comment.author.avatarUrl,
           radius: 18,
           borderColor: mc.pinkMain,
         ),

@@ -48,8 +48,7 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
         _MetaRow(recipe: recipe),
         const GapV(24),
         RecipeDetailsCreatorProfile(
-          authorName: recipe.authorName,
-          authorAvatarUrl: recipe.authorAvatarUrl,
+          author: recipe.author,
           onTap: () =>
               context.push(Routes.author(origin: origin), extra: recipe),
         ),

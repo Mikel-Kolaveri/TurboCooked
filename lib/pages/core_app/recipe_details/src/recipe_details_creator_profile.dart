@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
+import 'package:recipe_app/models/profile.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
@@ -11,40 +12,38 @@ import 'package:recipe_app/widgets/my_text.dart';
 class RecipeDetailsCreatorProfile extends ConsumerWidget {
   const RecipeDetailsCreatorProfile({
     super.key,
-    required this.authorName,
-    required this.authorAvatarUrl,
+    required this.author,
     this.onTap,
   });
-  final String authorName;
-  final String authorAvatarUrl;
+  final Profile author;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget author = Row(
+    Widget authorInfo = Row(
       children: [
-        MyNetworkAvatar(authorAvatarUrl, radius: 32),
+        MyNetworkAvatar(author.avatarUrl, radius: 32),
         const GapH(16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyText('@$authorName', (ms.pop14w400PinkMain)),
-              MyText(authorName, (ms.pop16w400TextPrime), lines: 3),
+              MyText('@${author.username}', (ms.pop14w400PinkMain)),
+              MyText(author.displayName, (ms.pop16w400TextPrime), lines: 3),
             ],
           ),
         ),
       ],
     );
-    author = GestureDetector(
+    authorInfo = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: author,
+      child: authorInfo,
     );
 
     Widget current = Row(
       children: [
-        Expanded(child: author),
+        Expanded(child: authorInfo),
         const GapH(8),
         Expanded(child: _Button()),
       ],

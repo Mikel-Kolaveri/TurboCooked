@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
-class SocialInfoBar extends ConsumerWidget {
-  const SocialInfoBar({super.key});
+class SocialInfoBar extends StatelessWidget {
+  const SocialInfoBar({
+    super.key,
+    required this.recipeCount,
+    required this.followingCount,
+    required this.followerCount,
+  });
+  final int recipeCount;
+  final int followingCount;
+  final int followerCount;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     Widget infoHeader(String text, int value) {
       return Expanded(
         child: Column(
@@ -31,11 +38,11 @@ class SocialInfoBar extends ConsumerWidget {
     Widget current = IntrinsicHeight(
       child: Row(
         children: [
-          infoHeader('Recipes', 20),
+          infoHeader('Recipes', recipeCount),
           divider,
-          infoHeader('Following', 180),
+          infoHeader('Following', followingCount),
           divider,
-          infoHeader('Followers', 200),
+          infoHeader('Followers', followerCount),
         ],
       ),
     );

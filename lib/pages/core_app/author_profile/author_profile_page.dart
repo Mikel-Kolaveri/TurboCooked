@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
+import 'package:recipe_app/providers/community_recipes_provider.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
@@ -20,31 +21,28 @@ class AuthorProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authorName = recipe.authorName;
+    final author = recipe.author;
     final origin = Routes.recipeDetailsOrigin(
       GoRouterState.of(context).uri.path,
     );
-    final recipes = RecipeData.byAuthor(authorName);
+    final recipes = ref
+        .watch(communityRecipesProvider)
+        .where((r) => r.author.id == author.id)
+        .toList();
 
     Widget header = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MyNetworkAvatar(
-          recipe.authorAvatarUrl,
-          radius: 56,
-          borderColor: mc.pinkMain,
-        ),
+        MyNetworkAvatar(author.avatarUrl, radius: 56, borderColor: mc.pinkMain),
         const GapH(16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyText(authorName, ms.pop15w500PinkMain),
-              MyText('@$authorName', ms.pop12w400PinkMain),
-              MyText(
-                'Home cook sharing favourite recipes with the community.',
-                ms.pop12w400TextPrime,
-              ),
+              MyText(author.displayName, ms.pop15w500PinkMain),
+              MyText('@${author.username}', ms.pop12w400PinkMain),
+              if (author.bio.isNotEmpty)
+                MyText(author.bio, ms.pop12w400TextPrime),
             ],
           ),
         ),
@@ -59,7 +57,11 @@ class AuthorProfilePage extends ConsumerWidget {
         const GapV(16),
         header,
         const GapV(16),
-        SocialInfoBar(),
+        SocialInfoBar(
+          recipeCount: recipes.length,
+          followingCount: author.followingCount,
+          followerCount: author.followerCount,
+        ),
         const GapV(24),
         MyText('Recipes', ms.pop20w600PinkMain),
         const GapV(16),

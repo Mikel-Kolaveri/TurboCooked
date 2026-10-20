@@ -58,8 +58,8 @@ class _RecipeCardState extends State<RecipeCard> {
               ),
             ),
             child: _BottomContent(
-              authorAvatarUrl: recipe.authorAvatarUrl,
-              authorName: recipe.authorName,
+              authorAvatarUrl: recipe.author.avatarUrl,
+              authorName: recipe.author.displayName,
               createdAt: recipe.createdAt,
               title: recipe.name,
               description: recipe.description,

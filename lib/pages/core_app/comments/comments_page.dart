@@ -80,11 +80,11 @@ class _InputBarState extends ConsumerState<_InputBar> {
 
   void _send() {
     final text = _controller.text.trim();
-    if (text.isEmpty) return;
-    final user = ref.read(currentUserProvider);
+    final author = ref.read(currentProfileProvider);
+    if (text.isEmpty || author == null) return;
     ref
         .read(commentsProvider(widget.recipe).notifier)
-        .add(text: text, authorName: user?.displayName ?? 'you', avatarUrl: '');
+        .add(text: text, author: author);
     _controller.clear();
     FocusScope.of(context).unfocus();
   }

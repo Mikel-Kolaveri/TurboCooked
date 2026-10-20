@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_app/auth/user_notifier.dart';
+import 'package:recipe_app/providers/community_recipes_provider.dart';
 import 'package:recipe_app/router/router.dart';
-import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/pages/core_app/profile/src/profile_page_header.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -22,6 +23,12 @@ class ProfilePage extends ConsumerStatefulWidget {
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final profile = ref.watch(currentProfileProvider);
+    final myRecipes = ref
+        .watch(communityRecipesProvider)
+        .where((r) => r.author.id == profile?.id)
+        .toList();
+
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       children: [
@@ -50,19 +57,24 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ],
         ),
         const GapV(16),
-        SocialInfoBar(),
-        const GapV(16),
-        // TODO: consider replacing with GridView
-        Wrap(
-          runSpacing: 24,
-          spacing: 16,
-          direction: Axis.horizontal,
-          children: RecipeData.categories
-              .expand((c) => c.recipes)
-              .take(5)
-              .map((r) => RecipeItem.profile(recipe: r))
-              .toList(),
+        SocialInfoBar(
+          recipeCount: myRecipes.length,
+          followingCount: profile?.followingCount ?? 0,
+          followerCount: profile?.followerCount ?? 0,
         ),
+        const GapV(16),
+        if (myRecipes.isEmpty)
+          MyText.center('No recipes yet', ms.pop13w400TextPrime)
+        else
+          // TODO: consider replacing with GridView
+          Wrap(
+            runSpacing: 24,
+            spacing: 16,
+            direction: Axis.horizontal,
+            children: myRecipes
+                .map((r) => RecipeItem.profile(recipe: r))
+                .toList(),
+          ),
         GapBottom.home(),
       ],
     );
