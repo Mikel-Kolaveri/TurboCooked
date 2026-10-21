@@ -5,6 +5,7 @@ import 'package:recipe_app/auth/user_notifier.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
 import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/models/recipe.dart';
+import 'package:recipe_app/models/recipe_category.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/providers/community_recipes_provider.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -30,6 +31,7 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
   final _descriptionCtrl = TextEditingController();
   final _cookTimeCtrl = TextEditingController();
   final _servingsCtrl = TextEditingController(text: '2');
+  String? _categoryId;
   final List<_IngredientControllers> _ingredients = [_IngredientControllers()];
   final List<TextEditingController> _steps = [TextEditingController()];
 
@@ -85,8 +87,7 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
     final recipe = Recipe(
       // TODO: temporary local id; the recipe repository should assign ids.
       id: 'local_${now.microsecondsSinceEpoch}',
-      // TODO: placeholder until Create gets a category picker.
-      categoryId: RecipeData.categories.first.id,
+      categoryId: _categoryId!,
       name: _titleCtrl.text.trim(),
       imageUrl: TestNetworkImages.pasta,
       durationMinutes: int.parse(_cookTimeCtrl.text.trim()),
@@ -138,6 +139,11 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
           controller: _descriptionCtrl,
           validator: _required,
           maxLines: 4,
+        ),
+        const GapV(16),
+        _CategoryPicker(
+          categories: RecipeData.categories,
+          onChanged: (id) => _categoryId = id,
         ),
         const GapV(16),
         Row(
@@ -241,6 +247,87 @@ class _CoverPhotoPlaceholder extends StatelessWidget {
       ).showSnackBar(const SnackBar(content: Text('Photo upload coming soon'))),
       child: current,
     );
+    return current;
+  }
+}
+
+class _CategoryPicker extends StatelessWidget {
+  const _CategoryPicker({required this.categories, required this.onChanged});
+  final List<RecipeCategory> categories;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return FormField<String>(
+      validator: (value) => value == null ? 'Pick a category' : null,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      builder: (field) {
+        final theme = Theme.of(context);
+
+        Widget current = Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final category in categories)
+              _CategoryChip(
+                label: category.name,
+                isSelected: field.value == category.id,
+                onTap: () {
+                  field.didChange(category.id);
+                  onChanged(category.id);
+                },
+              ),
+          ],
+        );
+        current = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyText('Category', ms.pop15w600TextPrime),
+            const GapV(8),
+            current,
+            if (field.hasError) ...[
+              const GapV(8),
+              // TextFormField's own error style, so this matches the fields above.
+              MyText(
+                field.errorText!,
+                theme.textTheme.bodySmall!.copyWith(
+                  color: theme.colorScheme.error,
+                ),
+              ),
+            ],
+          ],
+        );
+        return current;
+      },
+    );
+  }
+}
+
+class _CategoryChip extends StatelessWidget {
+  const _CategoryChip({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget current = MyText(
+      label,
+      isSelected ? ms.pop14w400PinkCream : ms.pop14w400PinkMain,
+    );
+    current = SymPadding(h: 16, v: 8, child: current);
+    current = DecoratedBox(
+      decoration: BoxDecoration(
+        color: isSelected ? mc.pinkMain : mc.pinkCream,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: current,
+    );
+    current = GestureDetector(onTap: onTap, child: current);
     return current;
   }
 }
