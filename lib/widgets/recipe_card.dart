@@ -64,7 +64,7 @@ class _RecipeCardState extends State<RecipeCard> {
               title: recipe.name,
               description: recipe.description,
               cookTime: recipe.durationMinutes,
-              comments: recipe.comments,
+              comments: recipe.commentCount,
             ),
           ),
         ),

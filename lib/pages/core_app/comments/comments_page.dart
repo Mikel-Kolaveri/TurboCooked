@@ -23,7 +23,7 @@ class CommentsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final comments = ref.watch(commentsProvider(recipe));
+    final comments = ref.watch(commentsProvider(recipe.id));
     final isGuest = ref.watch(authStateNotifierProvider).isGuest;
 
     Widget header = Row(
@@ -83,7 +83,7 @@ class _InputBarState extends ConsumerState<_InputBar> {
     final author = ref.read(currentProfileProvider);
     if (text.isEmpty || author == null) return;
     ref
-        .read(commentsProvider(widget.recipe).notifier)
+        .read(commentsProvider(widget.recipe.id).notifier)
         .add(text: text, author: author);
     _controller.clear();
     FocusScope.of(context).unfocus();

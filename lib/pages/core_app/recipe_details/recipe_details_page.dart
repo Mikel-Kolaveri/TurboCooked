@@ -38,7 +38,7 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
     final origin = Routes.recipeDetailsOrigin(
       GoRouterState.of(context).uri.path,
     );
-    final comments = ref.watch(commentsProvider(recipe));
+    final comments = ref.watch(commentsProvider(recipe.id));
 
     Widget current = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

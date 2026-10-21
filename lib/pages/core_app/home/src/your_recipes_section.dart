@@ -12,10 +12,7 @@ class YourRecipes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sampleRecipes = RecipeData.categories
-        .expand((c) => c.recipes)
-        .take(2)
-        .toList();
+    final sampleRecipes = RecipeData.recipes.take(2).toList();
     final testChildren = [
       RecipeItem.home(recipe: sampleRecipes[0], isFavorite: true),
       RecipeItem.home(recipe: sampleRecipes[1]),

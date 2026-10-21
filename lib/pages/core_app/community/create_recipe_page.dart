@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/user_notifier.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
+import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/providers/community_recipes_provider.dart';
@@ -80,14 +81,19 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
     final author = ref.read(currentProfileProvider);
     if (author == null) return;
 
+    final now = DateTime.now();
     final recipe = Recipe(
+      // TODO: temporary local id; the recipe repository should assign ids.
+      id: 'local_${now.microsecondsSinceEpoch}',
+      // TODO: placeholder until Create gets a category picker.
+      categoryId: RecipeData.categories.first.id,
       name: _titleCtrl.text.trim(),
       imageUrl: TestNetworkImages.pasta,
       durationMinutes: int.parse(_cookTimeCtrl.text.trim()),
       author: author,
       description: _descriptionCtrl.text.trim(),
-      comments: 0,
-      createdAt: DateTime.now(),
+      commentCount: 0,
+      createdAt: now,
       servings: int.parse(_servingsCtrl.text.trim()),
       ingredients: _ingredients
           .map((i) => Ingredient(i.amount.text.trim(), i.name.text.trim()))

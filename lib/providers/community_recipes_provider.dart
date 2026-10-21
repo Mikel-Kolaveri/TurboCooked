@@ -9,7 +9,7 @@ final communityRecipesProvider =
 
 class CommunityRecipesNotifier extends Notifier<List<Recipe>> {
   @override
-  List<Recipe> build() => RecipeData.allRecipes;
+  List<Recipe> build() => RecipeData.recipes;
 
   void add(Recipe recipe) => state = [recipe, ...state];
 }
