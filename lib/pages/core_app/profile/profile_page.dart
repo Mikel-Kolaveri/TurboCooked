@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/user_notifier.dart';
-import 'package:recipe_app/providers/community_recipes_provider.dart';
+import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/pages/core_app/profile/src/profile_page_header.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/recipe_item.dart';
@@ -24,10 +25,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final profile = ref.watch(currentProfileProvider);
-    final myRecipes = ref
-        .watch(communityRecipesProvider)
-        .where((r) => r.author.id == profile?.id)
-        .toList();
+    final recipeCount = profile == null
+        ? 0
+        : ref.watch(authorRecipesProvider(profile.id)).valueOrNull?.length ?? 0;
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -58,24 +58,51 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         ),
         const GapV(16),
         SocialInfoBar(
-          recipeCount: myRecipes.length,
+          recipeCount: recipeCount,
           followingCount: profile?.followingCount ?? 0,
           followerCount: profile?.followerCount ?? 0,
         ),
         const GapV(16),
-        if (myRecipes.isEmpty)
-          MyText.center('No recipes yet', ms.pop13w400TextPrime)
+        if (profile == null)
+          const _GuestPrompt()
         else
-          // TODO: consider replacing with GridView
-          Wrap(
-            runSpacing: 24,
-            spacing: 16,
-            direction: Axis.horizontal,
-            children: myRecipes
-                .map((r) => RecipeItem.profile(recipe: r))
-                .toList(),
+          MyAsyncView(
+            value: ref.watch(authorRecipesProvider(profile.id)),
+            isEmpty: (recipes) => recipes.isEmpty,
+            emptyMessage: 'No recipes yet',
+            onRetry: () => ref.invalidate(authorRecipesProvider(profile.id)),
+            // TODO: consider replacing with GridView
+            builder: (recipes) => Wrap(
+              runSpacing: 24,
+              spacing: 16,
+              direction: Axis.horizontal,
+              children: recipes
+                  .map(
+                    (r) => RecipeItem.profile(key: ValueKey(r.id), recipe: r),
+                  )
+                  .toList(),
+            ),
           ),
         GapBottom.home(),
+      ],
+    );
+  }
+}
+
+class _GuestPrompt extends StatelessWidget {
+  const _GuestPrompt();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        MyText('Want to share your recipes? ', ms.pop13w400TextPrime),
+        MyText(
+          'Sign in',
+          ms.pop13w600PinkMain,
+          onTap: () => context.go(Routes.login),
+        ),
       ],
     );
   }

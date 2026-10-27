@@ -1,27 +1,33 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/models/recipe_comment.dart';
-import 'package:recipe_app/models/profile.dart';
+import 'package:recipe_app/repositories/comment_repository.dart';
+import 'package:recipe_app/repositories/recipe_repository.dart';
 
 final commentsProvider =
-    NotifierProvider.family<CommentsNotifier, List<RecipeComment>, String>(
+    AsyncNotifierProvider.family<CommentsNotifier, List<RecipeComment>, String>(
       CommentsNotifier.new,
     );
 
-class CommentsNotifier extends FamilyNotifier<List<RecipeComment>, String> {
+class CommentsNotifier
+    extends FamilyAsyncNotifier<List<RecipeComment>, String> {
   @override
-  List<RecipeComment> build(String arg) => RecipeData.commentsFor(arg);
+  Future<List<RecipeComment>> build(String arg) =>
+      ref.watch(commentRepositoryProvider).fetchComments(arg);
 
-  void add({required String text, required Profile author}) {
-    final now = DateTime.now();
-    final comment = RecipeComment(
-      // TODO: temporary local id; the comments repository should assign ids.
-      id: 'local_${now.microsecondsSinceEpoch}',
-      recipeId: arg,
-      author: author,
-      text: text,
-      createdAt: now,
-    );
-    state = [comment, ...state];
+  Future<void> add(String text) async {
+    final comment = await ref
+        .read(commentRepositoryProvider)
+        .addComment(arg, text);
+
+    final loaded = state.valueOrNull;
+    // No list on screen yet (still loading or failed), so fetch it instead.
+    if (loaded == null) {
+      ref.invalidateSelf();
+    } else {
+      state = AsyncData([comment, ...loaded]);
+    }
+    // Recipe lists show comment counts. Rebuilding the repository refetches
+    // every provider that watches it.
+    ref.invalidate(recipeRepositoryProvider);
   }
 }

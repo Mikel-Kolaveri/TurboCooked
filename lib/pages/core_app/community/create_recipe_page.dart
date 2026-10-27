@@ -3,16 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/user_notifier.dart';
 import 'package:recipe_app/constants/test_network_images.dart';
-import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/models/recipe_category.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/providers/community_recipes_provider.dart';
+import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/button.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_box.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
@@ -34,6 +35,7 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
   String? _categoryId;
   final List<_IngredientControllers> _ingredients = [_IngredientControllers()];
   final List<TextEditingController> _steps = [TextEditingController()];
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -78,34 +80,41 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
     return (parsed == null || parsed <= 0) ? 'Enter a number' : null;
   }
 
-  void _publish() {
+  Future<void> _publish() async {
     if (!_formKey.currentState!.validate()) return;
-    final author = ref.read(currentProfileProvider);
-    if (author == null) return;
+    if (ref.read(currentProfileProvider) == null) return;
 
-    final now = DateTime.now();
-    final recipe = Recipe(
-      // TODO: temporary local id; the recipe repository should assign ids.
-      id: 'local_${now.microsecondsSinceEpoch}',
+    final draft = RecipeDraft(
       categoryId: _categoryId!,
       name: _titleCtrl.text.trim(),
       imageUrl: TestNetworkImages.pasta,
       durationMinutes: int.parse(_cookTimeCtrl.text.trim()),
-      author: author,
       description: _descriptionCtrl.text.trim(),
-      commentCount: 0,
-      createdAt: now,
       servings: int.parse(_servingsCtrl.text.trim()),
       ingredients: _ingredients
           .map((i) => Ingredient(i.amount.text.trim(), i.name.text.trim()))
           .toList(),
       steps: _steps.map((s) => s.text.trim()).toList(),
     );
-    ref.read(communityRecipesProvider.notifier).add(recipe);
 
+    setState(() => _isLoading = true);
     final messenger = ScaffoldMessenger.of(context);
-    context.pop();
-    messenger.showSnackBar(const SnackBar(content: Text('Recipe published!')));
+    try {
+      await ref.read(communityRecipesProvider.notifier).publish(draft);
+      if (!mounted) return;
+      context.pop();
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Recipe published!')),
+      );
+    } catch (_) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text("Couldn't publish your recipe. Try again."),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -142,7 +151,8 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
         ),
         const GapV(16),
         _CategoryPicker(
-          categories: RecipeData.categories,
+          categories: ref.watch(categoriesProvider),
+          onRetry: () => ref.invalidate(categoriesProvider),
           onChanged: (id) => _categoryId = id,
         ),
         const GapV(16),
@@ -196,7 +206,10 @@ class _CreateRecipePageState extends ConsumerState<CreateRecipePage> {
           const GapV(12),
         ],
         const GapV(24),
-        Button.pinkMainTH20(text: 'Publish', onTap: _publish),
+        if (_isLoading)
+          Center(child: CircularProgressIndicator(color: mc.pinkMain))
+        else
+          Button.pinkMainTH20(text: 'Publish', onTap: _publish),
         const GapBottom(),
       ],
     );
@@ -252,8 +265,13 @@ class _CoverPhotoPlaceholder extends StatelessWidget {
 }
 
 class _CategoryPicker extends StatelessWidget {
-  const _CategoryPicker({required this.categories, required this.onChanged});
-  final List<RecipeCategory> categories;
+  const _CategoryPicker({
+    required this.categories,
+    required this.onRetry,
+    required this.onChanged,
+  });
+  final AsyncValue<List<RecipeCategory>> categories;
+  final VoidCallback onRetry;
   final ValueChanged<String> onChanged;
 
   @override
@@ -264,20 +282,24 @@ class _CategoryPicker extends StatelessWidget {
       builder: (field) {
         final theme = Theme.of(context);
 
-        Widget current = Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final category in categories)
-              _CategoryChip(
-                label: category.name,
-                isSelected: field.value == category.id,
-                onTap: () {
-                  field.didChange(category.id);
-                  onChanged(category.id);
-                },
-              ),
-          ],
+        Widget current = MyAsyncView(
+          value: categories,
+          onRetry: onRetry,
+          builder: (list) => Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final category in list)
+                _CategoryChip(
+                  label: category.name,
+                  isSelected: field.value == category.id,
+                  onTap: () {
+                    field.didChange(category.id);
+                    onChanged(category.id);
+                  },
+                ),
+            ],
+          ),
         );
         current = Column(
           crossAxisAlignment: CrossAxisAlignment.start,

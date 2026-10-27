@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/models/recipe_category.dart';
+import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_network_avatar.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
-class HomeCategoriesStrip extends StatelessWidget {
+class HomeCategoriesStrip extends ConsumerWidget {
   const HomeCategoriesStrip({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final categories = RecipeData.categories;
-
-    Widget current = ListView.separated(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      itemCount: categories.length,
-      separatorBuilder: (_, __) => const GapH(16),
-      itemBuilder: (context, index) =>
-          _CategoryChip(category: categories[index]),
+  Widget build(BuildContext context, WidgetRef ref) {
+    Widget current = MyAsyncView(
+      value: ref.watch(categoriesProvider),
+      onRetry: () => ref.invalidate(categoriesProvider),
+      builder: (categories) => ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        itemCount: categories.length,
+        separatorBuilder: (_, __) => const GapH(16),
+        itemBuilder: (context, index) =>
+            _CategoryChip(category: categories[index]),
+      ),
     );
     current = SizedBox(height: 96, child: current);
 

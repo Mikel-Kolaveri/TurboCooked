@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/auth_state_notifier.dart';
-import 'package:recipe_app/auth/user_notifier.dart';
 import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/providers/comments_provider.dart';
@@ -12,6 +11,7 @@ import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/comment_tile.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_box.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
@@ -23,7 +23,6 @@ class CommentsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final comments = ref.watch(commentsProvider(recipe.id));
     final isGuest = ref.watch(authStateNotifierProvider).isGuest;
 
     Widget header = Row(
@@ -36,20 +35,18 @@ class CommentsPage extends ConsumerWidget {
     header = Column(children: [const GapTop(size: 24), header, const GapV(16)]);
     header = HPadding(16, header);
 
-    Widget list = comments.isEmpty
-        ? Center(
-            child: MyText(
-              'No comments yet. Be the first!',
-              ms.pop13w400TextPrime,
-            ),
-          )
-        : ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: comments.length,
-            separatorBuilder: (_, __) => const GapV(20),
-            itemBuilder: (context, index) =>
-                CommentTile(comment: comments[index]),
-          );
+    Widget list = MyAsyncView(
+      value: ref.watch(commentsProvider(recipe.id)),
+      isEmpty: (comments) => comments.isEmpty,
+      emptyMessage: 'No comments yet. Be the first!',
+      onRetry: () => ref.invalidate(commentsProvider(recipe.id)),
+      builder: (comments) => ListView.separated(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        itemCount: comments.length,
+        separatorBuilder: (_, __) => const GapV(20),
+        itemBuilder: (context, index) => CommentTile(comment: comments[index]),
+      ),
+    );
 
     return Column(
       children: [
@@ -71,6 +68,7 @@ class _InputBar extends ConsumerStatefulWidget {
 
 class _InputBarState extends ConsumerState<_InputBar> {
   final _controller = TextEditingController();
+  bool _isSending = false;
 
   @override
   void dispose() {
@@ -78,15 +76,25 @@ class _InputBarState extends ConsumerState<_InputBar> {
     super.dispose();
   }
 
-  void _send() {
+  Future<void> _send() async {
     final text = _controller.text.trim();
-    final author = ref.read(currentProfileProvider);
-    if (text.isEmpty || author == null) return;
-    ref
-        .read(commentsProvider(widget.recipe.id).notifier)
-        .add(text: text, author: author);
-    _controller.clear();
-    FocusScope.of(context).unfocus();
+    if (text.isEmpty || _isSending) return;
+    setState(() => _isSending = true);
+    try {
+      await ref.read(commentsProvider(widget.recipe.id).notifier).add(text);
+      _controller.clear();
+      if (mounted) FocusScope.of(context).unfocus();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Couldn't post your comment. Try again."),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSending = false);
+    }
   }
 
   @override
@@ -94,7 +102,12 @@ class _InputBarState extends ConsumerState<_InputBar> {
     Widget send = MyCircleBox(
       color: mc.pinkMain,
       padding: 12,
-      child: Icon(Icons.send_rounded, color: mc.white, size: 20),
+      child: _isSending
+          ? SizedBox.square(
+              dimension: 20,
+              child: CircularProgressIndicator(color: mc.white, strokeWidth: 2),
+            )
+          : Icon(Icons.send_rounded, color: mc.white, size: 20),
     );
     send = GestureDetector(onTap: _send, child: send);
 
