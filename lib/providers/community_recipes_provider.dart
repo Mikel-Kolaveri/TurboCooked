@@ -1,15 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe_app/data/recipe_data.dart';
 import 'package:recipe_app/models/recipe.dart';
+import 'package:recipe_app/repositories/recipe_repository.dart';
 
 final communityRecipesProvider =
-    NotifierProvider<CommunityRecipesNotifier, List<Recipe>>(
+    AsyncNotifierProvider<CommunityRecipesNotifier, List<Recipe>>(
       CommunityRecipesNotifier.new,
     );
 
-class CommunityRecipesNotifier extends Notifier<List<Recipe>> {
+class CommunityRecipesNotifier extends AsyncNotifier<List<Recipe>> {
   @override
-  List<Recipe> build() => RecipeData.recipes;
+  Future<List<Recipe>> build() =>
+      ref.watch(recipeRepositoryProvider).fetchCommunity();
 
-  void add(Recipe recipe) => state = [recipe, ...state];
+  Future<void> publish(RecipeDraft draft) async {
+    await ref.read(recipeRepositoryProvider).createRecipe(draft);
+    // Refetches every provider that watches the repository, this one included.
+    ref.invalidate(recipeRepositoryProvider);
+  }
 }

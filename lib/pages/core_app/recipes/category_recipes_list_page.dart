@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/models/recipe_category.dart';
-import 'package:recipe_app/providers/community_recipes_provider.dart';
+import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/recipe_card.dart';
@@ -18,26 +19,27 @@ class CategoryRecipesListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recipes = ref
-        .watch(communityRecipesProvider)
-        .where((r) => r.categoryId == category.id)
-        .toList();
-
-    Widget list = ListView.separated(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
-      itemCount: recipes.length,
-      separatorBuilder: (_, __) => const GapV(16),
-      itemBuilder: (context, index) {
-        final recipe = recipes[index];
-        return RecipeCard(
-          key: ValueKey(recipe.id),
-          recipe: recipe,
-          onTap: () => context.push(
-            Routes.recipeDetails(origin: Routes.categoryRecipes),
-            extra: recipe,
-          ),
-        );
-      },
+    Widget list = MyAsyncView(
+      value: ref.watch(categoryRecipesProvider(category.id)),
+      isEmpty: (recipes) => recipes.isEmpty,
+      emptyMessage: 'No recipes in this category yet',
+      onRetry: () => ref.invalidate(categoryRecipesProvider(category.id)),
+      builder: (recipes) => ListView.separated(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+        itemCount: recipes.length,
+        separatorBuilder: (_, __) => const GapV(16),
+        itemBuilder: (context, index) {
+          final recipe = recipes[index];
+          return RecipeCard(
+            key: ValueKey(recipe.id),
+            recipe: recipe,
+            onTap: () => context.push(
+              Routes.recipeDetails(origin: Routes.categoryRecipes),
+              extra: recipe,
+            ),
+          );
+        },
+      ),
     );
     Widget header = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

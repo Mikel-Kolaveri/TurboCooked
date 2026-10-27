@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe_app/constants/my_assets.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/models/recipe.dart';
-import 'package:recipe_app/models/recipe_comment.dart';
 import 'package:recipe_app/extensions/int_extension.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_step_item.dart';
 import 'package:recipe_app/providers/comments_provider.dart';
@@ -17,6 +16,7 @@ import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_details_crea
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_ingredient_item.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_custom_scrollview.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_svg.dart';
@@ -38,7 +38,6 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
     final origin = Routes.recipeDetailsOrigin(
       GoRouterState.of(context).uri.path,
     );
-    final comments = ref.watch(commentsProvider(recipe.id));
 
     Widget current = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +73,7 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
         ],
         const GapV(16),
         _CommentsPreview(
-          comments: comments,
+          recipe: recipe,
           onSeeAll: () =>
               context.push(Routes.comments(origin: origin), extra: recipe),
         ),
@@ -123,33 +122,45 @@ class _MetaRow extends StatelessWidget {
   }
 }
 
-class _CommentsPreview extends StatelessWidget {
-  const _CommentsPreview({required this.comments, required this.onSeeAll});
-  final List<RecipeComment> comments;
+class _CommentsPreview extends ConsumerWidget {
+  const _CommentsPreview({required this.recipe, required this.onSeeAll});
+  final Recipe recipe;
   final VoidCallback onSeeAll;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final comments = ref.watch(commentsProvider(recipe.id));
+    // The recipe's own count fills in so the header doesn't jump on load.
+    final count = comments.valueOrNull?.length ?? recipe.commentCount;
+
     Widget header = Row(
       children: [
-        MyText('Comments (${comments.length})', ms.pop20w600PinkMain),
+        MyText('Comments ($count)', ms.pop20w600PinkMain),
         const GapH.spacer(8),
         MyText('See all', ms.pop14w600PinkMain, onTap: onSeeAll),
       ],
     );
 
+    // Empty is handled here, not by MyAsyncView, to keep it left-aligned.
+    Widget body = MyAsyncView(
+      value: comments,
+      onRetry: () => ref.invalidate(commentsProvider(recipe.id)),
+      builder: (comments) => comments.isEmpty
+          ? MyText('No comments yet. Be the first!', ms.pop13w400TextPrime)
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final comment in comments.take(2)) ...[
+                  CommentTile(comment: comment),
+                  const GapV(16),
+                ],
+              ],
+            ),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        header,
-        const GapV(12),
-        if (comments.isEmpty)
-          MyText('No comments yet. Be the first!', ms.pop13w400TextPrime),
-        for (final comment in comments.take(2)) ...[
-          CommentTile(comment: comment),
-          const GapV(16),
-        ],
-      ],
+      children: [header, const GapV(12), body],
     );
   }
 }

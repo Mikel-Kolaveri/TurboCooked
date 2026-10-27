@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/data/recipe_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_padding.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/recipe_item.dart';
 
-class YourRecipes extends StatelessWidget {
+class YourRecipes extends ConsumerWidget {
   const YourRecipes({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final sampleRecipes = RecipeData.recipes.take(2).toList();
-    final testChildren = [
-      RecipeItem.home(recipe: sampleRecipes[0], isFavorite: true),
-      RecipeItem.home(recipe: sampleRecipes[1]),
-    ];
-
-    Widget current = ListView.separated(
-      itemBuilder: (context, index) => testChildren[index],
-      separatorBuilder: (context, index) => GapH(16),
-      scrollDirection: Axis.horizontal,
-      itemCount: testChildren.length,
-      padding: EdgeInsets.symmetric(horizontal: 32),
+  Widget build(BuildContext context, WidgetRef ref) {
+    Widget current = MyAsyncView(
+      value: ref.watch(savedRecipesProvider),
+      isEmpty: (recipes) => recipes.isEmpty,
+      emptyMessage: 'No favorites yet',
+      onRetry: () => ref.invalidate(savedRecipesProvider),
+      color: mc.white,
+      builder: (recipes) => ListView.separated(
+        itemBuilder: (context, index) => RecipeItem.home(
+          key: ValueKey(recipes[index].id),
+          recipe: recipes[index],
+          isFavorite: true,
+        ),
+        separatorBuilder: (context, index) => GapH(16),
+        scrollDirection: Axis.horizontal,
+        itemCount: recipes.length,
+        padding: EdgeInsets.symmetric(horizontal: 32),
+      ),
     );
 
     current = SizedBox(height: 184, child: current);

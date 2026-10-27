@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/pages/core_app/profile/src/social_info_bar.dart';
-import 'package:recipe_app/providers/community_recipes_provider.dart';
+import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/theme/my_styles.dart';
 import 'package:recipe_app/widgets/back_button.dart';
 import 'package:recipe_app/widgets/gap.dart';
+import 'package:recipe_app/widgets/my_async_view.dart';
 import 'package:recipe_app/widgets/my_network_avatar.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/recipe_item.dart';
@@ -25,10 +26,7 @@ class AuthorProfilePage extends ConsumerWidget {
     final origin = Routes.recipeDetailsOrigin(
       GoRouterState.of(context).uri.path,
     );
-    final recipes = ref
-        .watch(communityRecipesProvider)
-        .where((r) => r.author.id == author.id)
-        .toList();
+    final authorRecipes = ref.watch(authorRecipesProvider(author.id));
 
     Widget header = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,19 +56,31 @@ class AuthorProfilePage extends ConsumerWidget {
         header,
         const GapV(16),
         SocialInfoBar(
-          recipeCount: recipes.length,
+          recipeCount: authorRecipes.valueOrNull?.length ?? 0,
           followingCount: author.followingCount,
           followerCount: author.followerCount,
         ),
         const GapV(24),
         MyText('Recipes', ms.pop20w600PinkMain),
         const GapV(16),
-        Wrap(
-          runSpacing: 24,
-          spacing: 16,
-          children: recipes
-              .map((r) => RecipeItem(recipe: r, origin: origin))
-              .toList(),
+        MyAsyncView(
+          value: authorRecipes,
+          isEmpty: (recipes) => recipes.isEmpty,
+          emptyMessage: 'No recipes yet',
+          onRetry: () => ref.invalidate(authorRecipesProvider(author.id)),
+          builder: (recipes) => Wrap(
+            runSpacing: 24,
+            spacing: 16,
+            children: recipes
+                .map(
+                  (r) => RecipeItem(
+                    key: ValueKey(r.id),
+                    recipe: r,
+                    origin: origin,
+                  ),
+                )
+                .toList(),
+          ),
         ),
         GapBottom.home(),
       ],
