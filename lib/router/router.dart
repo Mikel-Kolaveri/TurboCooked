@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/auth_state_notifier.dart';
+import 'package:recipe_app/extensions/go_router_state_extension.dart';
 import 'package:recipe_app/extensions/set_status_bar_theme.dart';
 import 'package:recipe_app/pages/auth/login_page.dart';
 import 'package:recipe_app/pages/auth/signup_page.dart';
@@ -13,8 +14,6 @@ import 'package:recipe_app/pages/core_app/profile/profile_page.dart';
 import 'package:recipe_app/pages/core_app/recipes/categories_page.dart';
 import 'package:recipe_app/pages/core_app/settings/settings_page.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/recipe_details_page.dart';
-import 'package:recipe_app/models/recipe.dart';
-import 'package:recipe_app/models/recipe_category.dart';
 import 'package:recipe_app/pages/core_app/recipes/category_recipes_list_page.dart';
 import 'package:recipe_app/pages/landing_page.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -70,13 +69,14 @@ final router = GoRouter(
         GoRoute(
           path: Routes.home,
           builder: (context, state) => HomePage(),
-          routes: [_recipeDetailsRoute()],
+          routes: [_recipeRoute(), _userRoute()],
         ),
         GoRoute(
           path: Routes.community,
           builder: (context, state) => CommunityPage(),
           routes: [
-            _recipeDetailsRoute(),
+            _recipeRoute(),
+            _userRoute(),
             GoRoute(
               path: Routes._create,
               builder: (context, state) => const CreateRecipePage(),
@@ -88,18 +88,19 @@ final router = GoRouter(
           builder: (context, state) => CategoriesPage(),
           routes: [
             GoRoute(
-              path: Routes._category,
+              path: '${Routes._category}/:$_categoryIdParam',
               builder: (context, state) => CategoryRecipesListPage(
-                category: state.extra as RecipeCategory,
+                categoryId: state.pathParam(_categoryIdParam),
               ),
-              routes: [_recipeDetailsRoute()],
             ),
+            _recipeRoute(),
+            _userRoute(),
           ],
         ),
         GoRoute(
           path: Routes.profile,
           builder: (context, state) => ProfilePage(),
-          routes: [_recipeDetailsRoute()],
+          routes: [_recipeRoute(), _userRoute()],
         ),
         GoRoute(
           path: Routes.settings,
@@ -110,20 +111,27 @@ final router = GoRouter(
   ],
 );
 
-GoRoute _recipeDetailsRoute() => GoRoute(
-  path: Routes._recipeDetails,
-  builder: (context, state) => RecipeDetailsPage(recipe: state.extra as Recipe),
+const _recipeIdParam = 'recipeId';
+const _userIdParam = 'userId';
+const _categoryIdParam = 'categoryId';
+
+GoRoute _recipeRoute() => GoRoute(
+  path: '${Routes._recipe}/:$_recipeIdParam',
+  builder: (context, state) =>
+      RecipeDetailsPage(recipeId: state.pathParam(_recipeIdParam)),
   routes: [
     GoRoute(
       path: Routes._comments,
-      builder: (context, state) => CommentsPage(recipe: state.extra as Recipe),
-    ),
-    GoRoute(
-      path: Routes._author,
       builder: (context, state) =>
-          AuthorProfilePage(recipe: state.extra as Recipe),
+          CommentsPage(recipeId: state.pathParam(_recipeIdParam)),
     ),
   ],
+);
+
+GoRoute _userRoute() => GoRoute(
+  path: '${Routes._user}/:$_userIdParam',
+  builder: (context, state) =>
+      AuthorProfilePage(userId: state.pathParam(_userIdParam)),
 );
 
 abstract class Routes {
@@ -137,24 +145,24 @@ abstract class Routes {
 
   static const String settings = '$profile/settings';
 
-  static const String _recipeDetails = 'recipe_details';
+  static const String _recipe = 'recipe';
+  static const String _user = 'user';
   static const String _category = 'category';
   static const String _comments = 'comments';
-  static const String _author = 'author';
   static const String _create = 'create';
-  static const String categoryRecipes = '$categories/$_category';
   static const String createRecipe = '$community/$_create';
 
-  static String recipeDetails({required String origin}) =>
-      '$origin/$_recipeDetails';
+  static String recipeDetails(String id, {required String origin}) =>
+      '$origin/$_recipe/$id';
 
-  static String comments({required String origin}) =>
-      '${recipeDetails(origin: origin)}/$_comments';
+  static String comments(String recipeId, {required String origin}) =>
+      '${recipeDetails(recipeId, origin: origin)}/$_comments';
 
-  static String author({required String origin}) =>
-      '${recipeDetails(origin: origin)}/$_author';
+  static String user(String id, {required String origin}) =>
+      '$origin/$_user/$id';
 
-  /// Inverse of [recipeDetails]: the tab path the recipe details page was opened from.
-  static String recipeDetailsOrigin(String detailsPath) =>
-      detailsPath.substring(0, detailsPath.lastIndexOf('/$_recipeDetails'));
+  static String category(String id) => '$categories/$_category/$id';
+
+  /// The tab a nested page sits under, e.g. `/home` for `/home/recipe/r_1`.
+  static String tabRoot(Uri uri) => '/${uri.pathSegments.first}';
 }

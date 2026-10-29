@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/auth/auth_state_notifier.dart';
-import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/extensions/color_extension.dart';
 import 'package:recipe_app/providers/comments_provider.dart';
 import 'package:recipe_app/router/router.dart';
@@ -18,12 +17,13 @@ import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/my_text_field.dart';
 
 class CommentsPage extends ConsumerWidget {
-  const CommentsPage({super.key, required this.recipe});
-  final Recipe recipe;
+  const CommentsPage({super.key, required this.recipeId});
+  final String recipeId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isGuest = ref.watch(authStateNotifierProvider).isGuest;
+    final origin = Routes.tabRoot(GoRouterState.of(context).uri);
 
     Widget header = Row(
       children: [
@@ -36,15 +36,22 @@ class CommentsPage extends ConsumerWidget {
     header = HPadding(16, header);
 
     Widget list = MyAsyncView(
-      value: ref.watch(commentsProvider(recipe.id)),
+      value: ref.watch(commentsProvider(recipeId)),
       isEmpty: (comments) => comments.isEmpty,
       emptyMessage: 'No comments yet. Be the first!',
-      onRetry: () => ref.invalidate(commentsProvider(recipe.id)),
+      onRetry: () => ref.invalidate(commentsProvider(recipeId)),
       builder: (comments) => ListView.separated(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         itemCount: comments.length,
         separatorBuilder: (_, __) => const GapV(20),
-        itemBuilder: (context, index) => CommentTile(comment: comments[index]),
+        itemBuilder: (context, index) {
+          final comment = comments[index];
+          return CommentTile(
+            comment: comment,
+            onAuthorTap: () =>
+                context.push(Routes.user(comment.author.id, origin: origin)),
+          );
+        },
       ),
     );
 
@@ -52,15 +59,15 @@ class CommentsPage extends ConsumerWidget {
       children: [
         header,
         Expanded(child: list),
-        isGuest ? const _GuestBar() : _InputBar(recipe: recipe),
+        isGuest ? const _GuestBar() : _InputBar(recipeId: recipeId),
       ],
     );
   }
 }
 
 class _InputBar extends ConsumerStatefulWidget {
-  const _InputBar({required this.recipe});
-  final Recipe recipe;
+  const _InputBar({required this.recipeId});
+  final String recipeId;
 
   @override
   ConsumerState<_InputBar> createState() => _InputBarState();
@@ -81,7 +88,7 @@ class _InputBarState extends ConsumerState<_InputBar> {
     if (text.isEmpty || _isSending) return;
     setState(() => _isSending = true);
     try {
-      await ref.read(commentsProvider(widget.recipe.id).notifier).add(text);
+      await ref.read(commentsProvider(widget.recipeId).notifier).add(text);
       _controller.clear();
       if (mounted) FocusScope.of(context).unfocus();
     } catch (_) {

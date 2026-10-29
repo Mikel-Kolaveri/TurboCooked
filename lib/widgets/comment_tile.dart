@@ -8,8 +8,9 @@ import 'package:recipe_app/widgets/my_network_avatar.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class CommentTile extends StatelessWidget {
-  const CommentTile({super.key, required this.comment});
+  const CommentTile({super.key, required this.comment, this.onAuthorTap});
   final RecipeComment comment;
+  final VoidCallback? onAuthorTap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class CommentTile extends StatelessWidget {
             comment.author.displayName,
             ms.pop13w600PinkMain,
             lines: 1,
+            onTap: onAuthorTap,
           ),
         ),
         const GapH(8),
@@ -36,14 +38,17 @@ class CommentTile extends StatelessWidget {
       ],
     );
 
+    Widget avatar = MyNetworkAvatar(
+      comment.author.avatarUrl,
+      radius: 18,
+      borderColor: mc.pinkMain,
+    );
+    avatar = GestureDetector(onTap: onAuthorTap, child: avatar);
+
     Widget current = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MyNetworkAvatar(
-          comment.author.avatarUrl,
-          radius: 18,
-          borderColor: mc.pinkMain,
-        ),
+        avatar,
         const GapH(12),
         Expanded(child: body),
       ],

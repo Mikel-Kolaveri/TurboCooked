@@ -7,6 +7,7 @@ import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/extensions/int_extension.dart';
 import 'package:recipe_app/pages/core_app/recipe_details/src/recipe_step_item.dart';
 import 'package:recipe_app/providers/comments_provider.dart';
+import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
 import 'package:recipe_app/widgets/back_button.dart';
@@ -23,8 +24,8 @@ import 'package:recipe_app/widgets/my_svg.dart';
 import 'package:recipe_app/widgets/my_text.dart';
 
 class RecipeDetailsPage extends ConsumerStatefulWidget {
-  const RecipeDetailsPage({super.key, required this.recipe});
-  final Recipe recipe;
+  const RecipeDetailsPage({super.key, required this.recipeId});
+  final String recipeId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -34,10 +35,36 @@ class RecipeDetailsPage extends ConsumerStatefulWidget {
 class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    final recipe = widget.recipe;
-    final origin = Routes.recipeDetailsOrigin(
-      GoRouterState.of(context).uri.path,
+    Widget current = MyAsyncView(
+      value: ref.watch(recipeProvider(widget.recipeId)),
+      isEmpty: (recipe) => recipe == null,
+      emptyMessage: 'Recipe not found',
+      onRetry: () => ref.invalidate(recipeProvider(widget.recipeId)),
+      builder: (recipe) => _RecipeBody(recipe: recipe!),
     );
+
+    Widget back = CircleAvatar(
+      backgroundColor: mc.white.opacityTo(0.85),
+      child: BackBtn(),
+    );
+
+    current = Stack(
+      children: [
+        current,
+        Positioned(top: 32, left: 16, child: back),
+      ],
+    );
+    return current;
+  }
+}
+
+class _RecipeBody extends StatelessWidget {
+  const _RecipeBody({required this.recipe});
+  final Recipe recipe;
+
+  @override
+  Widget build(BuildContext context) {
+    final origin = Routes.tabRoot(GoRouterState.of(context).uri);
 
     Widget current = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +77,7 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
         RecipeDetailsCreatorProfile(
           author: recipe.author,
           onTap: () =>
-              context.push(Routes.author(origin: origin), extra: recipe),
+              context.push(Routes.user(recipe.author.id, origin: origin)),
         ),
         const GapV(32),
         MyText('Details', ms.pop20w600PinkMain),
@@ -72,11 +99,7 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
           const GapV(16),
         ],
         const GapV(16),
-        _CommentsPreview(
-          recipe: recipe,
-          onSeeAll: () =>
-              context.push(Routes.comments(origin: origin), extra: recipe),
-        ),
+        _CommentsPreview(recipe: recipe, origin: origin),
         GapBottom.home(),
       ],
     );
@@ -85,18 +108,6 @@ class _RecipeDetailsPageState extends ConsumerState<RecipeDetailsPage> {
       header: MyNetworkImage(recipe.imageUrl),
       headerHeight: 300,
       children: [current],
-    );
-
-    Widget back = CircleAvatar(
-      backgroundColor: mc.white.opacityTo(0.85),
-      child: BackBtn(),
-    );
-
-    current = Stack(
-      children: [
-        current,
-        Positioned(top: 32, left: 16, child: back),
-      ],
     );
     return current;
   }
@@ -123,9 +134,9 @@ class _MetaRow extends StatelessWidget {
 }
 
 class _CommentsPreview extends ConsumerWidget {
-  const _CommentsPreview({required this.recipe, required this.onSeeAll});
+  const _CommentsPreview({required this.recipe, required this.origin});
   final Recipe recipe;
-  final VoidCallback onSeeAll;
+  final String origin;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -137,7 +148,11 @@ class _CommentsPreview extends ConsumerWidget {
       children: [
         MyText('Comments ($count)', ms.pop20w600PinkMain),
         const GapH.spacer(8),
-        MyText('See all', ms.pop14w600PinkMain, onTap: onSeeAll),
+        MyText(
+          'See all',
+          ms.pop14w600PinkMain,
+          onTap: () => context.push(Routes.comments(recipe.id, origin: origin)),
+        ),
       ],
     );
 
@@ -151,7 +166,12 @@ class _CommentsPreview extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for (final comment in comments.take(2)) ...[
-                  CommentTile(comment: comment),
+                  CommentTile(
+                    comment: comment,
+                    onAuthorTap: () => context.push(
+                      Routes.user(comment.author.id, origin: origin),
+                    ),
+                  ),
                   const GapV(16),
                 ],
               ],

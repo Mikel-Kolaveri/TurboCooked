@@ -38,8 +38,7 @@ class _RecipesPageState extends ConsumerState<CategoriesPage> {
                   (category) => CategoryItem(
                     categoryText: category.name,
                     assetLink: category.imageUrl,
-                    onTap: () =>
-                        context.push(Routes.categoryRecipes, extra: category),
+                    onTap: () => context.push(Routes.category(category.id)),
                   ),
                 )
                 .toList(),

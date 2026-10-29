@@ -57,8 +57,7 @@ class _CommunityPageState extends ConsumerState<CommunityPage> {
             key: ValueKey(recipe.id),
             recipe: recipe,
             onTap: () => context.push(
-              Routes.recipeDetails(origin: Routes.community),
-              extra: recipe,
+              Routes.recipeDetails(recipe.id, origin: Routes.community),
             ),
           );
         },

@@ -14,6 +14,10 @@ class FakeRecipeRepository implements RecipeRepository {
   static const _trendingLimit = 5;
 
   @override
+  Future<Recipe?> fetchRecipe(String id) async =>
+      (await _select((r) => r.id == id)).firstOrNull;
+
+  @override
   Future<List<RecipeCategory>> fetchCategories() async {
     await _db.simulateNetworkDelay();
     return [..._db.categories];

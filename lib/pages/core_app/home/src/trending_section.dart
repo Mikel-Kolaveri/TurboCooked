@@ -36,8 +36,7 @@ class TrendingSection extends ConsumerWidget {
               recipe: recipe,
               height: _cardHeight,
               onTap: () => context.push(
-                Routes.recipeDetails(origin: Routes.home),
-                extra: recipe,
+                Routes.recipeDetails(recipe.id, origin: Routes.home),
               ),
             ),
           );

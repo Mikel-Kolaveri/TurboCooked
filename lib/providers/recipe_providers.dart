@@ -3,6 +3,10 @@ import 'package:recipe_app/models/recipe.dart';
 import 'package:recipe_app/models/recipe_category.dart';
 import 'package:recipe_app/repositories/recipe_repository.dart';
 
+final recipeProvider = FutureProvider.family<Recipe?, String>(
+  (ref, id) => ref.watch(recipeRepositoryProvider).fetchRecipe(id),
+);
+
 final categoriesProvider = FutureProvider<List<RecipeCategory>>(
   (ref) => ref.watch(recipeRepositoryProvider).fetchCategories(),
 );
