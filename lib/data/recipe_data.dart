@@ -191,6 +191,24 @@ List<RecipeComment> _seedComments(Recipe recipe, int offset) {
 }
 
 abstract class RecipeData {
+  static const List<Profile> profiles = [
+    _chefMarco,
+    _nonnaItalia,
+    _dolceVita,
+    _wokMaster,
+    _padThaiPro,
+    _sushiLover,
+    _ramenKing,
+    _sweetTooth,
+    _bakerGrace,
+    _brownieQueen,
+    _patissierJp,
+    _toastQueen,
+    _quickEats,
+    _veggieChef,
+    _eggMaster,
+  ];
+
   static const List<RecipeCategory> categories = [
     RecipeCategory(
       id: 'italian',

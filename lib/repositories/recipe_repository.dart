@@ -14,6 +14,7 @@ final recipeRepositoryProvider = Provider<RecipeRepository>(
 
 // Recipe lists come back newest first, except fetchTrending.
 abstract interface class RecipeRepository {
+  Future<Recipe?> fetchRecipe(String id);
   Future<List<RecipeCategory>> fetchCategories();
   Future<List<Recipe>> fetchCommunity();
   Future<List<Recipe>> fetchTrending();

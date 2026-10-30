@@ -116,8 +116,7 @@ class _RecipeItemState extends State<RecipeItem> {
     current = GestureDetector(
       child: current,
       onTap: () => context.push(
-        Routes.recipeDetails(origin: widget.origin),
-        extra: widget.recipe,
+        Routes.recipeDetails(widget.recipe.id, origin: widget.origin),
       ),
     );
     return current;

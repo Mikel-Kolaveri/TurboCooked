@@ -62,7 +62,7 @@ class _CategoryChip extends StatelessWidget {
     );
     current = SizedBox(width: 72, child: current);
     current = GestureDetector(
-      onTap: () => context.go(Routes.categoryRecipes, extra: category),
+      onTap: () => context.go(Routes.category(category.id)),
       child: current,
     );
     return current;

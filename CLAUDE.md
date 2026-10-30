@@ -35,6 +35,10 @@ return current;
 
 When adding new wrappers, follow the same principle: shorten a verbose or frequently-repeated Flutter pattern.
 
+## Null safety
+Don't use `!` on nullable values. Handle null explicitly: early return, a meaningful default, or throw a descriptive error when null can only mean a bug.
+Never use a placeholder fallback (`?? ''`, `?? 0`) just to satisfy the type — it turns a bug into wrong-looking data.
+
 ## Git
 Always ask for confirmation before creating a commit.
 

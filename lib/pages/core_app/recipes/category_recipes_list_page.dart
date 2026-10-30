@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recipe_app/models/recipe_category.dart';
 import 'package:recipe_app/providers/recipe_providers.dart';
 import 'package:recipe_app/router/router.dart';
 import 'package:recipe_app/theme/my_colors.dart';
@@ -14,16 +13,23 @@ import 'package:recipe_app/widgets/my_text.dart';
 import 'package:recipe_app/widgets/recipe_card.dart';
 
 class CategoryRecipesListPage extends ConsumerWidget {
-  const CategoryRecipesListPage({super.key, required this.category});
-  final RecipeCategory category;
+  const CategoryRecipesListPage({super.key, required this.categoryId});
+  final String categoryId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget list = MyAsyncView(
-      value: ref.watch(categoryRecipesProvider(category.id)),
+    // Not whenData: it drops the previous value while the categories reload,
+    // so the list would flash a spinner and the title would go blank.
+    final categories = ref.watch(categoriesProvider);
+    final category = categories.valueOrNull
+        ?.where((c) => c.id == categoryId)
+        .firstOrNull;
+
+    Widget recipes = MyAsyncView(
+      value: ref.watch(categoryRecipesProvider(categoryId)),
       isEmpty: (recipes) => recipes.isEmpty,
       emptyMessage: 'No recipes in this category yet',
-      onRetry: () => ref.invalidate(categoryRecipesProvider(category.id)),
+      onRetry: () => ref.invalidate(categoryRecipesProvider(categoryId)),
       builder: (recipes) => ListView.separated(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
         itemCount: recipes.length,
@@ -34,19 +40,26 @@ class CategoryRecipesListPage extends ConsumerWidget {
             key: ValueKey(recipe.id),
             recipe: recipe,
             onTap: () => context.push(
-              Routes.recipeDetails(origin: Routes.categoryRecipes),
-              extra: recipe,
+              Routes.recipeDetails(recipe.id, origin: Routes.categories),
             ),
           );
         },
       ),
     );
+    Widget list = MyAsyncView(
+      value: categories,
+      isEmpty: (_) => category == null,
+      emptyMessage: 'Category not found',
+      onRetry: () => ref.invalidate(categoriesProvider),
+      builder: (_) => recipes,
+    );
+
     Widget header = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(child: Row(children: [BackBtn()])),
 
-        MyText(category.name, ms.pop20w600PinkMain),
+        MyText(category?.name ?? '', ms.pop20w600PinkMain),
         Expanded(child: SizedBox()),
       ],
     );
